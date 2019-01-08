@@ -1,56 +1,137 @@
 import {BCAbstractRobot, SPECS} from 'battlecode';
 
 // constants
-const choices = [[0,-1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]];
+var moveable = [];
+var buildable = [];
 
 // initialize once
-var first_turn = false;
+var firstTurn = true;
 var passableMap = null;
 var karbMap = null;
 var fuelMap = null;
+var xmax;
+var ymax;
+var moveRadius;
+var sightRadius;
+var buildRadius;
+var unitType;
 
 // frequent updates
-var step = -1;
+var turnCount = -1;
 var visibleRobotMap = null;
+var xpos = 0;
+var ypos = 0;
 
 class MyRobot extends BCAbstractRobot {
     turn() {
-        step++;
-        if (first_turn) {
-            first_turn = false;
+        try{
+
+        visibleRobotMap = this.getVisibleRobotMap();
+
+        if (firstTurn) {
+            firstTurn = false;
             passableMap =  this.getPassableMap();
             karbMap = this.getKarboniteMap();
             fuelMap = this.getFuelMap();
+            xmax = passableMap.length;
+            ymax = passableMap[0].length;
+            xpos = this.me.x;
+            ypos = this.me.y;
+
+            buildRadius = 2;
+            switch (this.me.unit) {
+                case SPECS.PILGRIM:
+                    sightRadius = 100;
+                    moveRadius = 4;
+                    break;
+                case SPECS.CRUSADER:
+                    sightRadius = 36;
+                    moveRadius = 9;
+                    break;
+                case SPECS.CASTLE:
+                    sightRadius = 100;
+                    moveRadius = 0;
+                    break;
+            }
+
+            for (var x = 1; x <= Math.sqrt(moveRadius); x++) {
+                for (var y = 0; y <= Math.sqrt(moveRadius); y++) {
+                    if (x*x+y*y <= moveRadius) {
+                        moveable.push([x, y]);
+                        moveable.push([-x, -y]);
+                        moveable.push([-x, y]);
+                        moveable.push([x, -y]);
+                    }
+                }
+            }
+
+            for (var x = 1; x <= Math.sqrt(buildRadius); x++) {
+                for (var y = 0; y <= Math.sqrt(buildRadius); y++) {
+                    if (x*x+y*y <= buildRadius) {
+                        buildable.push([x, y]);
+                        buildable.push([-x, -y]);
+                        buildable.push([-x, y]);
+                        buildable.push([x, -y]);
+                    }
+                }
+            }
+             this.log(buildable);
+             this.log(moveable);
+
+        //end of init
         }
-        visibleRobotMap = this.getVisibleRobotMap();
+
         switch (this.me.unit) {
             case SPECS.PILGRIM:
-                return this.pilgrim_turn();
+                return this.pilgrimTurn();
             case SPECS.CRUSADER:
-                return this.crusader_turn();
+                return this.crusaderTurn();
             case SPECS.CASTLE:
-                return this.castle_turn();
+                return this.castleTurn();
+        }
+        }
+        catch (err) {
+            this.log("Error "+err);
         }
     }
 
-    pilgrim_turn() {
-        const choice = choices[Math.floor(Math.random()*choices.length)];
-        return this.move(...choice);
+    pilgrimTurn() {
+        this.log("I am a Pilgrim at "+xpos+" "+ypos);
+        if (this.fuel >= 50) {
+            for (var i = 0; i < moveable.length; i++) {
+                var x = this.me.x+moveable[i][0];
+                var y = this.me.y+moveable[i][1];
+                if (this.checkBounds(y, x)&&passableMap[y][x]&&visibleRobotMap[y][x]==0) {
+                    this.log("Moving to "+x+" "+y);
+                    return this.move(moveable[i][0], moveable[i][1]);
+                }
+            }
+        }
     }
 
-    crusader_turn() {
-        const choice = choices[Math.floor(Math.random()*choices.length)];
-        return this.move(...choice);
+    crusaderTurn() {
+        this.log("I am a Crusader at "+xpos+" "+ypos);
+        var choice = moveable[Math.floor(Math.random()*moveable.length)];
+        return this.move(choice);
     }
 
-    castle_turn() {
-        if (step % 10 === 0) {
-            this.log("Building a pilgrim at " + (this.me.x+1) + ", " + (this.me.y+1));
-            return this.buildUnit(SPECS.PILGRIM, 1, 1);
+    castleTurn() {
+        this.log("I am a Castle at "+xpos+" "+ypos);
+        this.log(this.karbonite+" "+this.fuel);
+        if (this.karbonite >= 10 && this.fuel >= 50) {
+            for (var i = 0; i < buildable.length; i++) {
+                var x = this.me.x+buildable[i][0];
+                var y = this.me.y+buildable[i][1];
+                if (this.checkBounds(y, x)&&passableMap[y][x]&&visibleRobotMap[y][x]==0) {
+                    this.log("Building pilgrim at "+x+" "+y);
+                    return this.buildUnit(SPECS.PILGRIM, buildable[i][0], buildable[i][1]);
+                }
+            }
         }
-        else {
-            return // this.log("Castle health: " + this.me.health);
-        }
+    }
+
+    checkBounds(x, y) {
+        return 0 <= x && x < xmax && 0 <= y && y < ymax;
     }
 }
 
