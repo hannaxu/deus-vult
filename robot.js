@@ -36,6 +36,8 @@ class MyRobot extends BCAbstractRobot {
         try{
 
         this.visibleRobotMap = this.getVisibleRobotMap();
+        this.xpos = this.me.x;
+        this.ypos = this.me.y;
 
         if (this.firstTurn) {
             this.firstTurn = false;
@@ -44,8 +46,6 @@ class MyRobot extends BCAbstractRobot {
             this.fuelMap = this.getFuelMap();
             this.xmax = this.passableMap.length;
             this.ymax = this.passableMap[0].length;
-            this.xpos = this.me.x;
-            this.ypos = this.me.y;
 
             this.buildRadius = 2;
             switch (this.me.unit) {
@@ -84,8 +84,8 @@ class MyRobot extends BCAbstractRobot {
                     }
                 }
             }
-             this.log(this.buildable);
-             this.log(this.moveable);
+            //this.log(this.buildable);
+            //this.log(this.moveable);
 
         //end of init
         }
@@ -106,6 +106,10 @@ class MyRobot extends BCAbstractRobot {
 
     checkBounds(x, y) {
         return 0 <= x && x < this.xmax && 0 <= y && y < this.ymax;
+    }
+
+    astar() {
+        //prob
     }
 }
 
