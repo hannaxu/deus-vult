@@ -23,6 +23,8 @@ export default {
   unitType: null,
   creatorPos: null,
 
+  rLocs: [],
+
   // frequent updates
   turnCount: -1,
   visibleRobotMap: null,
