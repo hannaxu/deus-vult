@@ -1,4 +1,4 @@
-import {BCAbstractRobot, SPECS} from 'battlecode';
+import { BCAbstractRobot, SPECS } from 'battlecode';
 
 import vars from './variables';
 
@@ -9,43 +9,35 @@ import pilgrimTurn from './pilgrim';
 import * as utils from './utils';
 
 class MyRobot extends BCAbstractRobot {
-  constructor() {
+  constructor () {
     super();
     vars.SPECS = SPECS;
   }
 
-  turn() {
-    try{
-
+  turn () {
+    try {
       vars.visibleRobotMap = this.getVisibleRobotMap();
       vars.xpos = this.me.x;
       vars.ypos = this.me.y;
 
       if (vars.firstTurn) {
         vars.firstTurn = false;
-        vars.passableMap =  this.getPassableMap();
+        vars.passableMap = this.getPassableMap();
         vars.karbMap = this.getKarboniteMap();
         vars.fuelMap = this.getFuelMap();
         vars.xmax = vars.passableMap.length;
         vars.ymax = vars.passableMap[0].length;
 
+        vars.moveRadius = vars.SPECS.UNITS[this.me.unit].SPEED;
+        vars.attackRadius = vars.SPECS.UNITS[this.me.unit].ATTACK_RADIUS;
         vars.buildRadius = 2;
-        vars.moveCost = 1;
-        switch (this.me.unit) {
-          case vars.SPECS.PILGRIM:
-            vars.sightRadius = 100;
-            vars.moveRadius = 4;
-            break;
-          case vars.SPECS.CRUSADER:
-            vars.sightRadius = 36;
-            vars.moveRadius = 9;
-            break;
-          case vars.SPECS.CASTLE:
-            vars.sightRadius = 100;
-            vars.moveRadius = 0;
+        vars.sightRadius = vars.SPECS.UNITS[this.me.unit].VISION_RADIUS;
+        vars.attackCost = vars.SPECS.UNITS[this.me.unit].ATTACK_FUEL_COST;
+        vars.moveCost = vars.SPECS.UNITS[this.me.unit].FUEL_PER_MOVE;
+
+        if(this.me.unit==vars.SPECS.CASTLE) {
             var symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
             this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
-            break;
         }
 
         for (var x = 1; x <= Math.sqrt(vars.moveRadius); x++) {
@@ -69,8 +61,6 @@ class MyRobot extends BCAbstractRobot {
             }
           }
         }
-        //this.log(vars.buildable);
-        //this.log(vars.moveable);
 
         for (var x = 0; x < vars.xmax; x++) {
           vars.fuzzyCost.push([]);

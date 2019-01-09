@@ -21,8 +21,10 @@ export default function pilgrimTurn () {
     if (choice==null) {
       this.log("Trying to move to "+end+" but stuck");
     }
-    this.log("Moving "+choice+" to "+this.creatorPos);
-    return this.move(choice[0], choice[1]);
+    else {
+      this.log("Moving "+choice+" to "+vars.creatorPos);
+      return this.move(choice[0], choice[1]);
+    }
   }
 
   if (vars.karbMap[this.me.y][this.me.x]) {
