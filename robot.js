@@ -46,8 +46,8 @@ class MyRobot extends BCAbstractRobot {
             if (x*x+y*y <= vars.moveRadius) {
               vars.moveable.push([x, y]);
               vars.moveable.push([-x, -y]);
-              vars.moveable.push([-x, y]);
-              vars.moveable.push([x, -y]);
+              vars.moveable.push([-y, x]);
+              vars.moveable.push([y, -x]);
             }
           }
         }
@@ -57,8 +57,8 @@ class MyRobot extends BCAbstractRobot {
             if (x*x+y*y <= vars.buildRadius) {
               vars.buildable.push([x, y]);
               vars.buildable.push([-x, -y]);
-              vars.buildable.push([-x, y]);
-              vars.buildable.push([x, -y]);
+              vars.buildable.push([-y, x]);
+              vars.buildable.push([y, -x]);
             }
           }
         }
@@ -70,16 +70,20 @@ class MyRobot extends BCAbstractRobot {
           }
         }
 
+        // determines which castle/church created this unit
+        // this.log(vars.buildable);
         if (this.me.unit!=vars.SPECS.CASTLE&&this.me.unit!=vars.SPECS.CHURCH) {
           for (var i = 0; i < vars.buildable.length; i++) {
             var x = this.me.x+vars.buildable[i][0];
             var y = this.me.y+vars.buildable[i][1];
             if (!this.checkBounds(x, y)) continue;
             var id = this.getRobot(vars.visibleRobotMap[y][x]);
-            if (id==null) continue;
-            var xsig = Math.floor(id.signal/100);
-            var ysig = id.signal%100;
-            if (id.unit==vars.SPECS.CASTLE&&xsig==this.me.x&&ysig==this.me.y) {
+            if (id==null||id.signal==null) continue;
+            var dir = vars.buildable[id.signal];
+            // this.log(". "+dir);
+            // this.log(vars.buildable[i]);
+            var correctSignal = dir[0]==-vars.buildable[i][0]&&dir[1]==-vars.buildable[i][1];
+            if ((id.unit==vars.SPECS.CASTLE||id.unit==vars.SPECS.CHURCH)&&correctSignal) {
               vars.creatorPos = [x, y];
             }
           }
