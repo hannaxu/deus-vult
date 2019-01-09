@@ -34,10 +34,11 @@ class MyRobot extends BCAbstractRobot {
         vars.sightRadius = vars.SPECS.UNITS[this.me.unit].VISION_RADIUS;
         vars.attackCost = vars.SPECS.UNITS[this.me.unit].ATTACK_FUEL_COST;
         vars.moveCost = vars.SPECS.UNITS[this.me.unit].FUEL_PER_MOVE;
+        vars.maxKarb = vars.SPECS.UNITS[this.me.unit].KARBONITE_CAPACITY;
 
-        if(this.me.unit==vars.SPECS.CASTLE) {
-            var symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
-            this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
+        if (this.me.unit==vars.SPECS.CASTLE) {
+          var symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
+          this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
         }
 
         for (var x = 1; x <= Math.sqrt(vars.moveRadius); x++) {
@@ -69,7 +70,7 @@ class MyRobot extends BCAbstractRobot {
           }
         }
 
-        if (this.me.unit!=vars.SPECS.CASTLE) {
+        if (this.me.unit!=vars.SPECS.CASTLE&&this.me.unit!=vars.SPECS.CHURCH) {
           for (var i = 0; i < vars.buildable.length; i++) {
             var x = this.me.x+vars.buildable[i][0];
             var y = this.me.y+vars.buildable[i][1];
@@ -104,11 +105,11 @@ class MyRobot extends BCAbstractRobot {
     }
   }
 
-  checkBounds(x, y) {
+  checkBounds (x, y) {
     return 0 <= x && x < vars.xmax && 0 <= y && y < vars.ymax;
   }
 
-  findMove(start, end) {
+  findMove (start, end) {
     if (vars.fuzzyCost[end[0]][end[1]].length==0) {
       for (var x = 0; x < vars.xmax; x++) {
         vars.fuzzyCost[end[0]][end[1]].push([]);
@@ -118,7 +119,7 @@ class MyRobot extends BCAbstractRobot {
       }
       this.bfs(end);
     }
-    var bestMove = [vars.POS_INF, vars.POS_INF, null];
+    var bestMove = [vars.fuzzyCost[end[0]][end[1]][start[0]][start[1]][0], vars.fuzzyCost[end[0]][end[1]][start[0]][start[1]][1], null];
     for (var i = 0; i < vars.moveable.length; i++) {
       var x = this.me.x+vars.moveable[i][0];
       var y = this.me.y+vars.moveable[i][1];

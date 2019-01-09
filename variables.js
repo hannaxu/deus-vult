@@ -19,6 +19,7 @@ export default {
   attackRadius: null, // 2d array with lower and upper bound
   attackCost: null,
   moveCost: null,
+  maxKarb: null,
   unitType: null,
   creatorPos: null,
 
