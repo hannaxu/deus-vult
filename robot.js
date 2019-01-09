@@ -3,6 +3,8 @@ import castleTurn from './castle';
 import crusaderTurn from './crusader';
 import pilgrimTurn from './pilgrim';
 
+import * as utils from './utils';
+
 class MyRobot extends BCAbstractRobot {
     
     constructor() {
@@ -60,6 +62,8 @@ class MyRobot extends BCAbstractRobot {
                 case this.SPECS.CASTLE:
                     this.sightRadius = 100;
                     this.moveRadius = 0;
+                    var symmetry = utils.checkMapSymmetry(this.passableMap, this.karbMap, this.fuelMap);
+                    this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
                     break;
             }
 
