@@ -1,3 +1,5 @@
+import vars from './variables';
+
 /**
  * Determine the map's symmetry from globally-known data.
  * @param   {bool[][]}  passMap The full map, result of this.map.
@@ -37,8 +39,8 @@ function equal2D(arr1, arr2){
 //
 //determine resource
 export function initRecList () {
-  for (var x=0; x<xmax; x++) {
-    for (var y=0; y<ymax; y++) {
+  for (var x=0; x<vars.xmax; x++) {
+    for (var y=0; y<vars.ymax; y++) {
       if (vars.fuelMap[y][x]) {
         vars.rLocs.push({});
         vars.rLocs[vars.rLocs.length-1].type=0;
