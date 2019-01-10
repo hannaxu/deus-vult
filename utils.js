@@ -71,7 +71,7 @@ export function findMove (start, end) {
         vars.fuzzyCost[end[0]][end[1]][x].push(null);
       }
     }
-    this.bfs(end);
+    bfs(end);
     //this.log("Conducted bfs "+start+" "+end);
   }
   if (vars.fuzzyCost[end[0]][end[1]][start[0]][start[1]]==null) {
@@ -79,14 +79,14 @@ export function findMove (start, end) {
   }
   var bestMove = [vars.fuzzyCost[end[0]][end[1]][start[0]][start[1]][0], vars.fuzzyCost[end[0]][end[1]][start[0]][start[1]][1], null];
   for (var i = 0; i < vars.moveable.length; i++) {
-    var x = this.me.x+vars.moveable[i][0];
-    var y = this.me.y+vars.moveable[i][1];
+    var x = start[0]+vars.moveable[i][0];
+    var y = start[1]+vars.moveable[i][1];
     if (checkBounds(x, y)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
       var move = vars.fuzzyCost[end[0]][end[1]][x][y];
       if (move[0]<bestMove[0]) {
         bestMove = [move[0], move[1], vars.moveable[i]];
       }
-      else if(move[0]==bestMove[0]&&move[1]<bestMove[0]) {
+      else if (move[0]==bestMove[0]&&move[1]<bestMove[0]) {
         bestMove = [move[0], move[1], vars.moveable[i]];
       }
     }
