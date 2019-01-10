@@ -31,7 +31,7 @@ class MyRobot extends BCAbstractRobot {
         vars.moveRadius = vars.SPECS.UNITS[this.me.unit].SPEED;
         vars.attackRadius = vars.SPECS.UNITS[this.me.unit].ATTACK_RADIUS;
         vars.buildRadius = 2;
-        vars.sightRadius = vars.SPECS.UNITS[this.me.unit].VISION_RADIUS;
+        vars.visionRadius = vars.SPECS.UNITS[this.me.unit].VISION_RADIUS;
         vars.attackCost = vars.SPECS.UNITS[this.me.unit].ATTACK_FUEL_COST;
         vars.moveCost = vars.SPECS.UNITS[this.me.unit].FUEL_PER_MOVE;
         vars.maxKarb = vars.SPECS.UNITS[this.me.unit].KARBONITE_CAPACITY;
@@ -43,29 +43,10 @@ class MyRobot extends BCAbstractRobot {
 
         utils.initRecList();
 
-
-        for (var x = 1; x <= Math.sqrt(vars.moveRadius); x++) {
-          for (var y = 0; y <= Math.sqrt(vars.moveRadius); y++) {
-            if (x*x+y*y <= vars.moveRadius) {
-              vars.moveable.push([x, y]);
-              vars.moveable.push([-x, -y]);
-              vars.moveable.push([-y, x]);
-              vars.moveable.push([y, -x]);
-            }
-          }
-        }
-        //this.log("moveable created");
-
-        for (var x = 1; x <= Math.sqrt(vars.buildRadius); x++) {
-          for (var y = 0; y <= Math.sqrt(vars.buildRadius); y++) {
-            if (x*x+y*y <= vars.buildRadius) {
-              vars.buildable.push([x, y]);
-              vars.buildable.push([-x, -y]);
-              vars.buildable.push([-y, x]);
-              vars.buildable.push([y, -x]);
-            }
-          }
-        }
+        vars.seeable = utils.findConnections(vars.visionRadius);
+        vars.attackable = utils.findConnections(vars.attackRadius);
+        vars.moveable = utils.findConnections(vars.moveRadius);
+        vars.buildable = utils.findConnections(vars.buildRadius);
         //this.log("buildable created");
 
         for (var x = 0; x < vars.xmax; x++) {
