@@ -5,6 +5,8 @@ export default {
 
   // initialize once
   SPECS: null,
+  seeable: [],
+  attackable: [],
   moveable: [],
   buildable: [],
   firstTurn: true,
@@ -14,7 +16,7 @@ export default {
   xmax: null,
   ymax: null,
   moveRadius: null,
-  sightRadius: null,
+  visionRadius: null,
   buildRadius: null,
   attackRadius: null, // 2d array with lower and upper bound
   attackCost: null,
