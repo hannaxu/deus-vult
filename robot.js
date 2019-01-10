@@ -54,6 +54,7 @@ class MyRobot extends BCAbstractRobot {
             }
           }
         }
+        //this.log("moveable created");
 
         for (var x = 1; x <= Math.sqrt(vars.buildRadius); x++) {
           for (var y = 0; y <= Math.sqrt(vars.buildRadius); y++) {
@@ -65,6 +66,7 @@ class MyRobot extends BCAbstractRobot {
             }
           }
         }
+        //this.log("buildable created");
 
         for (var x = 0; x < vars.xmax; x++) {
           vars.fuzzyCost.push([]);
@@ -72,26 +74,25 @@ class MyRobot extends BCAbstractRobot {
             vars.fuzzyCost[x].push([]);
           }
         }
+        //this.log("fuzzyCost created");
 
         // determines which castle/church created this unit
-        // this.log(vars.buildable);
         if (this.me.unit!=vars.SPECS.CASTLE&&this.me.unit!=vars.SPECS.CHURCH) {
           for (var i = 0; i < vars.buildable.length; i++) {
             var x = this.me.x+vars.buildable[i][0];
             var y = this.me.y+vars.buildable[i][1];
             if (!this.checkBounds(x, y)) continue;
             var id = this.getRobot(vars.visibleRobotMap[y][x]);
-            if (id==null||id.signal==null) continue;
+            if (id==null||(id.unit!=vars.SPECS.CASTLE&&id.unit!=vars.SPECS.CHURCH)) continue;
             var dir = vars.buildable[id.signal];
-            // this.log(". "+dir);
-            // this.log(vars.buildable[i]);
             var correctSignal = dir[0]==-vars.buildable[i][0]&&dir[1]==-vars.buildable[i][1];
-            if ((id.unit==vars.SPECS.CASTLE||id.unit==vars.SPECS.CHURCH)&&correctSignal) {
+            if (correctSignal) {
               vars.creatorPos = [x, y];
             }
           }
-          this.log("Created by "+vars.creatorPos);
+          //this.log("Created by "+vars.creatorPos);
         }
+
         vars.firstTurn = false;
       // end of init
       }
@@ -125,6 +126,10 @@ class MyRobot extends BCAbstractRobot {
         }
       }
       this.bfs(end);
+      //this.log("Conducted bfs "+start+" "+end);
+    }
+    if (vars.fuzzyCost[end[0]][end[1]][start[0]][start[1]]==null) {
+      return null;
     }
     var bestMove = [vars.fuzzyCost[end[0]][end[1]][start[0]][start[1]][0], vars.fuzzyCost[end[0]][end[1]][start[0]][start[1]][1], null];
     for (var i = 0; i < vars.moveable.length; i++) {
