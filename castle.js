@@ -2,7 +2,7 @@ import vars from './variables';
 
 export default function castleTurn() {
   this.log("I am a Castle at "+this.me.x+" "+this.me.y);
-  this.log("Resources: "+this.karbonite+" "+this.fuel);
+  //this.log("Resources: "+this.karbonite+" "+this.fuel);
   if (this.karbonite >= 10 && this.fuel >= 50) {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];

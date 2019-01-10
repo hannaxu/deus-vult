@@ -24,7 +24,7 @@ function symmetry2DHoriz(arr){
     return equal2D(topFlipped, bottom);
 }
 function equal2D(arr1, arr2){
-    for(var r = 0; r < arr1.length; r++){    
+    for(var r = 0; r < arr1.length; r++){
         for(var c = 0; c < arr1[0].length; c++){
             if(arr1[r][c] != arr2[r][c]){
                 return false;
