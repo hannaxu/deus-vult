@@ -130,3 +130,18 @@ export function multiDest (start, ends) {
   }
   return distances;
 }
+
+export function findConnections (r2) {
+  var reachable = [];
+  for (var x = 1; x <= Math.sqrt(r2); x++) {
+    for (var y = 0; y <= Math.sqrt(r2); y++) {
+      if (x*x+y*y <= vars.buildRadius) {
+        reachable.push([x, y]);
+        reachable.push([-x, -y]);
+        reachable.push([-y, x]);
+        reachable.push([y, -x]);
+      }
+    }
+  }
+  return reachable;
+}
