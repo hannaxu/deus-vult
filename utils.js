@@ -113,3 +113,20 @@ export function bfs (end) {
     index++;
   }
 }
+
+export function multiDest (start, ends) {
+  if (vars.fuzzyCost[start[0]][start[1]].length==0) {
+    for (var x = 0; x < vars.xmax; x++) {
+      vars.fuzzyCost[start[0]][start[1]].push([]);
+      for (var y = 0; y < vars.ymax; y++) {
+        vars.fuzzyCost[start[0]][start[1]][x].push(null);
+      }
+    }
+    bfs(start);
+  }
+  var distances = [];
+  for (var i = 0; i < ends; i++) {
+    distances.push(vars.fuzzyCost[start[0]][start[1]][ends[i][0]][ends[i][1]][0]);
+  }
+  return distances;
+}
