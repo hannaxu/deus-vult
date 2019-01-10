@@ -1,10 +1,11 @@
+import * as utils from './utils';
 /**
  * Radio a message ot friendly units, encrypt and add signature.
  * Message format:
  * 8 bits - last 8 bits of unit id,
  * 8 bits - message.
  * @param {int} message
- * @param {int} sq_radius 
+ * @param {int} sq_radius
  */
 export function sendMessage(message, sq_radius) {
   // Several checks to avoid errors - may remove later
@@ -40,7 +41,7 @@ export function readMessages() {
     var id_true = other_r.id & 255;
     var id_restored = message_decr >> 8;
     var message = message_decr & 255;
-    
+
     // Friendly messages
     if(id_restored == id_true){
       try{
@@ -74,7 +75,7 @@ function cypherMessage(message) {
 function processMessage(message, sender) {
   // PROCEED WITH CAUTION - these messages might still be compromised
   // There is a 0.39% chance a random enemy message will end up here
-  
+
   // TODO: process decoded messages
   this.log("Received message " + message.toString(2) + " from unit " + sender.id);
 }

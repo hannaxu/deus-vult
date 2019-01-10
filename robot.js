@@ -81,7 +81,7 @@ class MyRobot extends BCAbstractRobot {
           for (var i = 0; i < vars.buildable.length; i++) {
             var x = this.me.x+vars.buildable[i][0];
             var y = this.me.y+vars.buildable[i][1];
-            if (!this.checkBounds(x, y)) continue;
+            if (!utils.checkBounds(x, y)) continue;
             var id = this.getRobot(vars.visibleRobotMap[y][x]);
             if (id==null||(id.unit!=vars.SPECS.CASTLE&&id.unit!=vars.SPECS.CHURCH)) continue;
             var dir = vars.buildable[id.signal];
