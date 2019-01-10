@@ -41,6 +41,9 @@ class MyRobot extends BCAbstractRobot {
           this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
         }
 
+        utils.initRecList();
+
+
         for (var x = 1; x <= Math.sqrt(vars.moveRadius); x++) {
           for (var y = 0; y <= Math.sqrt(vars.moveRadius); y++) {
             if (x*x+y*y <= vars.moveRadius) {
