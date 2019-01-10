@@ -19,7 +19,7 @@ export default function pilgrimTurn () {
       }
     }
     //this.log("Not next to a castle");
-    var choice = utils.findMove([this.me.x, this.me.y], vars.creatorPos);
+    var choice = utils.findMove.call(this, [this.me.x, this.me.y], vars.creatorPos);
     if (choice==null) {
       //this.log("Trying to move to "+vars.creatorPos+" but stuck");
       return;
@@ -44,7 +44,7 @@ export default function pilgrimTurn () {
     }
   }
 
-  var choice = utils.findMove([this.me.x, this.me.y], end);
+  var choice = utils.findMove.call(this, [this.me.x, this.me.y], end);
   if (choice==null) {
     //this.log("Trying to move to "+end+" but stuck");
   }
