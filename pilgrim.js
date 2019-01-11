@@ -25,10 +25,10 @@ function initRecList() {
 }
 
 export default function pilgrimTurn () {
-if (vars.firstTurn) {
+    if (vars.firstTurn) {
         initRedList();
     }
-  this.log("I am a Pilgrim at "+this.me.x+" "+this.me.y);
+    this.log("I am a Pilgrim at "+this.me.x+" "+this.me.y);
 
   if (this.me.karbonite==20) {
     this.log("I have full karbonite");

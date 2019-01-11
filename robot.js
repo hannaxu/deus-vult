@@ -39,9 +39,9 @@ class MyRobot extends BCAbstractRobot {
             var symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
             this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
         }
-
-        for (var x = 1; x <= Math.sqrt(vars.moveRadius); x++) {
-          for (var y = 0; y <= Math.sqrt(vars.moveRadius); y++) {
+        
+        for (var x = 1; x*x <= vars.moveRadius; x++) {
+          for (var y = 0; y*y <= vars.moveRadius; y++) {
             if (x*x+y*y <= vars.moveRadius) {
               vars.moveable.push([x, y]);
               vars.moveable.push([-x, -y]);
@@ -50,9 +50,8 @@ class MyRobot extends BCAbstractRobot {
             }
           }
         }
-
-        for (var x = 1; x <= Math.sqrt(vars.buildRadius); x++) {
-          for (var y = 0; y <= Math.sqrt(vars.buildRadius); y++) {
+        for (var x = 1; x*x <= vars.buildRadius; x++) {
+          for (var y = 0; y*y <= vars.buildRadius; y++) {
             if (x*x+y*y <= vars.buildRadius) {
               vars.buildable.push([x, y]);
               vars.buildable.push([-x, -y]);
