@@ -93,7 +93,17 @@ class MyRobot extends BCAbstractRobot {
         vars.firstTurn = false;
       // end of init
       }
-      vars.visibleRobots = this.getVisibleRobots();
+      vars.commRobots = this.getVisibleRobots();
+
+      vars.visibleRobots = [];
+      for (var i = 0; i < vars.visible.length; i++) {
+        var x = this.me.x+vars.visible[i][0];
+        var y = this.me.y+vars.visible[i][1];
+        if (utils.checkBounds(x, y)&&vars.visibleRobotMap[y][x]>0) {
+          vars.visibleRobots.push(this.getRobot(vars.visibleRobotMap[y][x]));
+        }
+      }
+
       // if (!this.firstTurn) return;
       // this.firstTurn = false;
 
