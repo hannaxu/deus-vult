@@ -19,6 +19,7 @@ export default function pilgrimTurn () {
       }
     }
     //this.log("Not next to a castle");
+<<<<<<< HEAD
 
     var base = null;
     for (var b in vars.baseLocs) {
@@ -26,6 +27,9 @@ export default function pilgrimTurn () {
     }
     this.log(base);
     var choice = utils.findMove.call(this, [this.me.x, this.me.y], base);
+=======
+    var choice = utils.findMove.call(this, [this.me.x, this.me.y], vars.creatorPos);
+>>>>>>> f7eab13c59d3eedad6619bb5744467c6b0baab8b
     if (choice==null) {
       //this.log("Trying to move to "+vars.creatorPos+" but stuck");
       return;
