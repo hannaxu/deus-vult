@@ -21,7 +21,7 @@ class MyRobot extends BCAbstractRobot {
       vars.ypos = this.me.y;
 
       if (vars.firstTurn) {
-        vars.firstTurn = false;
+
         vars.passableMap = this.getPassableMap();
         vars.karbMap = this.getKarboniteMap();
         vars.fuelMap = this.getFuelMap();
@@ -35,11 +35,6 @@ class MyRobot extends BCAbstractRobot {
         vars.attackCost = vars.SPECS.UNITS[this.me.unit].ATTACK_FUEL_COST;
         vars.moveCost = vars.SPECS.UNITS[this.me.unit].FUEL_PER_MOVE;
         vars.maxKarb = vars.SPECS.UNITS[this.me.unit].KARBONITE_CAPACITY;
-
-        if (this.me.unit==vars.SPECS.CASTLE) {
-          var symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
-          this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
-        }
 
         utils.initRecList();
 
@@ -73,8 +68,6 @@ class MyRobot extends BCAbstractRobot {
           }
           //this.log("Created by "+vars.creatorPos);
         }
-
-        vars.firstTurn = false;
       // end of init
       }
 

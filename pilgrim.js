@@ -4,7 +4,10 @@ import * as utils from './utils';
 export default function pilgrimTurn () {
 
   this.log("I am a Pilgrim at "+this.me.x+" "+this.me.y);
-
+  if (vars.firstTurn) {
+    vars.firstTurn = false;
+  }
+  
   if (this.me.karbonite==vars.maxKarb) {
     //this.log("I have full karbonite");
     for (var i = 0; i < vars.buildable.length; i++) {
