@@ -8,7 +8,7 @@ export function sendMessage(message, sq_radius) {
   if(!checkParams.call(this, message, sq_radius, true))
     return;
 
-  this.signal(cypherMessage(message), sq_radius);
+  this.signal(cypherMessage(message, this.me.team), sq_radius);
   this.log("Successfully sent message " + message.toString(2) + " over sq_radius " + sq_radius);
 }
 
@@ -27,7 +27,7 @@ export function sendMessageTrusted(message, sq_radius) {
     return;
 
   var message_full = (this.id & 255) << 8 | message;
-  this.signal(cypherMessage(message_full), sq_radius);
+  this.signal(cypherMessage(message_full, this.me.team), sq_radius);
   this.log("Successfully sent message " + message.toString(2) + " over sq_radius " + sq_radius);
 }
 
@@ -48,7 +48,7 @@ export function readMessages() {
       continue;
     
     // Chceck if the message has the trusted signature
-    var message = cypherMessage(other_r.signal);
+    var message = cypherMessage(other_r.signal, this.me.team);
     var id_true = other_r.id & 255;
     var id_restored = message >> 8;
     var message_restored = message & 255;
