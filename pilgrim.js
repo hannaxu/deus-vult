@@ -1,9 +1,22 @@
 import vars from './variables';
 import * as utils from './utils';
 
+
+var recD;
 export default function pilgrimTurn () {
     var me=this.me;
+    if (vars.firstTurn) {
+        var openRecs=[];
+        
+        for (var i=0; i<vars.rLocs.length; i++) {
+            var p=vars.rLocs[i];
+            openRecs.push([p.x,p.y]);
+        }
+        //this.log(openRecs.length);
+        recD=utils.multiDest(openRecs);
+    }
     if (3*(me.karbonite*vars.maxFuel+me.fuel*vars.maxKarb)>(vars.maxFuel*vars.maxKarb)) {
+        this.log("hi");
         for (var i=0; i<8; i++) {
             var x=me.x+vars.buildable[i][0];
             var y=me.y+vars.buildable[i][1];
@@ -25,42 +38,41 @@ export default function pilgrimTurn () {
         }
     }
     if (vars.teamFuel>=1 && (vars.karbMap[me.y][me.x] || vars.fuelMap[me.y][me.x])) {
+        this.log("Mined stuff");
         return this.mine();
     }
     //this.log(vars.teamFuel);
     if (vars.teamFuel>2) {
-        var openRecs=[];
-        for (var i=0; i<vars.rLocs.length; i++) {
-            var p=vars.rLocs[i];
-            openRecs.push([p.x,p.y]);
-        }
-        var dists=utils.multiDest(openRecs);
+        
         this.log("Headed to depot");
-        return pickAdjMove(dists,this);
+        return pickAdjMove(recD,this);
     }
     return null;
 }
                     
 function pickAdjMove(costs,thas) {
     var me=thas.me;
+    if (costs[me.x][me.y]==null) {
+        return null;
+    }
     var best=costs[me.x][me.y][0];
     var bestd=-1;
+    //thas.log(vars.buildable.length);
     for (var i=0; i<8; i++) {
         var x=me.x+vars.buildable[i][0];
         var y=me.y+vars.buildable[i][1];
-        if (utils.checkBounds(x,y)) {
-            thas.log(costs[x][y]);
-        }
-        if (utils.checkBounds(x,y) && vars.visibleRobotMap[y][x]==0 && vars.passableMap[y][x] && costs[x][y][0]<best) {
+        if (utils.checkBounds(x,y) && vars.visibleRobotMap[y][x]==0 && vars.passableMap[x][y] && costs[x][y]!=null && costs[x][y]!=undefined && costs[x][y][0]<best) {
             best=costs[x][y][0];
             bestd=i;
-            that.log("possible");
+            
         }
     }
+    //thas.log("point");
     if (bestd==-1) {
         return null;
     } else {
-        thas.log(best);
+        //thas.log(bestd);
+        //thas.log(vars.passableMap[y][x]);
         return thas.move(vars.buildable[bestd][0],vars.buildable[bestd][1]);
     }
 }

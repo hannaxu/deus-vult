@@ -9,7 +9,7 @@ export function sendMessage(message, sq_radius) {
     return;
 
   this.signal(cypherMessage(message, this.me.team), sq_radius);
-  this.log("Successfully sent message " + message.toString(2) + " over sq_radius " + sq_radius);
+  //this.log("Successfully sent message " + message.toString(2) + " over sq_radius " + sq_radius);
 }
 
 /**
@@ -28,7 +28,7 @@ export function sendMessageTrusted(message, sq_radius) {
 
   var message_full = (this.id & 255) << 8 | message;
   this.signal(cypherMessage(message_full, this.me.team), sq_radius);
-  this.log("Successfully sent message " + message.toString(2) + " over sq_radius " + sq_radius);
+  //this.log("Successfully sent message " + message.toString(2) + " over sq_radius " + sq_radius);
 }
 
 /**
@@ -105,7 +105,7 @@ function processMessage(message, sender, isLong) {
   // There is a 0.39% chance a random enemy message will end up here
 
   // TODO: process decoded messages
-  this.log("Received message " + message.toString(2) + " from unit " + sender.id);
+  //this.log("Received message " + message.toString(2) + " from unit " + sender.id);
 }
 
 function checkParams(message, sq_radius, isLong){

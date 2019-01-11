@@ -23,13 +23,13 @@ class MyRobot extends BCAbstractRobot {
         vars.teamFuel=this.fuel;
 
       if (vars.firstTurn) {
-        vars.firstTurn = false;
-        vars.passableMap = this.getPassableMap();
+          
+        
+        vars.passableMap = this.map;
         vars.karbMap = this.getKarboniteMap();
         vars.fuelMap = this.getFuelMap();
-        vars.xmax = vars.passableMap.length;
-        vars.ymax = vars.passableMap[0].length;
-
+        vars.ymax = vars.passableMap.length;
+        vars.xmax = vars.passableMap[0].length;
         vars.moveRadius = vars.SPECS.UNITS[this.me.unit].SPEED;
         vars.attackRadius = vars.SPECS.UNITS[this.me.unit].ATTACK_RADIUS;
         vars.buildRadius = 2;
@@ -38,7 +38,7 @@ class MyRobot extends BCAbstractRobot {
         vars.moveCost = vars.SPECS.UNITS[this.me.unit].FUEL_PER_MOVE;
           vars.maxKarb = vars.SPECS.UNITS[this.me.unit].KARBONITE_CAPACITY;
           vars.maxFuel = vars.SPECS.UNITS[this.me.unit].FUEL_CAPACITY;
-
+          utils.initRecList();
         if(this.me.unit==vars.SPECS.CASTLE) {
             var symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
             this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
@@ -85,9 +85,8 @@ class MyRobot extends BCAbstractRobot {
               vars.creatorPos = [x, y];
             }
           }
-          this.log("Created by "+vars.creatorPos);
+          //this.log("Created by "+vars.creatorPos);
         }
-        vars.firstTurn = false;
       // end of init
       }
       vars.visibleRobots = this.getVisibleRobots();
@@ -100,15 +99,20 @@ class MyRobot extends BCAbstractRobot {
       //   sendMessage.call(this, 2**16-1, 100);
       // else if(Math.random() < 0.001)
       //   sendMessageTrusted.call(this, 2**8-1, 1000);
-
+        var ret=null;
       switch (this.me.unit) {
         case vars.SPECS.PILGRIM:
-          return this.pilgrimTurn();
+          ret= this.pilgrimTurn();
+              break;
         case vars.SPECS.CRUSADER:
-          return this.crusaderTurn();
+          ret= this.crusaderTurn();
+              break;
         case vars.SPECS.CASTLE:
-          return this.castleTurn();
+          ret= this.castleTurn();
+              break;
       }
+        vars.firstTurn = false;
+        return ret;
     }
     catch (err) {
       this.log("Error "+err);
