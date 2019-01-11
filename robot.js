@@ -7,7 +7,7 @@ import crusaderTurn from './crusader';
 import pilgrimTurn from './pilgrim';
 
 import * as utils from './utils';
-import { sendMessage, sendMessageTrusted, readMessages } from './communication';
+import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from './communication';
 
 class MyRobot extends BCAbstractRobot {
   constructor () {
@@ -61,7 +61,7 @@ class MyRobot extends BCAbstractRobot {
             if (!utils.checkBounds(x, y)) continue;
             var id = this.getRobot(vars.visibleRobotMap[y][x]);
             if (id==null||(id.unit!=vars.SPECS.CASTLE&&id.unit!=vars.SPECS.CHURCH)) continue;
-            var dir = vars.buildable[id.signal];
+            var dir = vars.buildable[cypherMessage(id.signal, this.me.team)];
             var correctSignal = dir[0]==-vars.buildable[i][0]&&dir[1]==-vars.buildable[i][1];
             if (correctSignal) {
               vars.creatorPos = [x, y];

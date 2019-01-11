@@ -1,5 +1,6 @@
 import vars from './variables';
 import * as utils from './utils';
+import { sendMessage } from './communication';
 
 var team;
 var totC;
@@ -48,7 +49,7 @@ export default function castleTurn() {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
       if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-        this.signal(i, vars.buildable[i][0]**2+vars.buildable[i][1]);
+        sendMessage.call(this, i, vars.buildable[i][0]**2+vars.buildable[i][1]);
         this.log("Building pilgrim at "+x+" "+y);
         return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
       }

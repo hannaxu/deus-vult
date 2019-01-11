@@ -80,19 +80,19 @@ export function readMessages() {
   }
 }
 
-
-// Helper functions
-
 /**
  * Encodes/decodes a single message according to our team cypher.
  * @param   {int}   message 16-bit message to encode/decode.
  * @param   {int}   team    Our team code (red/blue)
  * @return  {bool}          Encoded/decoded 16-bit message.
  */
-function cypherMessage(message, team) {
-    const secret = [53734, 60211];
-    return message ^ secret[team];
+export function cypherMessage(message, team) {
+  const secret = [53734, 60211];
+  return message ^ secret[team];
 }
+
+
+// Helper functions
 
 /**
  * Process the received message and act accordingly.
