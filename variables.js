@@ -30,7 +30,8 @@ export default {
   // frequent updates
   turnCount: -1,
   visibleRobotMap: null,
-  visibleRobots: null, // stores robot objects
+  visibleRobots: null, // stores robot objects only in visible range
+  commRobots: null, //stores all robots possible to receive signals from 
   baseLocs: {}, // stores Castle and Church locations
   fuzzyCost: [],
     teamFuel: null,

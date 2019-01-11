@@ -16,9 +16,9 @@ export default function castleTurn() {
     //determine if enemy castles are visible and number
     //  try to determine if map is truly horizontal or vertical if symmetry returned both
     team = this.me.team;
-    totC = vars.visibleRobots.length;
+    totC = vars.commRobots.length;
     for( var x = 0; x < totC; x++ ) {
-      if( vars.visibleRobots[x].team != team ) {
+      if( vars.commRobots[x].team != team ) {
         totC = totC-1;
       }
     }
@@ -28,9 +28,9 @@ export default function castleTurn() {
 
   //headcount 0: castle, 1: church, 2: pilgrim, 3: crusader, 4: prophet, 5: preacher
   var headcount = [0,0,0,0,0,0];
-  for( var i = 0; i < vars.visibleRobots.length; i++ ) {
-    if( vars.visibleRobots[i].team == team ) {
-      var u = vars.visibleRobots[i].unit;
+  for( var i = 0; i < vars.commRobots.length; i++ ) {
+    if( vars.commRobots[i].team == team ) {
+      var u = vars.commRobots[i].unit;
       if( u == vars.SPECS.CASTLE )
         headcount[0] += 1;
       if( u == vars.SPECS.CHURCH )

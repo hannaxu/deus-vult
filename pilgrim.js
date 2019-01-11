@@ -16,7 +16,7 @@ export default function pilgrimTurn () {
         recD=utils.multiDest(openRecs);
     }
     if (3*(me.karbonite*vars.maxFuel+me.fuel*vars.maxKarb)>(vars.maxFuel*vars.maxKarb)) {
-        this.log("hi");
+        //this.log("hi");
         for (var i=0; i<8; i++) {
             var x=me.x+vars.buildable[i][0];
             var y=me.y+vars.buildable[i][1];
@@ -33,18 +33,18 @@ export default function pilgrimTurn () {
                 facts.push(utils.unhashCoordinates(h));
             }
             var dists=utils.multiDest(facts);
-            this.log("To factory");
+            //this.log("To factory");
             return pickAdjMove(dists,this);
         }
     }
     if (vars.teamFuel>=1 && (vars.karbMap[me.y][me.x] || vars.fuelMap[me.y][me.x])) {
-        this.log("Mined stuff");
+        //this.log("Mined stuff");
         return this.mine();
     }
     //this.log(vars.teamFuel);
     if (vars.teamFuel>2) {
         
-        this.log("Headed to depot");
+        //this.log("Headed to depot");
         return pickAdjMove(recD,this);
     }
     return null;

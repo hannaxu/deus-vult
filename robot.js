@@ -5,6 +5,9 @@ import vars from './variables';
 import castleTurn from './castle';
 import crusaderTurn from './crusader';
 import pilgrimTurn from './pilgrim';
+import churchTurn from './church';
+import prophetTurn from './prophet';
+import preacherTurn from './preacher';
 
 import * as utils from './utils';
 import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from './communication';
@@ -89,7 +92,17 @@ class MyRobot extends BCAbstractRobot {
         }
       // end of init
       }
-      vars.visibleRobots = this.getVisibleRobots();
+      vars.commRobots = this.getVisibleRobots();
+
+      vars.visibleRobots = [];
+      for (var i = 0; i < vars.visible.length; i++) {
+        var x = this.me.x+vars.visible[i][0];
+        var y = this.me.y+vars.visible[i][1];
+        if (utils.checkBounds(x, y)&&vars.visibleRobotMap[y][x]>0) {
+          vars.visibleRobots.push(this.getRobot(vars.visibleRobotMap[y][x]));
+        }
+      }
+
       // if (!this.firstTurn) return;
       // this.firstTurn = false;
 
@@ -106,6 +119,15 @@ class MyRobot extends BCAbstractRobot {
               break;
         case vars.SPECS.CRUSADER:
           ret= this.crusaderTurn();
+              break;
+        case vars.SPECS.PROPHET:
+          ret= this.prophetTurn();
+              break;
+        case vars.SPECS.PREACHER:
+          ret= this.preacherTurn();
+              break;
+        case vars.SPECS.CHURCH:
+          ret= this.churchTurn();
               break;
         case vars.SPECS.CASTLE:
           ret= this.castleTurn();
@@ -176,5 +198,8 @@ class MyRobot extends BCAbstractRobot {
 MyRobot.prototype.castleTurn = castleTurn;
 MyRobot.prototype.crusaderTurn = crusaderTurn;
 MyRobot.prototype.pilgrimTurn = pilgrimTurn;
+MyRobot.prototype.churchTurn = churchTurn;
+MyRobot.prototype.prophetTurn = prophetTurn;
+MyRobot.prototype.preacherTurn = preacherTurn;
 
 var robot = new MyRobot();
