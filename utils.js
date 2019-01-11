@@ -159,7 +159,7 @@ export function updateBaseLocs () {
   for (var h in shouldSee) {
     delete vars.baseLocs[h];
   }
-  this.log(vars.baseLocs);
+  //this.log(vars.baseLocs);
 }
 
 export function hashCoordinates(pair) {
