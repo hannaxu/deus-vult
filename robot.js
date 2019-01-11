@@ -21,7 +21,7 @@ class MyRobot extends BCAbstractRobot {
       vars.ypos = this.me.y;
 
       if (vars.firstTurn) {
-        vars.firstTurn = false;
+
         vars.passableMap = this.getPassableMap();
         vars.karbMap = this.getKarboniteMap();
         vars.fuelMap = this.getFuelMap();
@@ -36,14 +36,9 @@ class MyRobot extends BCAbstractRobot {
         vars.moveCost = vars.SPECS.UNITS[this.me.unit].FUEL_PER_MOVE;
         vars.maxKarb = vars.SPECS.UNITS[this.me.unit].KARBONITE_CAPACITY;
 
-        if (this.me.unit==vars.SPECS.CASTLE) {
-          var symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
-          this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
-        }
-
         utils.initRecList();
 
-        vars.seeable = utils.findConnections(vars.visionRadius);
+        vars.visible = utils.findConnections(vars.visionRadius);
         vars.attackable = utils.findConnections(vars.attackRadius);
         vars.moveable = utils.findConnections(vars.moveRadius);
         vars.buildable = utils.findConnections(vars.buildRadius);
@@ -73,12 +68,21 @@ class MyRobot extends BCAbstractRobot {
           }
           //this.log("Created by "+vars.creatorPos);
         }
-
-        vars.firstTurn = false;
       // end of init
       }
+
+      vars.visibleRobots = [];
+      for (var i = 0; i < vars.visible.length; i++) {
+        var x = this.me.x+vars.visible[i][0];
+        var y = this.me.y+vars.visible[i][1];
+        if (utils.checkBounds(x, y)&&vars.visibleRobotMap[y][x]>0) {
+          vars.visibleRobots.push(this.getRobot(vars.visibleRobotMap[y][x]));
+        }
+      }
+
       // if (!this.firstTurn) return;
       // this.firstTurn = false;
+      utils.updateBaseLocs.call(this);
 
       switch (this.me.unit) {
         case vars.SPECS.PILGRIM:

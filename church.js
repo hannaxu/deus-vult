@@ -4,6 +4,10 @@ import * as utils from './utils';
 export default function castleTurn() {
   this.log("I am a Church at "+this.me.x+" "+this.me.y);
   this.log("Resources: "+this.karbonite+" "+this.fuel);
+  if (vars.firstTurn) {
+    vars.firstTurn = false;
+  }
+
   if (this.karbonite >= 10 && this.fuel >= 50) {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];

@@ -4,8 +4,11 @@ import * as utils from './utils';
 export default function pilgrimTurn () {
 
   this.log("I am a Pilgrim at "+this.me.x+" "+this.me.y);
-
-  if (this.me.karbonite==20) {
+  if (vars.firstTurn) {
+    vars.firstTurn = false;
+  }
+  
+  if (this.me.karbonite==vars.maxKarb) {
     //this.log("I have full karbonite");
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
@@ -19,7 +22,13 @@ export default function pilgrimTurn () {
       }
     }
     //this.log("Not next to a castle");
-    var choice = utils.findMove.call(this, [this.me.x, this.me.y], vars.creatorPos);
+
+    var base = null;
+    for (var b in vars.baseLocs) {
+      base = utils.unhashCoordinates(b);
+    }
+    this.log(base);
+    var choice = utils.findMove.call(this, [this.me.x, this.me.y], base);
     if (choice==null) {
       //this.log("Trying to move to "+vars.creatorPos+" but stuck");
       return;
@@ -36,6 +45,7 @@ export default function pilgrimTurn () {
   }
 
   var end = [0, 0];
+
   for (var x = 0; x < vars.xmax; x++) {
     for (var y = 0; y < vars.ymax; y++) {
       if (vars.karbMap[y][x]) {
