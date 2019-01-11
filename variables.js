@@ -22,9 +22,10 @@ export default {
   attackCost: null,
   moveCost: null,
   maxKarb: null,
+    maxFuel: null,
   unitType: null,
   creatorPos: null,
-  rLocs: [],
+  rLocs: [], //.type 0 for fuel .x .y
 
   // frequent updates
   turnCount: -1,
@@ -32,4 +33,5 @@ export default {
   visibleRobots: null, // stores robot objects
   baseLocs: {}, // stores Castle and Church locations
   fuzzyCost: [],
+    teamFuel: null,
 };

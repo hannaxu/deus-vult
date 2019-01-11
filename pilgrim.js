@@ -2,64 +2,66 @@ import vars from './variables';
 import * as utils from './utils';
 
 export default function pilgrimTurn () {
-
-  this.log("I am a Pilgrim at "+this.me.x+" "+this.me.y);
-  if (vars.firstTurn) {
-    vars.firstTurn = false;
-  }
-  
-  if (this.me.karbonite==vars.maxKarb) {
-    //this.log("I have full karbonite");
-    for (var i = 0; i < vars.buildable.length; i++) {
-      var x = this.me.x+vars.buildable[i][0];
-      var y = this.me.y+vars.buildable[i][1];
-      if (!utils.checkBounds(x, y)) continue;
-      var id = this.getRobot(vars.visibleRobotMap[y][x]);
-      if (id==null) continue;
-      if (id.unit==vars.SPECS.CASTLE) {
-        //this.log("Depositing karbonite");
-        return this.give(vars.buildable[i][0], vars.buildable[i][1], this.me.karbonite, this.me.fuel);
-      }
+    var me=this.me;
+    if (3*(me.karbonite*vars.maxFuel+me.fuel*vars.maxKarb)>(vars.maxFuel*vars.maxKarb)) {
+        for (var i=0; i<8; i++) {
+            var x=me.x+vars.buildable[i][0];
+            var y=me.y+vars.buildable[i][1];
+            if (utils.checkBounds(x,y) && vars.visibleRobotMap[y][x]>0) {
+                var r=this.getRobot(vars.visibleRobotMap[y][x]);
+                if (r!=null && (r.unit==vars.SPECS.CASTLE || r.unit==vars.SPECS.CASTLE)) {
+                    return this.give(vars.buildable[i][0],vars.buildable[i][1],me.karbonite,me.fuel);
+                }
+            }
+        }
+        if (vars.teamFuel>=2 && (me.karbonite==vars.maxKarb || me.fuel==vars.maxFuel)) {
+            var facts=[]
+            for (var h in vars.baseLocs) {
+                facts.push(utils.unhashCoordinates(h));
+            }
+            var dists=utils.multiDest(facts);
+            this.log("To factory");
+            return pickAdjMove(dists,this);
+        }
     }
-    //this.log("Not next to a castle");
-
-    var base = null;
-    for (var b in vars.baseLocs) {
-      base = utils.unhashCoordinates(b);
+    if (vars.teamFuel>=1 && (vars.karbMap[me.y][me.x] || vars.fuelMap[me.y][me.x])) {
+        return this.mine();
     }
-    this.log(base);
-    var choice = utils.findMove.call(this, [this.me.x, this.me.y], base);
-    if (choice==null) {
-      //this.log("Trying to move to "+vars.creatorPos+" but stuck");
-      return;
+    //this.log(vars.teamFuel);
+    if (vars.teamFuel>2) {
+        var openRecs=[];
+        for (var i=0; i<vars.rLocs.length; i++) {
+            var p=vars.rLocs[i];
+            openRecs.push([p.x,p.y]);
+        }
+        var dists=utils.multiDest(openRecs);
+        this.log("Headed to depot");
+        return pickAdjMove(dists,this);
     }
-    else {
-      //this.log("Moving "+choice+" to "+vars.creatorPos);
-      return this.move(choice[0], choice[1]);
-    }
-  }
-
-  if (vars.karbMap[this.me.y][this.me.x]) {
-    //this.log("Mining at "+this.me.x+" "+this.me.y);
-    return this.mine();
-  }
-
-  var end = [0, 0];
-
-  for (var x = 0; x < vars.xmax; x++) {
-    for (var y = 0; y < vars.ymax; y++) {
-      if (vars.karbMap[y][x]) {
-        end = [x, y];
-      }
-    }
-  }
-
-  var choice = utils.findMove.call(this, [this.me.x, this.me.y], end);
-  if (choice==null) {
-    //this.log("Trying to move to "+end+" but stuck");
-  }
-  else {
-    //this.log("Moving "+choice+" to "+end);
-    return this.move(choice[0], choice[1]);
-  }
+    return null;
 }
+                    
+function pickAdjMove(costs,thas) {
+    var me=thas.me;
+    var best=costs[me.x][me.y][0];
+    var bestd=-1;
+    for (var i=0; i<8; i++) {
+        var x=me.x+vars.buildable[i][0];
+        var y=me.y+vars.buildable[i][1];
+        if (utils.checkBounds(x,y)) {
+            thas.log(costs[x][y]);
+        }
+        if (utils.checkBounds(x,y) && vars.visibleRobotMap[y][x]==0 && vars.passableMap[y][x] && costs[x][y][0]<best) {
+            best=costs[x][y][0];
+            bestd=i;
+            that.log("possible");
+        }
+    }
+    if (bestd==-1) {
+        return null;
+    } else {
+        thas.log(best);
+        return thas.move(vars.buildable[bestd][0],vars.buildable[bestd][1]);
+    }
+}
+
