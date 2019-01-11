@@ -4,6 +4,7 @@ import * as utils from './utils';
 
 var recD;
 export default function pilgrimTurn () {
+    //this.log("entering");
     var me=this.me;
     if (vars.firstTurn) {
         var openRecs=[];
@@ -23,6 +24,7 @@ export default function pilgrimTurn () {
             if (utils.checkBounds(x,y) && vars.visibleRobotMap[y][x]>0) {
                 var r=this.getRobot(vars.visibleRobotMap[y][x]);
                 if (r!=null && (r.unit==vars.SPECS.CASTLE || r.unit==vars.SPECS.CASTLE)) {
+                    //this.log("giving stuff");
                     return this.give(vars.buildable[i][0],vars.buildable[i][1],me.karbonite,me.fuel);
                 }
             }
@@ -32,6 +34,7 @@ export default function pilgrimTurn () {
             for (var h in vars.baseLocs) {
                 facts.push(utils.unhashCoordinates(h));
             }
+            //this.log(facts.length);
             var dists=utils.multiDest(facts);
             //this.log("To factory");
             return pickAdjMove(dists,this);

@@ -142,7 +142,7 @@ export function updateBaseLocs () {
   var shouldSee = {};
   for (var h in vars.baseLocs) {
     var pos = unhashCoordinates(h);
-    if (vars.visibleRobotMap[pos[1]][pos[0]]>0) {
+    if (vars.visibleRobotMap[pos[1]][pos[0]]>=0) {
       shouldSee[h] = 0;
     }
   }

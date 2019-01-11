@@ -74,38 +74,41 @@ class MyRobot extends BCAbstractRobot {
             vars.fuzzyCost[x].push([]);
           }
         }
-
+          //this.log("low init");
         if (this.me.unit!=vars.SPECS.CASTLE) {
-          for (var i = 0; i < vars.buildable.length; i++) {
+          for (var i = 0; i < 8; i++) {
             var x = this.me.x+vars.buildable[i][0];
             var y = this.me.y+vars.buildable[i][1];
             if (!this.checkBounds(x, y)) continue;
             var id = this.getRobot(vars.visibleRobotMap[y][x]);
             if (id==null||(id.unit!=vars.SPECS.CASTLE&&id.unit!=vars.SPECS.CHURCH)) continue;
             var dir = vars.buildable[cypherMessage(id.signal, this.me.team)];
+              //this.log(dir+"");
             var correctSignal = dir[0]==-vars.buildable[i][0]&&dir[1]==-vars.buildable[i][1];
             if (correctSignal) {
               vars.creatorPos = [x, y];
             }
+              //
           }
           //this.log("Created by "+vars.creatorPos);
         }
       // end of init
+        //this.log("done init");
       }
       vars.commRobots = this.getVisibleRobots();
 
       vars.visibleRobots = [];
-      for (var i = 0; i < vars.visible.length; i++) {
-        var x = this.me.x+vars.visible[i][0];
-        var y = this.me.y+vars.visible[i][1];
-        if (utils.checkBounds(x, y)&&vars.visibleRobotMap[y][x]>0) {
-          vars.visibleRobots.push(this.getRobot(vars.visibleRobotMap[y][x]));
+        for (var i=0; i<vars.commRobots.length; i++) {
+            if (this.isVisible(vars.commRobots[i])) {
+                vars.visibleRobots.push(vars.commRobots[i]);
+            }
         }
-      }
 
+        
+        utils.updateBaseLocs();
       // if (!this.firstTurn) return;
       // this.firstTurn = false;
-
+        //this.log("mid robot");
       readMessages.call(this);
       // // send dummy messages
       // if(Math.random() < 0.001)
