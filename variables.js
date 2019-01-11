@@ -5,6 +5,8 @@ export default {
 
   // initialize once
   SPECS: null,
+  visible: [],
+  attackable: [],
   moveable: [],
   buildable: [],
   firstTurn: true,
@@ -14,16 +16,20 @@ export default {
   xmax: null,
   ymax: null,
   moveRadius: null,
-  sightRadius: null,
+  visionRadius: null,
   buildRadius: null,
   attackRadius: null, // 2d array with lower and upper bound
   attackCost: null,
   moveCost: null,
+  maxKarb: null,
   unitType: null,
   creatorPos: null,
+  rLocs: [],
 
   // frequent updates
   turnCount: -1,
   visibleRobotMap: null,
+  visibleRobots: null, // stores robot objects
+  baseLocs: {}, // stores Castle and Church locations
   fuzzyCost: [],
 };
