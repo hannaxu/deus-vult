@@ -7,6 +7,7 @@ import crusaderTurn from './crusader';
 import pilgrimTurn from './pilgrim';
 
 import * as utils from './utils';
+import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from './communication';
 
 class MyRobot extends BCAbstractRobot {
   constructor () {
@@ -77,10 +78,10 @@ class MyRobot extends BCAbstractRobot {
             var y = this.me.y+vars.buildable[i][1];
             if (!this.checkBounds(x, y)) continue;
             var id = this.getRobot(vars.visibleRobotMap[y][x]);
-            if (id==null) continue;
-            var xsig = Math.floor(id.signal/100);
-            var ysig = id.signal%100;
-            if (id.unit==vars.SPECS.CASTLE&&xsig==this.me.x&&ysig==this.me.y) {
+            if (id==null||(id.unit!=vars.SPECS.CASTLE&&id.unit!=vars.SPECS.CHURCH)) continue;
+            var dir = vars.buildable[cypherMessage(id.signal, this.me.team)];
+            var correctSignal = dir[0]==-vars.buildable[i][0]&&dir[1]==-vars.buildable[i][1];
+            if (correctSignal) {
               vars.creatorPos = [x, y];
             }
           }
@@ -89,8 +90,16 @@ class MyRobot extends BCAbstractRobot {
         vars.firstTurn = false;
       // end of init
       }
+      vars.visibleRobots = this.getVisibleRobots();
       // if (!this.firstTurn) return;
       // this.firstTurn = false;
+
+      readMessages.call(this);
+      // // send dummy messages
+      // if(Math.random() < 0.001)
+      //   sendMessage.call(this, 2**16-1, 100);
+      // else if(Math.random() < 0.001)
+      //   sendMessageTrusted.call(this, 2**8-1, 1000);
 
       switch (this.me.unit) {
         case vars.SPECS.PILGRIM:
