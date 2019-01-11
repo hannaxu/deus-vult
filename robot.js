@@ -5,6 +5,9 @@ import vars from './variables';
 import castleTurn from './castle';
 import crusaderTurn from './crusader';
 import pilgrimTurn from './pilgrim';
+import churchTurn from './church';
+import prophetTurn from './prophet';
+import preacherTurn from './preacher';
 
 import * as utils from './utils';
 import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from './communication';
@@ -90,6 +93,12 @@ class MyRobot extends BCAbstractRobot {
           return this.pilgrimTurn();
         case vars.SPECS.CRUSADER:
           return this.crusaderTurn();
+        case vars.SPECS.PROPHET:
+          return this.prophetTurn();
+        case vars.SPECS.PREACHER:
+          return this.preacherTurn();
+        case vars.SPECS.CHURCH:
+          return this.churchTurn();
         case vars.SPECS.CASTLE:
           return this.castleTurn();
       }
@@ -103,5 +112,8 @@ class MyRobot extends BCAbstractRobot {
 MyRobot.prototype.castleTurn = castleTurn;
 MyRobot.prototype.crusaderTurn = crusaderTurn;
 MyRobot.prototype.pilgrimTurn = pilgrimTurn;
+MyRobot.prototype.churchTurn = churchTurn;
+MyRobot.prototype.prophetTurn = prophetTurn;
+MyRobot.prototype.preacherTurn = preacherTurn;
 
 var robot = new MyRobot();
