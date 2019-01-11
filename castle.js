@@ -30,16 +30,18 @@ export default function castleTurn() {
   for( var i = 0; i < vars.visibleRobots.length; i++ ) {
     if( vars.visibleRobots[i].team == team ) {
       var u = vars.visibleRobots[i].unit;
-        if( u == vars.SPECS.CASTLE )
-          headcount[0] += 1;
-        if( u == vars.SPECS.CHURCH )
-          headcount[1] += 1;
-        if( u == vars.SPECS.PILGRIM )
-          headcount[2] += 1;
-        if( u == vars.SPECS.CRUSADER )
-          headcount[3] += 1;
-        if( u == vars.SPECS.PROPHET )
-          headcount[4] += 1;
+      if( u == vars.SPECS.CASTLE )
+        headcount[0] += 1;
+      if( u == vars.SPECS.CHURCH )
+        headcount[1] += 1;
+      if( u == vars.SPECS.PILGRIM )
+        headcount[2] += 1;
+      if( u == vars.SPECS.CRUSADER )
+        headcount[3] += 1;
+      if( u == vars.SPECS.PROPHET )
+        headcount[4] += 1;
+      if( u == vars.SPECS.PREACHER )
+        headcount[5] += 1;
     }
   }
 
