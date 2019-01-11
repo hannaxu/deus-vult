@@ -65,13 +65,7 @@ export function checkBounds (x, y) {
 
 export function findMove (start, end) {
   if (vars.fuzzyCost[end[0]][end[1]].length==0) {
-    for (var x = 0; x < vars.xmax; x++) {
-      vars.fuzzyCost[end[0]][end[1]].push([]);
-      for (var y = 0; y < vars.ymax; y++) {
-        vars.fuzzyCost[end[0]][end[1]][x].push(null);
-      }
-    }
-    bfs(end);
+    vars.fuzzyCost[end[0]][end[1]] = bfs([end]);
     //this.log("Conducted bfs "+start+" "+end);
   }
   if (vars.fuzzyCost[end[0]][end[1]][start[0]][start[1]]==null) {
@@ -94,41 +88,38 @@ export function findMove (start, end) {
   return bestMove[2];
 }
 
-export function bfs (end) {
+export function bfs (ends) {
+  var costs = []
+  for (var x = 0; x < vars.xmax; x++) {
+    costs.push([]);
+    for (var y = 0; y < vars.ymax; y++) {
+      costs[x].push(null);
+    }
+  }
   var index = 0;
   var queue = [];
-  queue.push(end);
-  vars.fuzzyCost[end[0]][end[1]][end[0]][end[1]] = [0, 0];
+  for (var i = 0; i < ends.length; i++) {
+    queue.push(ends[i]);
+    costs[ends[i][0]][ends[i][1]] = [0, 0];
+  }
   while (index<queue.length) {
     //this.log("q "+queue[index]);
-    var curCost = vars.fuzzyCost[end[0]][end[1]][queue[index][0]][queue[index][1]];
+    var curCost = costs[queue[index][0]][queue[index][1]];
     for (var i = 0; i < vars.moveable.length; i++) {
       var x = queue[index][0]+vars.moveable[i][0];
       var y = queue[index][1]+vars.moveable[i][1];
-      if (checkBounds(x, y)&&vars.passableMap[y][x]&&vars.fuzzyCost[end[0]][end[1]][x][y]==null) {
+      if (checkBounds(x, y)&&vars.passableMap[y][x]&&costs[x][y]==null) {
         queue.push([x, y]);
-        vars.fuzzyCost[end[0]][end[1]][x][y] = [curCost[0]+1, curCost[1]+vars.moveCost*(vars.moveable[i][0]**2+vars.moveable[i][1]**2)];
+        costs[x][y] = [curCost[0]+1, curCost[1]+vars.moveCost*(vars.moveable[i][0]**2+vars.moveable[i][1]**2)];
       }
     }
     index++;
   }
+  return costs;
 }
 
-export function multiDest (start, ends) {
-  if (vars.fuzzyCost[start[0]][start[1]].length==0) {
-    for (var x = 0; x < vars.xmax; x++) {
-      vars.fuzzyCost[start[0]][start[1]].push([]);
-      for (var y = 0; y < vars.ymax; y++) {
-        vars.fuzzyCost[start[0]][start[1]][x].push(null);
-      }
-    }
-    bfs(start);
-  }
-  var distances = [];
-  for (var i = 0; i < ends; i++) {
-    distances.push(vars.fuzzyCost[start[0]][start[1]][ends[i][0]][ends[i][1]][0]);
-  }
-  return distances;
+export function multiDest (ends) {
+  return bfs(ends);
 }
 
 export function findConnections (r2) {
@@ -144,4 +135,37 @@ export function findConnections (r2) {
     }
   }
   return reachable;
+}
+
+export function updateBaseLocs () {
+  var shouldSee = {};
+  for (var h in vars.baseLocs) {
+    var pos = unhashCoordinates(h);
+    if (vars.visibleRobotMap[pos[1]][pos[0]]>0) {
+      shouldSee[h] = 0;
+    }
+  }
+  for (var i = 0; i < vars.visibleRobots.length; i++) {
+    if (vars.visibleRobots[i].unit==vars.SPECS.CASTLE||vars.visibleRobots[i].unit==vars.SPECS.CHURCH) {
+      var hashVal = hashCoordinates([vars.visibleRobots[i].x, vars.visibleRobots[i].y]);
+      if (shouldSee[hashVal]==0) {
+        delete shouldSee[hashVal];
+      }
+      else {
+        vars.baseLocs[hashVal] = 0;
+      }
+    }
+  }
+  for (var h in shouldSee) {
+    delete vars.baseLocs[h];
+  }
+  this.log(vars.baseLocs);
+}
+
+export function hashCoordinates(pair) {
+  return pair[0]*vars.ymax+pair[1];
+}
+
+export function unhashCoordinates(hashVal) {
+  return [Math.floor(hashVal/vars.ymax), hashVal%vars.ymax];
 }

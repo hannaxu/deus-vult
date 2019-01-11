@@ -43,7 +43,7 @@ class MyRobot extends BCAbstractRobot {
 
         utils.initRecList();
 
-        vars.seeable = utils.findConnections(vars.visionRadius);
+        vars.visible = utils.findConnections(vars.visionRadius);
         vars.attackable = utils.findConnections(vars.attackRadius);
         vars.moveable = utils.findConnections(vars.moveRadius);
         vars.buildable = utils.findConnections(vars.buildRadius);
@@ -77,8 +77,19 @@ class MyRobot extends BCAbstractRobot {
         vars.firstTurn = false;
       // end of init
       }
+
+      vars.visibleRobots = [];
+      for (var i = 0; i < vars.visible.length; i++) {
+        var x = this.me.x+vars.visible[i][0];
+        var y = this.me.y+vars.visible[i][1];
+        if (utils.checkBounds(x, y)&&vars.visibleRobotMap[y][x]>0) {
+          vars.visibleRobots.push(this.getRobot(vars.visibleRobotMap[y][x]));
+        }
+      }
+
       // if (!this.firstTurn) return;
       // this.firstTurn = false;
+      utils.updateBaseLocs.call(this);
 
       switch (this.me.unit) {
         case vars.SPECS.PILGRIM:

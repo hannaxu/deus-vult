@@ -5,7 +5,7 @@ export default {
 
   // initialize once
   SPECS: null,
-  seeable: [],
+  visible: [],
   attackable: [],
   moveable: [],
   buildable: [],
@@ -24,11 +24,12 @@ export default {
   maxKarb: null,
   unitType: null,
   creatorPos: null,
-
   rLocs: [],
 
   // frequent updates
   turnCount: -1,
   visibleRobotMap: null,
+  visibleRobots: null, // stores robot objects
+  baseLocs: {}, // stores Castle and Church locations
   fuzzyCost: [],
 };
