@@ -7,6 +7,7 @@ import crusaderTurn from './crusader';
 import pilgrimTurn from './pilgrim';
 
 import * as utils from './utils';
+import { sendMessage, sendMessageTrusted, readMessages } from './communication';
 
 class MyRobot extends BCAbstractRobot {
   constructor () {
@@ -83,6 +84,13 @@ class MyRobot extends BCAbstractRobot {
       // if (!this.firstTurn) return;
       // this.firstTurn = false;
       utils.updateBaseLocs.call(this);
+
+      readMessages.call(this);
+      // // send dummy messages
+      // if(Math.random() < 0.001)
+      //   sendMessage.call(this, 2**16-1, 100);
+      // else if(Math.random() < 0.001)
+      //   sendMessageTrusted.call(this, 2**8-1, 1000);
 
       switch (this.me.unit) {
         case vars.SPECS.PILGRIM:
