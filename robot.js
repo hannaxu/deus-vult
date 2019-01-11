@@ -19,6 +19,7 @@ class MyRobot extends BCAbstractRobot {
       vars.visibleRobotMap = this.getVisibleRobotMap();
       vars.xpos = this.me.x;
       vars.ypos = this.me.y;
+        vars.teamFuel=this.fuel;
 
       if (vars.firstTurn) {
         vars.firstTurn = false;
@@ -34,6 +35,8 @@ class MyRobot extends BCAbstractRobot {
         vars.sightRadius = vars.SPECS.UNITS[this.me.unit].VISION_RADIUS;
         vars.attackCost = vars.SPECS.UNITS[this.me.unit].ATTACK_FUEL_COST;
         vars.moveCost = vars.SPECS.UNITS[this.me.unit].FUEL_PER_MOVE;
+          vars.maxKarb = vars.SPECS.UNITS[this.me.unit].KARBONITE_CAPACITY;
+          vars.maxFuel = vars.SPECS.UNITS[this.me.unit].FUEL_CAPACITY;
 
         if(this.me.unit==vars.SPECS.CASTLE) {
             var symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);

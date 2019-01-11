@@ -6,7 +6,7 @@ var castles;
 var numC;
 
 export default function castleTurn() {
-  this.log("I am a Castle at "+this.me.x+" "+this.me.y);
+  //this.log("I am a Castle at "+this.me.x+" "+this.me.y);
   //this.log("Resources: "+vars.firstTurn);
   if (vars.firstTurn) {
     var symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);

@@ -88,6 +88,7 @@ export function findMove (start, end) {
   return bestMove[2];
 }
 
+//list of [x,y]
 export function bfs (ends) {
   var costs = []
   for (var x = 0; x < vars.xmax; x++) {
@@ -124,8 +125,8 @@ export function multiDest (ends) {
 
 export function findConnections (r2) {
   var reachable = [];
-  for (var x = 1; x <= Math.sqrt(r2); x++) {
-    for (var y = 0; y <= Math.sqrt(r2); y++) {
+  for (var x = 1; x*x <= r2; x++) {
+    for (var y = 0; y*y <= r2; y++) {
       if (x*x+y*y <= r2) {
         reachable.push([x, y]);
         reachable.push([-x, -y]);
