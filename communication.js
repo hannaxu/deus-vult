@@ -141,3 +141,35 @@ function checkParams(message, sq_radius, isLong){
   }
   return true;
 }
+
+
+// Conversions
+
+/**
+ * Converts an (x, y) coordinate to an 8-bit message.
+ * @param   {int} x   The x-coordinate.
+ * @param   {int} y   The y-coordinate.
+ * @param   {int} max The map size.
+ * @returns {int}     The resultant 8-bit message. Can be read with coord8Decrypt().
+ */
+function coord8Encrypt(x, y, max){
+  var step = max / (2**4);
+
+  var xCell = Math.floor(x / step);
+  var yCell = Math.floor(y / step);
+  return xCell << 4 | yCell;
+}
+/**
+ * Converts a coord8Encrypt message back to coordinates.
+ * @param   {int} message The received 8-bit message.
+ * @param   {int} max     The map size.
+ * @returns {int[][]}     Coordinate plus uncertainty. First element is top left coord, second it bottom right.
+ */
+function coord8Decrypt(message, max){
+  var step = max / (2**4);
+
+  var xCell = message >> 4;
+  var yCell = message & (2**4-1);
+  return [[Math.ceil(xCell*step), Math.ceil(yCell*step)],
+          [Math.ceil((xCell+1)*step-1), Math.ceil((yCell+1)*step-1)]];
+}
