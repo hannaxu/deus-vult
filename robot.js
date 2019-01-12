@@ -42,10 +42,6 @@ class MyRobot extends BCAbstractRobot {
           vars.maxKarb = vars.SPECS.UNITS[this.me.unit].KARBONITE_CAPACITY;
           vars.maxFuel = vars.SPECS.UNITS[this.me.unit].FUEL_CAPACITY;
           utils.initRecList();
-        if(this.me.unit==vars.SPECS.CASTLE) {
-            var symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
-            this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
-        }
         
         for (var x = 1; x*x <= vars.moveRadius; x++) {
           for (var y = 0; y*y <= vars.moveRadius; y++) {

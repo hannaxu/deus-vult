@@ -1,3 +1,8 @@
+import vars from './variables';
+
+var trusted = {};
+
+
 /**
  * Radio a typical message.
  * The message will still be encoded for additional secutiry.
@@ -39,11 +44,20 @@ export function sendMessageTrusted(message, sq_radius) {
  * Otherwise, only receive if the mesage is trusted, or the robot is trusted.
  */
 export function readMessages() {
-  var robots = this.getVisibleRobots();
-  for(var i = 0; i < robots.length; i++){
-    var other_r = robots[i];
+  for(var i = 0; i < vars.commRobots.length; i++){
+    var other_r = vars.commRobots[i];
     if(other_r.id == this.id)
       continue;
+    
+    if(typeof(trusted[other_r.id]) == 'undefined')
+      trusted[other_r.id] = 0;
+    if(typeof(other_r.team) != 'undefined'){
+      if(other_r.team == this.me.team)
+        trusted[other_r.id] = 999;
+      else
+        trusted[other_r.id] = -999;
+    }
+    
     if(!this.isRadioing(other_r))
       continue;
     
@@ -53,13 +67,15 @@ export function readMessages() {
     var id_restored = message >> 8;
     var message_restored = message & 255;
 
-    // Trusted friendly messages
+    // Trusted signature detected
     if(id_restored == id_true){
       try{
         processMessage.call(this, message_restored, other_r, false);
+        trusted[other_r.id] += 1;
       }
       catch(e){
         this.log("Potentially malicious message from unit " + other_r.id);
+        trusted[other_r.id] -= 10;
       }
     }
     
@@ -73,9 +89,14 @@ export function readMessages() {
       }
     }
 
-    // Enemy messages or untrusted
+    // Unsure - checking trust factor
     else{
-      // maybe do something here idk
+      if(trusted[other_r.id] > 1){
+        processMessage.call(this, message, other_r, true);
+      }
+      else{
+        // maybe do something here idk
+      }
     }
   }
 }
