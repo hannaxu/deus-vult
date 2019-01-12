@@ -58,14 +58,14 @@ function pickAdjMove(costs,thas) {
     if (costs[me.x][me.y]==null) {
         return null;
     }
-    var best=costs[me.x][me.y][0];
+    var best=costs[me.x][me.y][1]+costs[me.x][me.y][0];
     var bestd=-1;
-    //thas.log(vars.buildable.length);
-    for (var i=0; i<8; i++) {
-        var x=me.x+vars.buildable[i][0];
-        var y=me.y+vars.buildable[i][1];
-        if (utils.checkBounds(x,y) && vars.visibleRobotMap[y][x]==0 && vars.passableMap[x][y] && costs[x][y]!=null && costs[x][y]!=undefined && costs[x][y][0]<best) {
-            best=costs[x][y][0];
+    //thas.log(best);
+    for (var i=0; i<vars.moveable.length; i++) {
+        var x=me.x+vars.moveable[i][0];
+        var y=me.y+vars.moveable[i][1];
+        if (utils.checkBounds(x,y) && vars.visibleRobotMap[y][x]==0 && vars.passableMap[x][y] && costs[x][y]!=null && costs[x][y]!=undefined && costs[x][y][1]+costs[x][y][0]+vars.moveable[i][0]**2+vars.moveable[i][1]**2<best) {
+            best=costs[x][y][0]+costs[x][y][1]+vars.moveable[i][0]**2+vars.moveable[i][1]**2;
             bestd=i;
             
         }
@@ -76,7 +76,7 @@ function pickAdjMove(costs,thas) {
     } else {
         //thas.log(bestd);
         //thas.log(vars.passableMap[y][x]);
-        return thas.move(vars.buildable[bestd][0],vars.buildable[bestd][1]);
+        return thas.move(vars.moveable[bestd][0],vars.moveable[bestd][1]);
     }
 }
 

@@ -45,7 +45,7 @@ export default function castleTurn() {
         headcount[5] += 1;
     }
   }
-
+    if (headcount[2]>1) return null; //disable later
   if (this.karbonite >= 10 && this.fuel >= 50) {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
