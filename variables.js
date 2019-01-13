@@ -22,7 +22,7 @@ export default {
   attackCost: null,
   moveCost: null,
   maxKarb: null,
-    maxFuel: null,
+  maxFuel: null,
   unitType: null,
   creatorPos: null,
   rLocs: [], //.type 0 for fuel .x .y
@@ -31,7 +31,8 @@ export default {
   turnCount: -1,
   visibleRobotMap: null,
   visibleRobots: null, // stores robot objects only in visible range
-  commRobots: null, //stores all robots possible to receive signals from 
+  visibleEnemyRobots: null,
+  commRobots: null, //stores all robots possible to receive signals from
   baseLocs: {}, // stores Castle and Church locations
   fuzzyCost: [],
     teamFuel: null,
