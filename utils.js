@@ -44,16 +44,9 @@ export function initRecList () {
   for (var x=0; x<vars.xmax; x++) {
     for (var y=0; y<vars.ymax; y++) {
       if (vars.fuelMap[y][x]) {
-        vars.rLocs.push({});
-        vars.rLocs[vars.rLocs.length-1].type=0;
-        vars.rLocs[vars.rLocs.length-1].x=x;
-        vars.rLocs[vars.rLocs.length-1].y=y;
-        vars.rLocs[vars.rLocs.length-1].lastFull=-500;
+        vars.rLocs.push({type: 0, x: x, y: y});
       } else if (vars.karbMap[y][x]) {
-        vars.rLocs.push({});
-        vars.rLocs[vars.rLocs.length-1].x=x;
-        vars.rLocs[vars.rLocs.length-1].y=y;
-        vars.rLocs[vars.rLocs.length-1].lastFull=-500;
+        vars.rLocs.push({type: 1, x: x, y: y});
       }
     }
   }

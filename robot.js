@@ -23,11 +23,10 @@ class MyRobot extends BCAbstractRobot {
       vars.visibleRobotMap = this.getVisibleRobotMap();
       vars.xpos = this.me.x;
       vars.ypos = this.me.y;
-        vars.teamFuel=this.fuel;
+      vars.teamFuel = this.fuel;
+      vars.teamKarb = this.kabonite;
 
       if (vars.firstTurn) {
-
-
         vars.passableMap = this.map;
         vars.karbMap = this.getKarboniteMap();
         vars.fuelMap = this.getFuelMap();
@@ -82,53 +81,62 @@ class MyRobot extends BCAbstractRobot {
       // end of init
         //this.log("done init");
       }
-      vars.commRobots = this.getVisibleRobots();
 
+      this.castleTalk(0);
+      vars.commRobots = this.getVisibleRobots();
       vars.visibleRobots = [];
       vars.visibleEnemyRobots = [];
-        for (var i=0; i<vars.commRobots.length; i++) {
-            if (this.isVisible(vars.commRobots[i])) {
-                vars.visibleRobots.push(vars.commRobots[i]);
-                if (vars.commRobots[i].team!=this.me.team) {
-                  vars.visibleEnemyRobots.push(vars.commRobots[i]);
-                }
-            }
+      vars.radioRobots = [];
+      switch (this.me.unit) {
+        case vars.SPECS.CASTLE:
+          vars.castleTalkRobots = [];
+          break;
+        default:
+          vars.castleTalkRobots = null;
+          break;
+      }
+      for(var i = 0; i < vars.commRobots.length; i++) {
+        var other_r = vars.commRobots[i];
+        if(other_r.id == this.id)
+          continue;
+        if(this.isVisible(other_r)) {
+          vars.visibleRobots.push(other_r);
+          if (vars.commRobots[i].team!=this.me.team) {
+            vars.visibleEnemyRobots.push(vars.commRobots[i]);
+          }
         }
+        if(this.isRadioing(other_r))
+          vars.radioRobots.push(other_r);
+        if(this.castleTalkRobots != null && other_r.castle_talk != 0)
+          vars.castleTalkRobots.push(other_r);
+      }
 
-
-        utils.updateBaseLocs();
-      // if (!this.firstTurn) return;
-      // this.firstTurn = false;
-        //this.log("mid robot");
+      utils.updateBaseLocs();
       readMessages.call(this);
-      // // send dummy messages
-      // if(Math.random() < 0.001)
-      //   sendMessage.call(this, 2**16-1, 100);
-      // else if(Math.random() < 0.001)
-      //   sendMessageTrusted.call(this, 2**8-1, 1000);
-        var ret=null;
+
+      var ret=null;
       switch (this.me.unit) {
         case vars.SPECS.PILGRIM:
           ret= this.pilgrimTurn();
-              break;
+          break;
         case vars.SPECS.CRUSADER:
           ret= this.crusaderTurn();
-              break;
+          break;
         case vars.SPECS.PROPHET:
           ret= this.prophetTurn();
-              break;
+          break;
         case vars.SPECS.PREACHER:
           ret= this.preacherTurn();
-              break;
+          break;
         case vars.SPECS.CHURCH:
           ret= this.churchTurn();
-              break;
+          break;
         case vars.SPECS.CASTLE:
           ret= this.castleTurn();
-              break;
+          break;
       }
-        vars.firstTurn = false;
-        return ret;
+      vars.firstTurn = false;
+      return ret;
     }
     catch (err) {
       this.log("Error "+err);

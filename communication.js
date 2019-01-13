@@ -44,22 +44,21 @@ export function sendMessageTrusted(message, sq_radius) {
  * Otherwise, only receive if the mesage is trusted, or the robot is trusted.
  */
 export function readMessages() {
-  for(var i = 0; i < vars.commRobots.length; i++){
-    var other_r = vars.commRobots[i];
-    if(other_r.id == this.id)
-      continue;
+
+  for(var i = 0; i < vars.visibleRobots.length; i++){
+    var other_r = vars.visibleRobots[i];
+
+    if(other_r.team == this.me.team)
+      trusted[other_r.id] = 999;
+    else
+      trusted[other_r.id] = -999;
+  }
+
+  for(var i = 0; i < vars.radioRobots.length; i++){
+    var other_r = vars.radioRobots[i];
 
     if(typeof(trusted[other_r.id]) == 'undefined')
       trusted[other_r.id] = 0;
-    if(typeof(other_r.team) != 'undefined'){
-      if(other_r.team == this.me.team)
-        trusted[other_r.id] = 999;
-      else
-        trusted[other_r.id] = -999;
-    }
-
-    if(!this.isRadioing(other_r))
-      continue;
 
     // Chceck if the message has the trusted signature
     var message = cypherMessage(other_r.signal, this.me.team);
