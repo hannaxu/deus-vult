@@ -17,10 +17,10 @@ export default function preacherTurn() {
       symmetry[1] = true;
     }
     if (symmetry[0]) {
-      enemyCastles.push([vars.xmax-1-this.me.x, this.me.y]);
+      enemyCastles.push([vars.xmax-1-vars.creatorPos[0], vars.creatorPos[1]]);
     }
     if (symmetry[1]) {
-      enemyCastles.push([this.me.x, vars.ymax-1-this.me.y]);
+      enemyCastles.push([vars.creatorPos[0], vars.ymax-1-vars.creatorPos[1]]);
     }
     vars.firstTurn = false;
   }
