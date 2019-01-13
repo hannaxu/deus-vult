@@ -58,7 +58,7 @@ export function checkBounds (x, y) {
 
 export function findMove (start, end) {
   if (vars.fuzzyCost[end[0]][end[1]].length==0) {
-    vars.fuzzyCost[end[0]][end[1]] = bfs([end]);
+    vars.fuzzyCost[end[0]][end[1]] = bfs.call(this, [end]);
     //this.log("Conducted bfs "+start+" "+end);
   }
   if (vars.fuzzyCost[end[0]][end[1]][start[0]][start[1]]==null) {
@@ -90,30 +90,34 @@ export function bfs (ends) {
       costs[x].push(null);
     }
   }
-  var index = 0;
   var queue = [];
   for (var i = 0; i < ends.length; i++) {
-    queue.push(ends[i]);
+    heappush(queue, [0, 0, ends[i]]);
     costs[ends[i][0]][ends[i][1]] = [0, 0];
   }
-  while (index<queue.length) {
-    //this.log("q "+queue[index]);
-    var curCost = costs[queue[index][0]][queue[index][1]];
+  var time = new Date().getTime();
+  while (queue.length>0) {
+    var state = heappop(queue);
+    var curCost = [state[0], state[1]];
+    if (costs[state[2][0]][state[2][1]]!=null && heapCompare(curCost, costs[state[2][0]][state[2][1]]) > 0) {
+      continue;
+    }
     for (var i = 0; i < vars.moveable.length; i++) {
-      var x = queue[index][0]+vars.moveable[i][0];
-      var y = queue[index][1]+vars.moveable[i][1];
-      if (checkBounds(x, y)&&vars.passableMap[y][x]&&costs[x][y]==null) {
-        queue.push([x, y]);
-        costs[x][y] = [curCost[0]+1, curCost[1]+vars.moveCost*(vars.moveable[i][0]**2+vars.moveable[i][1]**2)];
+      var x = state[2][0]+vars.moveable[i][0];
+      var y = state[2][1]+vars.moveable[i][1];
+      var newCost = [curCost[0]+1, curCost[1]+vars.moveCost*(vars.moveable[i][0]**2+vars.moveable[i][1]**2)];
+      if (checkBounds(x, y)&&vars.passableMap[y][x]&&(costs[x][y]==null||heapCompare(newCost, costs[x][y])<0)) {
+        heappush(queue, [newCost[0], newCost[1], [x, y]]);
+        costs[x][y] = newCost;
       }
     }
-    index++;
   }
+  this.log("BFS Time: "+(new Date().getTime()-time));
   return costs;
 }
 
 export function multiDest (ends) {
-  return bfs(ends);
+  return bfs.call(this, ends);
 }
 
 export function findConnections (r2) {
@@ -166,4 +170,58 @@ export function hashCoordinates(pair) {
 
 export function unhashCoordinates(hashVal) {
   return [Math.floor(hashVal/vars.ymax), hashVal%vars.ymax];
+}
+
+export function heapCompare(v1, v2) {
+  if (v1[0]==v2[0]) {
+    return v1[1]-v2[1];
+  }
+  return v1[0]-v2[0];
+}
+
+export function heappush(array, val) {
+  array.push(val);
+  var pos = array.length-1;
+  var parent = Math.floor((pos-1)/2);
+  while (pos > 0) {
+    if (heapCompare(array[pos], array[parent])<0) {
+      var temp = array[pos];
+      array[pos] = array[parent];
+      array[parent] = temp;
+    }
+    else {
+      break;
+    }
+    pos = parent;
+    parent = Math.floor((pos-1)/2);
+  }
+}
+
+export function heappop(array) {
+  if (array.length==0) {
+    throw "empty heap";
+  }
+  var ret = array[0];
+  array[0] = array[array.length-1];
+  var pos = 0;
+  while (2*pos+1 < array.length) {
+    var child;
+    if (2*pos+2==array.length||heapCompare(array[2*pos+1], array[2*pos+2]) < 0) {
+      child = 2*pos+1;
+    }
+    else {
+      child = 2*pos+2;
+    }
+    if (heapCompare(array[pos], array[child]) > 0) {
+      var temp = array[pos];
+      array[pos] = array[child];
+      array[child] = temp;
+    }
+    else {
+      break;
+    }
+    pos = child;
+  }
+  array.splice(array.length-1, 1);
+  return ret;
 }
