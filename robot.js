@@ -26,8 +26,8 @@ class MyRobot extends BCAbstractRobot {
         vars.teamFuel=this.fuel;
 
       if (vars.firstTurn) {
-          
-        
+
+
         vars.passableMap = this.map;
         vars.karbMap = this.getKarboniteMap();
         vars.fuelMap = this.getFuelMap();
@@ -36,33 +36,24 @@ class MyRobot extends BCAbstractRobot {
         vars.moveRadius = vars.SPECS.UNITS[this.me.unit].SPEED;
         vars.attackRadius = vars.SPECS.UNITS[this.me.unit].ATTACK_RADIUS;
         vars.buildRadius = 2;
-        vars.sightRadius = vars.SPECS.UNITS[this.me.unit].VISION_RADIUS;
+        vars.visionRadius = vars.SPECS.UNITS[this.me.unit].VISION_RADIUS;
         vars.attackCost = vars.SPECS.UNITS[this.me.unit].ATTACK_FUEL_COST;
         vars.moveCost = vars.SPECS.UNITS[this.me.unit].FUEL_PER_MOVE;
           vars.maxKarb = vars.SPECS.UNITS[this.me.unit].KARBONITE_CAPACITY;
           vars.maxFuel = vars.SPECS.UNITS[this.me.unit].FUEL_CAPACITY;
           utils.initRecList();
-        
-        for (var x = 1; x*x <= vars.moveRadius; x++) {
-          for (var y = 0; y*y <= vars.moveRadius; y++) {
-            if (x*x+y*y <= vars.moveRadius) {
-              vars.moveable.push([x, y]);
-              vars.moveable.push([-x, -y]);
-              vars.moveable.push([-x, y]);
-              vars.moveable.push([x, -y]);
+
+        vars.visible = utils.findConnections.call(this, vars.visionRadius);
+        if (vars.attackRadius!=null) {
+          var temp = utils.findConnections.call(this, vars.attackRadius[1]);
+          for (var i = 0; i < temp.length; i++) {
+            if (temp[i][0]**2+temp[i][1]**2 >= vars.attackRadius[0]) {
+              vars.attackable.push(temp[i]);
             }
           }
         }
-        for (var x = 1; x*x <= vars.buildRadius; x++) {
-          for (var y = 0; y*y <= vars.buildRadius; y++) {
-            if (x*x+y*y <= vars.buildRadius) {
-              vars.buildable.push([x, y]);
-              vars.buildable.push([-x, -y]);
-              vars.buildable.push([-x, y]);
-              vars.buildable.push([x, -y]);
-            }
-          }
-        }
+        vars.moveable = utils.findConnections.call(this, vars.moveRadius);
+        vars.buildable = utils.findConnections.call(this, vars.buildRadius);
 
         for (var x = 0; x < vars.xmax; x++) {
           vars.fuzzyCost.push([]);
@@ -72,13 +63,13 @@ class MyRobot extends BCAbstractRobot {
         }
           //this.log("low init");
         if (this.me.unit!=vars.SPECS.CASTLE) {
-          for (var i = 0; i < 8; i++) {
+          for (var i = 0; i < vars.buildable.length; i++) {
             var x = this.me.x+vars.buildable[i][0];
             var y = this.me.y+vars.buildable[i][1];
             if (!this.checkBounds(x, y)) continue;
             var id = this.getRobot(vars.visibleRobotMap[y][x]);
-            if (id==null||(id.unit!=vars.SPECS.CASTLE&&id.unit!=vars.SPECS.CHURCH)) continue;
-            var dir = vars.buildable[cypherMessage(id.signal, this.me.team)];
+            if (id==null||id.signal==-1||(id.unit!=vars.SPECS.CASTLE&&id.unit!=vars.SPECS.CHURCH)) continue;
+            var dir = vars.buildable[cypherMessage(id.signal, this.me.team)%vars.buildable.length];
               //this.log(dir+"");
             var correctSignal = dir[0]==-vars.buildable[i][0]&&dir[1]==-vars.buildable[i][1];
             if (correctSignal) {
@@ -94,13 +85,17 @@ class MyRobot extends BCAbstractRobot {
       vars.commRobots = this.getVisibleRobots();
 
       vars.visibleRobots = [];
+      vars.visibleEnemyRobots = [];
         for (var i=0; i<vars.commRobots.length; i++) {
             if (this.isVisible(vars.commRobots[i])) {
                 vars.visibleRobots.push(vars.commRobots[i]);
+                if (vars.commRobots[i].team!=this.me.team) {
+                  vars.visibleEnemyRobots.push(vars.commRobots[i]);
+                }
             }
         }
 
-        
+
         utils.updateBaseLocs();
       // if (!this.firstTurn) return;
       // this.firstTurn = false;
