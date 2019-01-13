@@ -73,7 +73,7 @@ export function findMove (start, end) {
       if (move[0]<bestMove[0]) {
         bestMove = [move[0], move[1], vars.moveable[i]];
       }
-      else if (move[0]==bestMove[0]&&move[1]<bestMove[0]) {
+      else if (move[0]==bestMove[0]&&move[1]<bestMove[1]) {
         bestMove = [move[0], move[1], vars.moveable[i]];
       }
     }
