@@ -135,6 +135,10 @@ export function findConnections (r2) {
       }
     }
   }
+  reachable.sort(function(x, y) {
+    return x[0]**2+x[1]**2-y[0]**2-y[1]**2;
+  });
+  //this.log(reachable);
   return reachable;
 }
 
