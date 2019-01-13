@@ -20,7 +20,7 @@ export function sendMessage(message, sq_radius) {
 /**
  * Radio a shorter message with a recognizable signature.
  * Units will accept it without needing to see you.
- * 
+ *
  * Message format:
  * 8 bits - last 8 bits of unit id,
  * 8 bits - message.
@@ -39,7 +39,7 @@ export function sendMessageTrusted(message, sq_radius) {
 /**
  * Read the full incoming queue of messages.
  * Messages that weren't sent through methods in this file will not make sense.
- * 
+ *
  * Automatically receive messages from visible robots.
  * Otherwise, only receive if the mesage is trusted, or the robot is trusted.
  */
@@ -48,7 +48,7 @@ export function readMessages() {
     var other_r = vars.commRobots[i];
     if(other_r.id == this.id)
       continue;
-    
+
     if(typeof(trusted[other_r.id]) == 'undefined')
       trusted[other_r.id] = 0;
     if(typeof(other_r.team) != 'undefined'){
@@ -57,10 +57,10 @@ export function readMessages() {
       else
         trusted[other_r.id] = -999;
     }
-    
+
     if(!this.isRadioing(other_r))
       continue;
-    
+
     // Chceck if the message has the trusted signature
     var message = cypherMessage(other_r.signal, this.me.team);
     var id_true = other_r.id & 255;
@@ -78,7 +78,7 @@ export function readMessages() {
         trusted[other_r.id] -= 10;
       }
     }
-    
+
     // Visible messages
     else if(typeof(other_r.team) != 'undefined'){
       if(other_r.team == this.me.team){
@@ -119,7 +119,7 @@ export function cypherMessage(message, team) {
  * Process the received message and act accordingly.
  * @param {int}   message The received message.
  * @param {bool}  sender  The robot that sent the message.
- * @param {Robot} isLong  Whether the message is 8-bit or 16-bit. 
+ * @param {Robot} isLong  Whether the message is 8-bit or 16-bit.
  */
 function processMessage(message, sender, isLong) {
   // PROCEED WITH CAUTION - these messages might still be compromised

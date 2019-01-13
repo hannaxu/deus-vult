@@ -2,7 +2,7 @@ import vars from './variables';
 import * as utils from './utils';
 
 export default function prophetTurn() {
-  this.log("I am a Preacher at "+vars.xpos+" "+vars.ypos);
+  this.log("I am a Prophet at "+vars.xpos+" "+vars.ypos);
   if (vars.firstTurn) {
     vars.firstTurn = false;
   }

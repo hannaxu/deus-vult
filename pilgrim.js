@@ -4,11 +4,12 @@ import * as utils from './utils';
 
 var recD;
 export default function pilgrimTurn () {
+    //this.log("I am a Pilgrim at "+this.me.x+" "+this.me.y);
     //this.log("entering");
     var me=this.me;
     if (vars.firstTurn) {
         var openRecs=[];
-        
+
         for (var i=0; i<vars.rLocs.length; i++) {
             var p=vars.rLocs[i];
             openRecs.push([p.x,p.y]);
@@ -46,13 +47,13 @@ export default function pilgrimTurn () {
     }
     //this.log(vars.teamFuel);
     if (vars.teamFuel>2) {
-        
+
         //this.log("Headed to depot");
         return pickAdjMove(recD,this);
     }
     return null;
 }
-                    
+
 function pickAdjMove(costs,thas) {
     var me=thas.me;
     if (costs[me.x][me.y]==null) {
@@ -67,7 +68,7 @@ function pickAdjMove(costs,thas) {
         if (utils.checkBounds(x,y) && vars.visibleRobotMap[y][x]==0 && vars.passableMap[x][y] && costs[x][y]!=null && costs[x][y]!=undefined && costs[x][y][1]+costs[x][y][0]+vars.moveable[i][0]**2+vars.moveable[i][1]**2<best) {
             best=costs[x][y][0]+costs[x][y][1]+vars.moveable[i][0]**2+vars.moveable[i][1]**2;
             bestd=i;
-            
+
         }
     }
     //thas.log("point");
@@ -79,4 +80,3 @@ function pickAdjMove(costs,thas) {
         return thas.move(vars.moveable[bestd][0],vars.moveable[bestd][1]);
     }
 }
-
