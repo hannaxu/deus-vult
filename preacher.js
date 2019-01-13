@@ -78,6 +78,5 @@ export default function preacherTurn() {
       //this.log("Moving towards "+x+" "+y);
       return this.move(move[0], move[1]);
     }
-    //costs = bfs([this.me.x, this.me.y], [enemyCastles[i]]);
   }
 }
