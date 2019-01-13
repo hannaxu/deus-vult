@@ -73,7 +73,7 @@ export default function preacherTurn() {
       i--;
       continue;
     }
-    var move = utils.findMove([this.me.x, this.me.y], enemyCastles[i]);
+    var move = utils.findMove.call(this, [this.me.x, this.me.y], enemyCastles[i]);
     if (move != null) {
       //this.log("Moving towards "+x+" "+y);
       return this.move(move[0], move[1]);

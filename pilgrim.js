@@ -15,7 +15,7 @@ export default function pilgrimTurn () {
             openRecs.push([p.x,p.y]);
         }
         //this.log(openRecs.length);
-        recD=utils.multiDest(openRecs);
+        recD=utils.multiDest.call(this, openRecs);
     }
     if (3*(me.karbonite*vars.maxFuel+me.fuel*vars.maxKarb)>(vars.maxFuel*vars.maxKarb)) {
         //this.log("hi");
@@ -36,7 +36,7 @@ export default function pilgrimTurn () {
                 facts.push(utils.unhashCoordinates(h));
             }
             //this.log(facts.length);
-            var dists=utils.multiDest(facts);
+            var dists=utils.multiDest.call(this, facts);
             //this.log("To factory");
             return pickAdjMove(dists,this);
         }
