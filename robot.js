@@ -23,11 +23,10 @@ class MyRobot extends BCAbstractRobot {
       vars.visibleRobotMap = this.getVisibleRobotMap();
       vars.xpos = this.me.x;
       vars.ypos = this.me.y;
-        vars.teamFuel=this.fuel;
+      vars.teamFuel = this.fuel;
+      vars.teamKarb = this.kabonite;
 
       if (vars.firstTurn) {
-          
-        
         vars.passableMap = this.map;
         vars.karbMap = this.getKarboniteMap();
         vars.fuelMap = this.getFuelMap();
@@ -39,28 +38,25 @@ class MyRobot extends BCAbstractRobot {
         vars.sightRadius = vars.SPECS.UNITS[this.me.unit].VISION_RADIUS;
         vars.attackCost = vars.SPECS.UNITS[this.me.unit].ATTACK_FUEL_COST;
         vars.moveCost = vars.SPECS.UNITS[this.me.unit].FUEL_PER_MOVE;
-          vars.maxKarb = vars.SPECS.UNITS[this.me.unit].KARBONITE_CAPACITY;
-          vars.maxFuel = vars.SPECS.UNITS[this.me.unit].FUEL_CAPACITY;
-          utils.initRecList();
+        vars.maxKarb = vars.SPECS.UNITS[this.me.unit].KARBONITE_CAPACITY;
+        vars.maxFuel = vars.SPECS.UNITS[this.me.unit].FUEL_CAPACITY;
+        
+        utils.initRecList();
         
         for (var x = 1; x*x <= vars.moveRadius; x++) {
-          for (var y = 0; y*y <= vars.moveRadius; y++) {
-            if (x*x+y*y <= vars.moveRadius) {
-              vars.moveable.push([x, y]);
-              vars.moveable.push([-x, -y]);
-              vars.moveable.push([-x, y]);
-              vars.moveable.push([x, -y]);
-            }
+          for (var y = 0; x*x+y*y <= vars.moveRadius; y++) {
+            vars.moveable.push([x, y]);
+            vars.moveable.push([-x, -y]);
+            vars.moveable.push([-x, y]);
+            vars.moveable.push([x, -y]);
           }
         }
         for (var x = 1; x*x <= vars.buildRadius; x++) {
-          for (var y = 0; y*y <= vars.buildRadius; y++) {
-            if (x*x+y*y <= vars.buildRadius) {
-              vars.buildable.push([x, y]);
-              vars.buildable.push([-x, -y]);
-              vars.buildable.push([-x, y]);
-              vars.buildable.push([x, -y]);
-            }
+          for (var y = 0; x*x+y*y <= vars.buildRadius; y++) {
+            vars.buildable.push([x, y]);
+            vars.buildable.push([-x, -y]);
+            vars.buildable.push([-x, y]);
+            vars.buildable.push([x, -y]);
           }
         }
 
@@ -91,49 +87,57 @@ class MyRobot extends BCAbstractRobot {
       // end of init
         //this.log("done init");
       }
+
+      this.castleTalk(0);
       vars.commRobots = this.getVisibleRobots();
-
       vars.visibleRobots = [];
-        for (var i=0; i<vars.commRobots.length; i++) {
-            if (this.isVisible(vars.commRobots[i])) {
-                vars.visibleRobots.push(vars.commRobots[i]);
-            }
-        }
-
-        
-        utils.updateBaseLocs();
-      // if (!this.firstTurn) return;
-      // this.firstTurn = false;
-        //this.log("mid robot");
+      vars.radioRobots = [];
+      switch (this.me.unit) {
+        case vars.SPECS.CASTLE:
+          vars.castleTalkRobots = [];
+          break;
+        default:
+          vars.castleTalkRobots = null;
+          break;
+      }
+      for(var i = 0; i < vars.commRobots.length; i++) {
+        var other_r = vars.commRobots[i];
+        if(other_r.id == this.id)
+          continue;
+        if(this.isVisible(other_r))
+          vars.visibleRobots.push(other_r);
+        if(this.isRadioing(other_r))
+          vars.radioRobots.push(other_r);
+        if(this.castleTalkRobots != null && other_r.castle_talk != 0)
+          vars.castleTalkRobots.push(other_r);
+      }
+      
+      utils.updateBaseLocs();
       readMessages.call(this);
-      // // send dummy messages
-      // if(Math.random() < 0.001)
-      //   sendMessage.call(this, 2**16-1, 100);
-      // else if(Math.random() < 0.001)
-      //   sendMessageTrusted.call(this, 2**8-1, 1000);
-        var ret=null;
+      
+      var ret=null;
       switch (this.me.unit) {
         case vars.SPECS.PILGRIM:
           ret= this.pilgrimTurn();
-              break;
+          break;
         case vars.SPECS.CRUSADER:
           ret= this.crusaderTurn();
-              break;
+          break;
         case vars.SPECS.PROPHET:
           ret= this.prophetTurn();
-              break;
+          break;
         case vars.SPECS.PREACHER:
           ret= this.preacherTurn();
-              break;
+          break;
         case vars.SPECS.CHURCH:
           ret= this.churchTurn();
-              break;
+          break;
         case vars.SPECS.CASTLE:
           ret= this.castleTurn();
-              break;
+          break;
       }
-        vars.firstTurn = false;
-        return ret;
+      vars.firstTurn = false;
+      return ret;
     }
     catch (err) {
       this.log("Error "+err);
