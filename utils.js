@@ -112,7 +112,7 @@ export function bfs (ends) {
       }
     }
   }
-  this.log("BFS Time: "+(new Date().getTime()-time));
+  //this.log("BFS Time: "+(new Date().getTime()-time));
   return costs;
 }
 
