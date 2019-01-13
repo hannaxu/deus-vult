@@ -7,6 +7,7 @@ var totC;
 
 var enemyCastles = [];
 var symmetry;
+var buildCount = [0,0,0,0,0,0];
 
 export default function castleTurn() {
   //this.log("I am a Castle at "+this.me.x+" "+this.me.y);
@@ -56,19 +57,21 @@ export default function castleTurn() {
     }
   }
 
-  if (headcount[2]<2 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+  if (headcount[2]<1 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
       if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
         sendMessage.call(this, i, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
         //this.log("Building pilgrim at "+x+" "+y);
+        buildCount[2]++;
         return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
       }
     }
   }
 
-  if(this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_FUEL)  {
+  // preacher build
+  if(2*buildCount[4] >= buildCount[5] && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_FUEL)  {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
@@ -78,11 +81,33 @@ export default function castleTurn() {
           message += vars.buildable.length;
         }
         if (symmetry[1]) {
-          message += vars.buildable.length()*2;
+          message += vars.buildable.length*2;
         }
         sendMessage.call(this, message, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
         //this.log("Building pilgrim at "+x+" "+y);
+        buildCount[5]++;
         return this.buildUnit(vars.SPECS.PREACHER, vars.buildable[i][0], vars.buildable[i][1]);
+      }
+    }
+  }
+
+  // prophet build
+  if(this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
+    for (var i = 0; i < vars.buildable.length; i++) {
+      var x = this.me.x+vars.buildable[i][0];
+      var y = this.me.y+vars.buildable[i][1];
+      if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
+        var message = i;
+        if (symmetry[0]) {
+          message += vars.buildable.length;
+        }
+        if (symmetry[1]) {
+          message += vars.buildable.length*2;
+        }
+        sendMessage.call(this, message, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
+        //this.log("Building pilgrim at "+x+" "+y);
+        buildCount[4]++;
+        return this.buildUnit(vars.SPECS.PROPHET, vars.buildable[i][0], vars.buildable[i][1]);
       }
     }
   }
