@@ -15,6 +15,7 @@ var symmetry;
 var buildCount = [0,0,0,0,0,0];
 var lastDeusVult = -10;
 var deusVult = null;
+var fullDV = true;
 
 export default function castleTurn() {
   //this.log("I am a Castle at "+this.me.x+" "+this.me.y);
@@ -85,6 +86,7 @@ export default function castleTurn() {
         enemyCastles.push([myCastles[i][1][0], vars.ymax-1-myCastles[i][1][1]]);
       }
     }
+    this.log(vars.castleLocs);
   }
 
   //headcount 0: castle, 1: church, 2: pilgrim, 3: crusader, 4: prophet, 5: preacher
@@ -170,10 +172,13 @@ export default function castleTurn() {
     //this.log(deusVult);
     sendMessage.call(this, 2**15+deusVult[0], vars.CAMPDIST);
     lastDeusVult = this.me.turn;
+    fullDV = false;
+    return;
   }
-  if (this.me.turn-lastDeusVult==1) {
+  while (!fullDV) {
     this.log("DEUS VULT 1");
     sendMessage.call(this, 2**15+deusVult[1], vars.CAMPDIST);
+    fullDV = true;
     curAttack++;
   }
 }
