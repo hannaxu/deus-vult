@@ -3,16 +3,22 @@ import * as utils from './utils';
 import { sendMessage } from './communication';
 
 var team;
-var totC;
+var totC = 0;
+var myCastles = []; // in turn order, contains IDs and locations
+var castleID = {};
+var castleOrder = 0;
+var teamID = {}; // hashmap stores info
 
 var enemyCastles = [];
+var curAttack = 0;
 var symmetry;
 var buildCount = [0,0,0,0,0,0];
-var lastDeusVult = 0;
+var lastDeusVult = -10;
+var deusVult = null;
 
 export default function castleTurn() {
   //this.log("I am a Castle at "+this.me.x+" "+this.me.y);
-  //this.log("Resources: "+vars.firstTurn);
+
   if (vars.firstTurn) {
     symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
     this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
@@ -21,21 +27,64 @@ export default function castleTurn() {
     //determine if enemy castles are visible and number
     //  try to determine if map is truly horizontal or vertical if symmetry returned both
     team = this.me.team;
-    totC = vars.commRobots.length;
-    for( var x = 0; x < totC; x++ ) {
-      if( vars.commRobots[x].team != team ) {
-        totC = totC-1;
+    for( var x = 0; x < vars.commRobots.length; x++ ) {
+      if(vars.commRobots[x].team == team) {
+        if (vars.commRobots[x].castle_talk==0) {
+          totC++;
+        }
+        else {
+          myCastles.push([vars.commRobots[x].id]);
+          castleID[vars.commRobots[x].id] = 0;
+          castleOrder++;
+        }
       }
-    }
-    if (symmetry[0]) {
-      enemyCastles.push(vars.xmax-1-this.me.x, this.me.y);
-    }
-    if (symmetry[1]) {
-      enemyCastles.push([this.me.x, vars.ymax-1-this.me.y]);
     }
     //this.log(enemyCastles);
     vars.firstTurn = false;
     //this.log("Test: " +vars.firstTurn);
+  }
+
+  // determines myCastles
+  if (this.me.turn == 1) {
+    for (var i = 0; i < castleOrder; i++) {
+      myCastles[i] = [myCastles[i][0], [this.getRobot(myCastles[i][0]).castle_talk-128, 0]];
+    }
+    this.castleTalk(this.me.x+128);
+    myCastles.push([this.me.id, [this.me.x, this.me.y]]);
+  }
+  if (this.me.turn == 2) {
+    outer: for( var x = 0; x < vars.commRobots.length; x++ ) {
+      if(vars.commRobots[x].team == team && vars.commRobots[x].castle_talk>=128) {
+        for (var i = 0; i < myCastles.length; i++) {
+          if (myCastles[i][0]==vars.commRobots[x].id) {
+            continue outer;
+          }
+        }
+        myCastles.push([vars.commRobots[x].id]);
+      }
+    }
+    for (var i = 0; i < castleOrder; i++) {
+      myCastles[i] = [myCastles[i][0], [myCastles[i][1][0], this.getRobot(myCastles[i][0]).castle_talk-128]];
+    }
+    for (var i = castleOrder+1; i < myCastles.length; i++) {
+      myCastles[i] = [myCastles[i][0], [this.getRobot(myCastles[i][0]).castle_talk-128, 0]];
+    }
+    this.castleTalk(this.me.y+128);
+  }
+  if (this.me.turn == 3) {
+    for (var i = castleOrder+1; i < myCastles.length; i++) {
+      myCastles[i] = [myCastles[i][0], [myCastles[i][1][0], this.getRobot(myCastles[i][0]).castle_talk-128]];
+    }
+    if (symmetry[0]) {
+      for (var i = 0; i < myCastles.length; i++) {
+        enemyCastles.push(vars.xmax-1-myCastles[i][1][0], myCastles[i][1][1]);
+      }
+    }
+    if (symmetry[1]) {
+      for (var i = 0; i < myCastles.length; i++) {
+        enemyCastles.push([myCastles[i][1][0], vars.ymax-1-myCastles[i][1][1]]);
+      }
+    }
   }
 
   //headcount 0: castle, 1: church, 2: pilgrim, 3: crusader, 4: prophet, 5: preacher
@@ -57,6 +106,7 @@ export default function castleTurn() {
         headcount[5] += 1;
     }
   }
+  //this.log(this.me.turn);
 
   if (headcount[2]<Math.floor(3/totC) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     for (var i = 0; i < vars.buildable.length; i++) {
@@ -115,8 +165,12 @@ export default function castleTurn() {
 
   //this.log("attackers "+headcount[3]+headcount[4]+headcount[5]);
   if (this.me.turn-lastDeusVult>=50 || (this.me.turn-lastDeusVult >= 10 && headcount[3]+headcount[4]+headcount[5] >= 10 && this.fuel >= vars.CAMPDIST)) {
-    this.log("DEUS VULT");
-    sendMessage.call(this, 2**16-1, vars.CAMPDIST);
+    deusVult = enemyCastles[curAttack%enemyCastles.length];
+    sendMessage.call(this, 2**15+deusVult[0], vars.CAMPDIST);
     lastDeusVult = this.me.turn;
+  }
+  if (this.me.turn-lastDeusVult==1) {
+    sendMessage.call(this, 2**15+deusVult[1], vars.CAMPDIST);
+    curAttack++;
   }
 }

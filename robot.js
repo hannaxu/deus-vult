@@ -110,7 +110,7 @@ class MyRobot extends BCAbstractRobot {
         if(this.castleTalkRobots != null && other_r.castle_talk != 0)
           vars.castleTalkRobots.push(other_r);
       }
-      utils.updateBaseLocs();
+      utils.updateLocs.call(this);
       readMessages.call(this);
 
       var ret=null;

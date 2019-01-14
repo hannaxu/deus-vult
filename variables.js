@@ -52,5 +52,6 @@ export default {
 
   // Created information
   baseLocs: {}, // stores Castle and Church locations
+  castleLocs: {}, // stores Castle and Church locations
   fuzzyCost: []
 };

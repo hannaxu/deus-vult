@@ -139,7 +139,7 @@ export function findConnections (r2) {
   return reachable;
 }
 
-export function updateBaseLocs () {
+export function updateLocs () {
   var shouldSee = {};
   for (var h in vars.baseLocs) {
     var pos = unhashCoordinates(h);
@@ -160,6 +160,28 @@ export function updateBaseLocs () {
   }
   for (var h in shouldSee) {
     delete vars.baseLocs[h];
+  }
+  // castleLocs
+  shouldSee = {};
+  for (var h in vars.castleLocs) {
+    var pos = unhashCoordinates(h);
+    if (vars.visibleRobotMap[pos[1]][pos[0]]>=0) {
+      shouldSee[h] = 0;
+    }
+  }
+  for (var i = 0; i < vars.visibleRobots.length; i++) {
+    if (vars.visibleRobots[i].unit==vars.SPECS.CASTLE) {
+      var hashVal = hashCoordinates([vars.visibleRobots[i].x, vars.visibleRobots[i].y]);
+      if (shouldSee[hashVal]==0) {
+        delete shouldSee[hashVal];
+      }
+      else {
+        vars.castleLocs[hashVal] = 0;
+      }
+    }
+  }
+  for (var h in shouldSee) {
+    delete vars.castleLocs[h];
   }
   //this.log(vars.baseLocs);
 }
