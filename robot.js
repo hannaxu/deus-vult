@@ -10,7 +10,7 @@ import prophetTurn from './prophet';
 import preacherTurn from './preacher';
 
 import * as utils from './utils';
-import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from './communication';
+import { sendMessage, sendMessageTrusted, readMessages, castleLocsComm, cypherMessage } from './communication';
 
 class MyRobot extends BCAbstractRobot {
   constructor () {
@@ -97,7 +97,7 @@ class MyRobot extends BCAbstractRobot {
       }
       for(var i = 0; i < vars.commRobots.length; i++) {
         var other_r = vars.commRobots[i];
-        if(other_r.id == this.id)
+        if(other_r.id == this.me.id)
           continue;
         if(this.isVisible(other_r)) {
           vars.visibleRobots.push(other_r);
@@ -131,9 +131,22 @@ class MyRobot extends BCAbstractRobot {
           ret= this.churchTurn();
           break;
         case vars.SPECS.CASTLE:
+          castleLocsComm.call(this);
           ret= this.castleTurn();
           break;
       }
+
+      // temporary failsafe
+      if(vars.creatorPos != null){
+        var creatorId = vars.visibleRobotMap[vars.creatorPos[1]][vars.creatorPos[0]];
+        if(creatorId > 0){
+          var creator = this.getRobot(creatorId);
+          if(creator.unit == SPECS.CASTLE && creator.turn <= 2){
+            this.castleTalk(0);
+          }
+        }
+      }
+
       vars.firstTurn = false;
       return ret;
     }

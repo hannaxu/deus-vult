@@ -1,5 +1,8 @@
 import vars from './variables';
 
+import { coord8Encrypt, coord8Decrypt, coord8Encrypt2, coord8Decrypt2 } from './conversion';
+import { assertAll } from './conversion';
+
 var trusted = {};
 
 
@@ -16,7 +19,6 @@ export function sendMessage(message, sq_radius) {
   this.signal(cypherMessage(message, this.me.team), sq_radius);
   //this.log("Successfully sent message " + message.toString(2) + " over sq_radius " + sq_radius);
 }
-
 /**
  * Radio a shorter message with a recognizable signature.
  * Units will accept it without needing to see you.
@@ -31,7 +33,7 @@ export function sendMessageTrusted(message, sq_radius) {
   if(!checkParams.call(this, message, sq_radius, false))
     return;
 
-  var message_full = (this.id & 255) << 8 | message;
+  var message_full = (this.me.id & 255) << 8 | message;
   this.signal(cypherMessage(message_full, this.me.team), sq_radius);
   //this.log("Successfully sent message " + message.toString(2) + " over sq_radius " + sq_radius);
 }
@@ -101,6 +103,91 @@ export function readMessages() {
 }
 
 /**
+ * Communicate castle locations in the first two turns.
+ */
+export function castleLocsComm(){
+  if(this.me.turn == 1){
+    //assertAll.call(this);
+    
+    vars.castleLocs = {};
+    vars.castleLocs[this.me.id] = [vars.xpos, vars.ypos];
+    vars.castleUncert = {};
+
+    // read incoming signals
+    for(var i = 0; i < vars.commRobots.length; i++){
+      var other_r = vars.commRobots[i];
+      if(other_r.id == this.me.id)
+        continue;
+      if(other_r.turn == 0)
+        continue;
+
+      // these will always be castles
+      var uncertLoc = coord8Decrypt(other_r.castle_talk, vars.xmax);
+      vars.castleUncert[other_r.id] = uncertLoc[0];
+      vars.castleLocs[other_r.id] = [Math.floor((uncertLoc[0][0]+uncertLoc[1][0])/2),
+                                     Math.floor((uncertLoc[0][1]+uncertLoc[1][1])/2)];
+    }
+    this.castleTalk(coord8Encrypt(vars.xpos, vars.ypos, vars.xmax));
+  }
+
+  else if(this.me.turn == 2){
+    // read incoming signals
+    for(var i = 0; i < vars.commRobots.length; i++){
+      var other_r = vars.commRobots[i];
+      if(other_r.id == this.me.id)
+        continue;
+      if(other_r.turn == 1){
+        // best attempt at distinguishing built from castle
+        // NOTE: this will break if a built unit sends a castleTalk within the first two turns
+        if(other_r.castle_talk == 0)
+          continue;
+
+        var uncertLoc = coord8Decrypt(other_r.castle_talk, vars.xmax);
+        vars.castleUncert[other_r.id] = uncertLoc[0];
+        vars.castleLocs[other_r.id] = [Math.floor((uncertLoc[0][0]+uncertLoc[1][0])/2),
+                                       Math.floor((uncertLoc[0][1]+uncertLoc[1][1])/2)];
+      }
+      else if(other_r.turn == 2){
+        // these will always be castles
+        var exactLoc = coord8Decrypt2((2**4-1) & other_r.castle_talk, vars.xmax, vars.castleUncert[other_r.id]);
+        delete vars.castleUncert[other_r.id];
+        vars.castleLocs[other_r.id] = exactLoc;
+      }
+    }
+    this.castleTalk((2**4) | coord8Encrypt2(vars.xpos, vars.ypos, vars.xmax));
+  }
+
+  else if(this.me.turn == 3){
+    // read incoming signals
+    for(var i = 0; i < vars.commRobots.length; i++){
+      var other_r = vars.commRobots[i];
+      if(other_r.id == this.me.id)
+        continue;
+      if(other_r.turn == 2){
+        // best attempt at distinguishing built from castle
+        // NOTE: this will break if a built unit sends a castleTalk within the first two turns 
+        if(other_r.castle_talk == 0)
+          continue;
+        if(!(other_r.id in vars.castleUncert))
+          vars.castleUncert[other_r.id] = [0, 0];
+
+        var exactLoc = coord8Decrypt2((2**4-1) & other_r.castle_talk, vars.xmax, vars.castleUncert[other_r.id]);
+        delete vars.castleUncert[other_r.id];
+        vars.castleLocs[other_r.id] = exactLoc;
+      }
+    }
+  }
+
+  if(typeof(vars.castleUncert) != 'undefined'){
+    if(this.me.turn > 1 && Object.keys(vars.castleUncert).length == 0){
+      delete vars.castleUncert;
+      // exact castle locations first found
+      //this.log(vars.castleLocs);
+    }
+  }
+}
+
+/**
  * Encodes/decodes a single message according to our team cypher.
  * @param   {int}   message 16-bit message to encode/decode.
  * @param   {int}   team    Our team code (red/blue)
@@ -112,7 +199,8 @@ export function cypherMessage(message, team) {
 }
 
 
-// Helper functions
+
+// HELPER FUNCTIONS
 
 /**
  * Process the received message and act accordingly.
@@ -141,34 +229,3 @@ function checkParams(message, sq_radius, isLong){
   return true;
 }
 
-
-// Conversions
-
-/**
- * Converts an (x, y) coordinate to an 8-bit message.
- * @param   {int} x   The x-coordinate.
- * @param   {int} y   The y-coordinate.
- * @param   {int} max The map size.
- * @returns {int}     The resultant 8-bit message. Can be read with coord8Decrypt().
- */
-function coord8Encrypt(x, y, max){
-  var step = max / (2**4);
-
-  var xCell = Math.floor(x / step);
-  var yCell = Math.floor(y / step);
-  return xCell << 4 | yCell;
-}
-/**
- * Converts a coord8Encrypt message back to coordinates.
- * @param   {int} message The received 8-bit message.
- * @param   {int} max     The map size.
- * @returns {int[][]}     Coordinate plus uncertainty. First element is top left coord, second it bottom right.
- */
-function coord8Decrypt(message, max){
-  var step = max / (2**4);
-
-  var xCell = message >> 4;
-  var yCell = message & (2**4-1);
-  return [[Math.ceil(xCell*step), Math.ceil(yCell*step)],
-          [Math.ceil((xCell+1)*step-1), Math.ceil((yCell+1)*step-1)]];
-}

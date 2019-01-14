@@ -44,13 +44,14 @@ export default {
 
   // Robots visible to me
   visibleRobotMap: null,
-  commRobots: null,       // all visible and radioable (for castles, all team robots, including yourself)
-  visibleRobots: null,    // only in visible range (not including yourself)
-  visibleEnemyRobots: null,//only in visible range and is an enemy
-  radioRobots: null,      // sent a radio signal (not including yourself)
-  castleTalkRobots: null, // sent a castle_talk (not including yourself)
+  commRobots: null,         // all visible and radioable (for castles, all team robots, including yourself)
+  visibleRobots: null,      // only in visible range (not including yourself)
+  visibleEnemyRobots: null, // only in visible range and is an enemy
+  radioRobots: null,        // sent a radio signal (not including yourself)
+  castleTalkRobots: null,   // sent a castle_talk (not including yourself)
 
   // Created information
+  castleLocs: null, // (castles only, for now) {id: [x, y]} of all friendly castles
   baseLocs: {}, // stores Castle and Church locations
   fuzzyCost: []
 };
