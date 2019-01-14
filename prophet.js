@@ -4,7 +4,8 @@ import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from './
 
 var enemyCastles = [];
 var symmetry = [false, false];
-var deusVult = null;
+var deusVult = [null, null];
+var deusVultFrom = null;
 
 export default function prophetTurn() {
   //this.log("I am a Prophet at "+vars.xpos+" "+vars.ypos);
@@ -43,60 +44,70 @@ export default function prophetTurn() {
     return this.attack(bestDir[0], bestDir[1]);
   }
 
-  // check for DEUS VULT signal
-  for (var i = 0; i < vars.radioRobots.length; i++) {
-    var message = cypherMessage(vars.radioRobots[i].signal, this.me.team);
-    if (message>=2**15) {
-      //this.log("DEUS VULT RECEIVED");
-      if (deusVult==null) {
-        deusVult = [message-2**15];
-        return;
-      }
-      else {
-        deusVult = [deusVult[0], message-2**15];
-      }
-    }
-  }
-
-  // goes to castle if there are no known enemyCastles
-  if (deusVult==null) {
-    for (var h in vars.castleLocs) {
-      var loc = utils.unhashCoordinates(h);
-      if ((this.me.x-loc[0])**2+(this.me.y-loc[1])**2 > vars.CAMPDIST) {
-        var move = utils.findMove.call(this, [this.me.x, this.me.y], loc);
-        if (move != null) {
-          //this.log("Moving towards "+x+" "+y);
-          return this.move(move[0], move[1]);
+    // check for DEUS VULT signal
+    if (deusVult[1]==null) {
+      for (var i = 0; i < vars.visibleRobots.length; i++) {
+        if (!this.isRadioing(vars.visibleRobots[i])||this.me.team!=vars.visibleRobots[i].team) {
+          continue;
+        }
+        var pos = [vars.visibleRobots.x, vars.visibleRobots.y];
+        if (vars.visibleRobots[i].unit==0) {
+          var message = cypherMessage(vars.visibleRobots[i].signal, this.me.team);
+          if (message>=2**15) {
+            if (deusVult[0]==null) {
+              //this.log("DEUS VULT 0 RECEIVED");
+              deusVultFrom = vars.visibleRobots[i].id;
+              deusVult = [message-2**15, null];
+              return;
+            }
+            else if (deusVult[1]==null&&vars.visibleRobots[i].id==deusVultFrom) {
+              //this.log("DEUS VULT 1 RECEIVED");
+              deusVult = [deusVult[0], message-2**15];
+            }
+          }
         }
       }
     }
-  }
 
-  // DEUS VULT, attack enemyCastles
-  if (deusVult!=null) {
-    var x = deusVult[0];
-    var y = deusVult[1];
-    var id = vars.visibleRobotMap[y][x];
-    if (id==0||(id!=-1&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
-      deusVult = null;
-      return;
-    }
-    var move = utils.findMove.call(this, [this.me.x, this.me.y], deusVult);
-    if (move != null) {
-      //this.log("Moving towards "+x+" "+y);
-      return this.move(move[0], move[1]);
-    }
-  }
-  else {
-    var curDist = (this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2;
-    for (var i = 0; i < vars.moveable.length; i++) {
-      var x = this.me.x+vars.moveable[i][0];
-      var y = this.me.y+vars.moveable[i][1];
-      var newDist = (x-vars.creatorPos[0])**2+(y-vars.creatorPos[1])**2;
-      var open = utils.checkBounds(x, y) && vars.visibleRobotMap[y][x]==0 && vars.passableMap[y][x];
-      if (open && curDist < newDist && newDist <= vars.CAMPDIST) {
-        return this.move(vars.moveable[i][0], vars.moveable[i][1]);
+    // goes to castle if there are no known enemyCastles
+    if (deusVult[1]==null) {
+      for (var h in vars.castleLocs) {
+        var loc = utils.unhashCoordinates(h);
+        if ((this.me.x-loc[0])**2+(this.me.y-loc[1])**2 > vars.CAMPDIST) {
+          var move = utils.findMove.call(this, [this.me.x, this.me.y], loc);
+          if (move != null) {
+            //this.log("Moving towards "+x+" "+y);
+            return this.move(move[0], move[1]);
+          }
+        }
       }
     }
-  }
+
+    // DEUS VULT, attack enemyCastles
+    if (deusVult[1]!=null) {
+      var x = deusVult[0];
+      var y = deusVult[1];
+      var id = vars.visibleRobotMap[y][x];
+      if (id==0||(id!=-1&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
+        deusVult = [null, null];
+        return;
+      }
+      var move = utils.findMove.call(this, [this.me.x, this.me.y], deusVult);
+      if (move != null) {
+        //this.log("Moving towards "+x+" "+y);
+        return this.move(move[0], move[1]);
+      }
+    }
+    else {
+      var curDist = (this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2;
+      for (var i = 0; i < vars.moveable.length; i++) {
+        var x = this.me.x+vars.moveable[i][0];
+        var y = this.me.y+vars.moveable[i][1];
+        var newDist = (x-vars.creatorPos[0])**2+(y-vars.creatorPos[1])**2;
+        var open = utils.checkBounds(x, y) && vars.visibleRobotMap[y][x]==0 && vars.passableMap[y][x];
+        if (open && curDist < newDist && newDist <= vars.CAMPDIST) {
+          return this.move(vars.moveable[i][0], vars.moveable[i][1]);
+        }
+      }
+    }
 }

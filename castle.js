@@ -165,11 +165,13 @@ export default function castleTurn() {
 
   //this.log("attackers "+headcount[3]+headcount[4]+headcount[5]);
   if (this.me.turn-lastDeusVult>=50 || (this.me.turn-lastDeusVult >= 10 && headcount[3]+headcount[4]+headcount[5] >= 10 && this.fuel >= vars.CAMPDIST)) {
+    this.log("DEUS VULT 0");
     deusVult = enemyCastles[curAttack%enemyCastles.length];
     sendMessage.call(this, 2**15+deusVult[0], vars.CAMPDIST);
     lastDeusVult = this.me.turn;
   }
   if (this.me.turn-lastDeusVult==1) {
+    this.log("DEUS VULT 1");
     sendMessage.call(this, 2**15+deusVult[1], vars.CAMPDIST);
     curAttack++;
   }
