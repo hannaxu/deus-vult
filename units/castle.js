@@ -125,12 +125,12 @@ export default function castleTurn() {
   //this.log(this.me.turn);
   if( enemyUnit > 0 ) {
     defend = true;
-    this.log("defend");
+    //this.log("defend");
   }
   else
     defend = false;
-  
-  if (!defend && (this.me.turn < 10 || headcount[2]<2) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+
+  if (!defend && headcount[2] < 1 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
@@ -197,7 +197,7 @@ export default function castleTurn() {
   }
   while (!fullDV) {
     this.log("DEUS VULT 1");
-    sendMessage.call(this, 2**15+deusVult[1], vars.CAMPDIST);
+    sendMessage.call(this, 2**15+2**14+deusVult[1], vars.CAMPDIST);
     fullDV = true;
     curAttack++;
   }

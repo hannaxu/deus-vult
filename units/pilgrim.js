@@ -8,7 +8,7 @@ export default function pilgrimTurn () {
     //this.log("entering");
     var me=this.me;
     if (vars.firstTurn) {
-        
+
     }
     if (3*(me.karbonite*vars.maxFuel+me.fuel*vars.maxKarb)>(vars.maxFuel*vars.maxKarb)) {
         //this.log("hi");
@@ -31,7 +31,7 @@ export default function pilgrimTurn () {
                 pris.push(0);
             }
             //this.log(facts.length);
-            this.log("To factory");
+            //this.log("To factory");
             return pickAdjMove.call(this,facts,pris);
         }
     }
@@ -41,7 +41,7 @@ export default function pilgrimTurn () {
     }
     //this.log(vars.teamFuel);
     if (vars.teamFuel>=4) {
-        this.log("To rloc");
+        //this.log("To rloc");
         var openRecs=[];
         var pris=[];
         for (var i=0; i<vars.rLocs.length; i++) {
