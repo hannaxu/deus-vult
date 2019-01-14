@@ -38,9 +38,9 @@ class MyRobot extends BCAbstractRobot {
         vars.visionRadius = vars.SPECS.UNITS[this.me.unit].VISION_RADIUS;
         vars.attackCost = vars.SPECS.UNITS[this.me.unit].ATTACK_FUEL_COST;
         vars.moveCost = vars.SPECS.UNITS[this.me.unit].FUEL_PER_MOVE;
-          vars.maxKarb = vars.SPECS.UNITS[this.me.unit].KARBONITE_CAPACITY;
-          vars.maxFuel = vars.SPECS.UNITS[this.me.unit].FUEL_CAPACITY;
-          utils.initRecList();
+        vars.maxKarb = vars.SPECS.UNITS[this.me.unit].KARBONITE_CAPACITY;
+        vars.maxFuel = vars.SPECS.UNITS[this.me.unit].FUEL_CAPACITY;
+        utils.initRecList();
 
         vars.visible = utils.findConnections.call(this, vars.visionRadius);
         if (vars.attackRadius!=null) {
@@ -110,7 +110,6 @@ class MyRobot extends BCAbstractRobot {
         if(this.castleTalkRobots != null && other_r.castle_talk != 0)
           vars.castleTalkRobots.push(other_r);
       }
-
       utils.updateBaseLocs();
       readMessages.call(this);
 
@@ -139,7 +138,8 @@ class MyRobot extends BCAbstractRobot {
       return ret;
     }
     catch (err) {
-      this.log("Error "+err);
+      this.log("Error in unit "+this.me.unit+" at ("+this.me.x+", "+this.me.y+")");
+      this.log(err);
     }
   }
 }
