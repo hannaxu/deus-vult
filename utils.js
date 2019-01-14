@@ -81,6 +81,14 @@ export function findMove (start, end) {
   return bestMove[2];
 }
 
+
+export function soloBFS(end) {
+    if (vars.fuzzyCost[end[0]][end[1]].length==0) {
+    vars.fuzzyCost[end[0]][end[1]] = bfs.call(this, [end]);
+    //this.log("Conducted bfs "+start+" "+end);
+  }
+    return vars.fuzzyCost[end[0]][end[1]]
+}
 //list of [x,y]
 export function bfs (ends) {
   var costs = []
