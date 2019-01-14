@@ -108,7 +108,7 @@ export function readMessages() {
 export function castleLocsComm(){
   if(this.me.turn == 1){
     //assertAll.call(this);
-    
+
     vars.castleLocs = {};
     vars.castleLocs[this.me.id] = [vars.xpos, vars.ypos];
     vars.castleUncert = {};
@@ -165,7 +165,7 @@ export function castleLocsComm(){
         continue;
       if(other_r.turn == 2){
         // best attempt at distinguishing built from castle
-        // NOTE: this will break if a built unit sends a castleTalk within the first two turns 
+        // NOTE: this will break if a built unit sends a castleTalk within the first two turns
         if(other_r.castle_talk == 0)
           continue;
         if(!(other_r.id in vars.castleUncert))
@@ -228,4 +228,3 @@ function checkParams(message, sq_radius, isLong){
   }
   return true;
 }
-

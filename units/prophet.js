@@ -69,16 +69,13 @@ export default function prophetTurn() {
       }
     }
 
-    // goes to castle if there are no known enemyCastles
+    // goes to creatorPos if there are no known enemyCastles
     if (deusVult[1]==null) {
-      for (var h in vars.castleLocs) {
-        var loc = utils.unhashCoordinates(h);
-        if ((this.me.x-loc[0])**2+(this.me.y-loc[1])**2 > vars.CAMPDIST) {
-          var move = utils.findMove.call(this, [this.me.x, this.me.y], loc);
-          if (move != null) {
-            //this.log("Moving towards "+x+" "+y);
-            return this.move(move[0], move[1]);
-          }
+      if ((this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2 > vars.CAMPDIST) {
+        var move = utils.findMove.call(this, [this.me.x, this.me.y], vars.creatorPos);
+        if (move != null) {
+          //this.log("Moving towards "+x+" "+y);
+          return this.move(move[0], move[1]);
         }
       }
     }

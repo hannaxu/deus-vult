@@ -51,8 +51,7 @@ export default {
   castleTalkRobots: null,   // sent a castle_talk (not including yourself)
 
   // Created information
-  castleLocs: null, // (castles only, for now) {id: [x, y]} of all friendly castles
+  castleLocs: {}, // (castles only, for now) {id: [x, y]} of all friendly castles
   baseLocs: {}, // stores Castle and Church locations
-  castleLocs: {}, // stores Castle and Church locations
   fuzzyCost: []
 };
