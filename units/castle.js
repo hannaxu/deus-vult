@@ -16,6 +16,7 @@ var buildCount = [0,0,0,0,0,0];
 var lastDeusVult = -10;
 var deusVult = null;
 var fullDV = true;
+var defend = false;
 
 export default function castleTurn() {
   //this.log("I am a Castle at "+this.me.x+" "+this.me.y);
@@ -118,7 +119,7 @@ export default function castleTurn() {
   }
   else
     defend = false;
-
+  
   if (!defend && (this.me.turn < 10 || headcount[2]<2) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
