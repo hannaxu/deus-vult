@@ -101,7 +101,7 @@ export default function preacherTurn() {
     // goes to creatorPos if there are no known enemyCastles
     if (deusVult[1]==null) {
       if ((this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2 > vars.CAMPDIST) {
-        var move = utils.findMove.call(this, [this.me.x, this.me.y], vars.creatorPos);
+        var move = utils.findMoveD.call(this, [this.me.x, this.me.y], vars.creatorPos);
         if (move != null) {
           //this.log("Moving towards "+x+" "+y);
           return this.move(move[0], move[1]);
@@ -119,7 +119,7 @@ export default function preacherTurn() {
         deusVultFrom = null;
         return;
       }
-      var move = utils.findMove.call(this, [this.me.x, this.me.y], deusVult);
+      var move = utils.findMoveD.call(this, [this.me.x, this.me.y], deusVult);
       if (move != null) {
         //this.log("Moving towards "+x+" "+y);
         return this.move(move[0], move[1]);
