@@ -1,6 +1,6 @@
-import vars from './variables';
-import * as utils from './utils';
-import { sendMessage } from './communication';
+import vars from '../variables';
+import * as utils from '../utils';
+import { sendMessage } from '../communication';
 
 var team;
 var totC = 0;

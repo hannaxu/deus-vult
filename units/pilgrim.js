@@ -1,5 +1,5 @@
-import vars from './variables';
-import * as utils from './utils';
+import vars from '../variables';
+import * as utils from '../utils';
 
 
 var recD;

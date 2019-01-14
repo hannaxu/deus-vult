@@ -1,5 +1,5 @@
-import vars from './variables';
-import * as utils from './utils';
+import vars from '../variables';
+import * as utils from '../utils';
 
 export default function crusaderTurn() {
   //this.log("I am a Crusader at "+vars.xpos+" "+vars.ypos);

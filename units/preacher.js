@@ -1,6 +1,6 @@
-import vars from './variables';
-import * as utils from './utils';
-import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from './communication';
+import vars from '../variables';
+import * as utils from '../utils';
+import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from '../communication';
 
 var enemyCastles = [];
 var symmetry = [false, false];
