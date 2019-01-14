@@ -1,6 +1,6 @@
 export default {
   // CONSTANTS
-
+  CAMPDIST: 4,
   POS_INF: 2147483647,
   NEG_INF: -2147483648,
   SPECS: null,

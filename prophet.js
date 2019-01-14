@@ -87,7 +87,7 @@ export default function prophetTurn() {
       var y = this.me.y+vars.moveable[i][1];
       var newDist = (x-vars.creatorPos[0])**2+(y-vars.creatorPos[1])**2;
       var open = utils.checkBounds(x, y) && vars.visibleRobotMap[y][x]==0 && vars.passableMap[y][x];
-      if (open && curDist < newDist && newDist <= vars.SPECS.UNITS[2].VISION_RADIUS) {
+      if (open && curDist < newDist && newDist <= vars.CAMPDIST) {
         return this.move(vars.moveable[i][0], vars.moveable[i][1]);
       }
     }

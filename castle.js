@@ -114,9 +114,9 @@ export default function castleTurn() {
   }
 
   //this.log("attackers "+headcount[3]+headcount[4]+headcount[5]);
-  if (this.me.turn-lastDeusVult>=50 || (this.me.turn-lastDeusVult >= 10 && headcount[3]+headcount[4]+headcount[5] >= 10 && this.fuel >= vars.visionRadius)) {
+  if (this.me.turn-lastDeusVult>=50 || (this.me.turn-lastDeusVult >= 10 && headcount[3]+headcount[4]+headcount[5] >= 10 && this.fuel >= vars.CAMPDIST)) {
     this.log("DEUS VULT");
-    sendMessage.call(this, 2**16-1, vars.visionRadius);
+    sendMessage.call(this, 2**16-1, vars.CAMPDIST);
     lastDeusVult = this.me.turn;
   }
 }
