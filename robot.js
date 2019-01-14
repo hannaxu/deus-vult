@@ -139,7 +139,7 @@ class MyRobot extends BCAbstractRobot {
     }
     catch (err) {
       this.log("Error in unit "+this.me.unit+" at ("+this.me.x+", "+this.me.y+")");
-      this.log(err);
+      this.log(err.toString());
     }
   }
 }
