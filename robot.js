@@ -2,12 +2,12 @@ import { BCAbstractRobot, SPECS } from 'battlecode';
 
 import vars from './variables';
 
-import castleTurn from './castle';
-import crusaderTurn from './crusader';
-import pilgrimTurn from './pilgrim';
-import churchTurn from './church';
-import prophetTurn from './prophet';
-import preacherTurn from './preacher';
+import castleTurn from './units/castle';
+import crusaderTurn from './units/crusader';
+import pilgrimTurn from './units/pilgrim';
+import churchTurn from './units/church';
+import prophetTurn from './units/prophet';
+import preacherTurn from './units/preacher';
 
 import * as utils from './utils';
 import { sendMessage, sendMessageTrusted, readMessages, castleLocsComm, cypherMessage } from './communication';

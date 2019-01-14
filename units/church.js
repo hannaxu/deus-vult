@@ -1,6 +1,6 @@
-import vars from './variables';
-import * as utils from './utils';
-import { sendMessage } from './communication';
+import vars from '../variables';
+import * as utils from '../utils';
+import { sendMessage } from '../communication';
 
 export default function castleTurn() {
   this.log("I am a Church at "+this.me.x+" "+this.me.y);
