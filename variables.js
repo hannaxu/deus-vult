@@ -19,7 +19,7 @@ export default {
   moveRadius: null,
   attackRadius: null, // [min, max]
   buildRadius: null,
-  sightRadius: null,
+  visionRadius: null,
   attackCost: null,
   moveCost: null,
   maxKarb: null,
