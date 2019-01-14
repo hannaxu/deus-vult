@@ -27,48 +27,53 @@ export default function prophetTurn() {
     vars.firstTurn = false;
   }
 
-  var bestDir = null;
-  for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
-    var x = vars.visibleEnemyRobots[i].x;
-    var y = vars.visibleEnemyRobots[i].y;
-    var dx = x-this.me.x;
-    var dy = y-this.me.y;
-    if (vars.attackRadius[0]<=dx**2+dy**2&&dx**2+dy**2<=vars.attackRadius[1]) {
-      if (bestDir==null||dx**2+dy**2 < bestDir[0]**2+bestDir[1]**2) {
-        bestDir = [dx, dy];
+  // attacking
+  if (this.fuel >= vars.attackCost) {
+    var bestDir = null;
+    for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
+      var x = vars.visibleEnemyRobots[i].x;
+      var y = vars.visibleEnemyRobots[i].y;
+      var dx = x-this.me.x;
+      var dy = y-this.me.y;
+      if (vars.attackRadius[0]<=dx**2+dy**2&&dx**2+dy**2<=vars.attackRadius[1]) {
+        if (bestDir==null||dx**2+dy**2 < bestDir[0]**2+bestDir[1]**2) {
+          bestDir = [dx, dy];
+        }
       }
     }
-  }
-  if (bestDir!=null) {
-    //this.log("Attacking "+(this.me.x+bestDir[0])+" "+(this.me.y+bestDir[1]));
-    return this.attack(bestDir[0], bestDir[1]);
+    if (bestDir!=null) {
+      //this.log("Attacking "+(this.me.x+bestDir[0])+" "+(this.me.y+bestDir[1]));
+      return this.attack(bestDir[0], bestDir[1]);
+    }
   }
 
-    // check for DEUS VULT signal
-    if (deusVult[1]==null) {
-      for (var i = 0; i < vars.visibleRobots.length; i++) {
-        if (!this.isRadioing(vars.visibleRobots[i])||this.me.team!=vars.visibleRobots[i].team) {
-          continue;
-        }
-        var pos = [vars.visibleRobots.x, vars.visibleRobots.y];
-        if (vars.visibleRobots[i].unit==0) {
-          var message = cypherMessage(vars.visibleRobots[i].signal, this.me.team);
-          if (message>=2**15) {
-            if (deusVult[0]==null) {
-              //this.log("DEUS VULT 0 RECEIVED");
-              deusVultFrom = vars.visibleRobots[i].id;
-              deusVult = [message-2**15, null];
-              return;
-            }
-            else if (deusVult[1]==null&&vars.visibleRobots[i].id==deusVultFrom) {
-              //this.log("DEUS VULT 1 RECEIVED");
-              deusVult = [deusVult[0], message-2**15];
-            }
+  // check for DEUS VULT signal
+  if (deusVult[1]==null) {
+    for (var i = 0; i < vars.visibleRobots.length; i++) {
+      if (!this.isRadioing(vars.visibleRobots[i])||this.me.team!=vars.visibleRobots[i].team) {
+        continue;
+      }
+      var pos = [vars.visibleRobots.x, vars.visibleRobots.y];
+      if (vars.visibleRobots[i].unit==0) {
+        var message = cypherMessage(vars.visibleRobots[i].signal, this.me.team);
+        if (message>=2**15) {
+          if (deusVult[0]==null) {
+            //this.log("DEUS VULT 0 RECEIVED");
+            deusVultFrom = vars.visibleRobots[i].id;
+            deusVult = [message-2**15, null];
+            return;
+          }
+          else if (deusVult[1]==null&&vars.visibleRobots[i].id==deusVultFrom) {
+            //this.log("DEUS VULT 1 RECEIVED");
+            deusVult = [deusVult[0], message-2**15];
           }
         }
       }
     }
+  }
 
+  // moving
+  if (this.fuel >= vars.moveCost*vars.moveRadius) {
     // goes to creatorPos if there are no known enemyCastles
     if (deusVult[1]==null) {
       if ((this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2 > vars.CAMPDIST) {
@@ -108,4 +113,5 @@ export default function prophetTurn() {
         }
       }
     }
+  }
 }
