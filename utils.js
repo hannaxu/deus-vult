@@ -144,7 +144,7 @@ export function updateLocs () {
   for (var h in vars.baseLocs) {
     var pos = unhashCoordinates(h);
     if (vars.visibleRobotMap[pos[1]][pos[0]]>=0) {
-      shouldSee[h] = 0;
+      shouldSee[h] = vars.visibleRobotMap[pos[1]][pos[0]];
     }
   }
   for (var i = 0; i < vars.visibleRobots.length; i++) {
@@ -154,7 +154,7 @@ export function updateLocs () {
         delete shouldSee[hashVal];
       }
       else {
-        vars.baseLocs[hashVal] = 0;
+        vars.baseLocs[hashVal] = vars.visibleRobots[i].id;
       }
     }
   }
@@ -166,7 +166,7 @@ export function updateLocs () {
   for (var h in vars.castleLocs) {
     var pos = unhashCoordinates(h);
     if (vars.visibleRobotMap[pos[1]][pos[0]]>=0) {
-      shouldSee[h] = 0;
+      shouldSee[h] = vars.visibleRobotMap[pos[1]][pos[0]];
     }
   }
   for (var i = 0; i < vars.visibleRobots.length; i++) {
@@ -176,7 +176,7 @@ export function updateLocs () {
         delete shouldSee[hashVal];
       }
       else {
-        vars.castleLocs[hashVal] = 0;
+        vars.castleLocs[hashVal] = vars.visibleRobots[i].id;
       }
     }
   }
