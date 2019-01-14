@@ -104,4 +104,16 @@ export default function preacherTurn() {
       }
     }
   }
+  else {
+    var curDist = (this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2;
+    for (var i = 0; i < vars.moveable.length; i++) {
+      var x = this.me.x+vars.moveable[i][0];
+      var y = this.me.y+vars.moveable[i][1];
+      var newDist = (x-vars.creatorPos[0])**2+(y-vars.creatorPos[1])**2;
+      var open = utils.checkBounds(x, y) && vars.visibleRobotMap[y][x]==0 && vars.passableMap[y][x];
+      if (open && curDist < newDist && newDist <= vars.SPECS.UNITS[0].VISION_RADIUS) {
+        return this.move(vars.moveable[i][0], vars.moveable[i][1]);
+      }
+    }
+  }
 }
