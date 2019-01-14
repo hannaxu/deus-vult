@@ -90,6 +90,7 @@ export default function prophetTurn() {
       var id = vars.visibleRobotMap[y][x];
       if (id==0||(id!=-1&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
         deusVult = [null, null];
+        deusVultFrom = null;
         return;
       }
       var move = utils.findMove.call(this, [this.me.x, this.me.y], deusVult);

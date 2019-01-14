@@ -8,7 +8,7 @@ var deusVult = [null, null]; // boolean for whether or not in attack phase
 var deusVultFrom = null;
 
 export default function preacherTurn() {
-  this.log("I am a Preacher at "+vars.xpos+" "+vars.ypos);
+  //this.log("I am a Preacher at "+vars.xpos+" "+vars.ypos);
   if (vars.firstTurn) {
     var creator = this.getRobot(vars.visibleRobotMap[vars.creatorPos[1]][vars.creatorPos[0]]);
     var message = Math.floor(cypherMessage(creator.signal, this.me.team)/8);
@@ -114,6 +114,7 @@ export default function preacherTurn() {
     var id = vars.visibleRobotMap[y][x];
     if (id==0||(id!=-1&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
       deusVult = [null, null];
+      deusVultFrom = null;
       return;
     }
     var move = utils.findMove.call(this, [this.me.x, this.me.y], deusVult);

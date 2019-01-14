@@ -77,7 +77,7 @@ export default function castleTurn() {
     }
     if (symmetry[0]) {
       for (var i = 0; i < myCastles.length; i++) {
-        enemyCastles.push(vars.xmax-1-myCastles[i][1][0], myCastles[i][1][1]);
+        enemyCastles.push([vars.xmax-1-myCastles[i][1][0], myCastles[i][1][1]]);
       }
     }
     if (symmetry[1]) {
@@ -108,7 +108,7 @@ export default function castleTurn() {
   }
   //this.log(this.me.turn);
 
-  if (headcount[2]<Math.floor(3/totC) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+  if (this.me.turn < 10 && headcount[2]<1 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
@@ -122,7 +122,7 @@ export default function castleTurn() {
   }
 
   // preacher build
-  if(3*buildCount[4] >= buildCount[5] && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_FUEL)  {
+  if(false && 3*buildCount[4] >= buildCount[5] && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_FUEL)  {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
@@ -143,7 +143,7 @@ export default function castleTurn() {
   }
 
   // prophet build
-  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
+  if (castleOrder == 0 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
@@ -164,9 +164,10 @@ export default function castleTurn() {
   }
 
   //this.log("attackers "+headcount[3]+headcount[4]+headcount[5]);
-  if (this.me.turn-lastDeusVult>=50 || (this.me.turn-lastDeusVult >= 10 && headcount[3]+headcount[4]+headcount[5] >= 10 && this.fuel >= vars.CAMPDIST)) {
+  if (this.me.turn-lastDeusVult>=100 || (this.me.turn-lastDeusVult >= 10 && headcount[3]+headcount[4]+headcount[5] >= 8 && this.fuel >= vars.CAMPDIST)) {
     this.log("DEUS VULT 0");
     deusVult = enemyCastles[curAttack%enemyCastles.length];
+    //this.log(deusVult);
     sendMessage.call(this, 2**15+deusVult[0], vars.CAMPDIST);
     lastDeusVult = this.me.turn;
   }
