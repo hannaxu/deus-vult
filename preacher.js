@@ -27,13 +27,14 @@ export default function preacherTurn() {
 
   var bestDir = null;
   var maxHit = vars.NEG_INF;
-  for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
-    var x = vars.visibleEnemyRobots[i].x;
-    var y = vars.visibleEnemyRobots[i].y;
-    var dx = x-this.me.x;
-    var dy = y-this.me.y;
-    if (vars.attackRadius[0]<=dx**2+dy**2&&dx**2+dy**2<=vars.attackRadius[1]) {
+  for (var i = 0; i < vars.attackable.length; i++) {
+    var x = this.me.x+vars.attackable[i][0];
+    var y = this.me.y+vars.attackable[i][1];
+    var dx = vars.attackable[i][0];
+    var dy = vars.attackable[i][1];
+    if (utils.checkBounds(x, y)&&vars.passableMap[y][x]) {
       var hit = 0;
+      var damaging = false;
       vars.buildable.push([0, 0]);
       for (var j = 0; j < vars.buildable.length; j++) {
         var xhit = x+vars.buildable[j][0];
@@ -48,18 +49,19 @@ export default function preacherTurn() {
           }
           else {
             hit++;
+            damaging = true;
           }
         }
       }
       vars.buildable.splice(8, 1);
       //this.log(hit);
-      if (hit > maxHit) {
+      if (damaging && hit > maxHit) {
         bestDir = [dx, dy];
         maxHit = hit;
       }
     }
   }
-  if (bestDir!=null) {
+  if (bestDir!=null&&maxHit>=0) {
     //this.log("Attacking "+(this.me.x+bestDir[0])+" "+(this.me.y+bestDir[1]));
     return this.attack(bestDir[0], bestDir[1]);
   }
