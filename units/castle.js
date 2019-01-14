@@ -89,6 +89,16 @@ export default function castleTurn() {
     this.log(vars.castleLocs);
   }
 
+  // TODO check which enemy castles are dead
+  for( var x = 0; x < vars.commRobots.length; x++ ) {
+    if(vars.commRobots[x].team == team) {
+      var message = vars.commRobots[x].castle_talk;
+      if (message & 64 > 0) {
+        // remove castle from enemyCastles
+      }
+    }
+  }
+
   //headcount 0: castle, 1: church, 2: pilgrim, 3: crusader, 4: prophet, 5: preacher
   var headcount = [1,0,0,0,0,0];
   for( var i = 0; i < vars.commRobots.length; i++ ) {
