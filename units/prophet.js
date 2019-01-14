@@ -56,17 +56,15 @@ export default function prophetTurn() {
       var pos = [vars.visibleRobots.x, vars.visibleRobots.y];
       if (vars.visibleRobots[i].unit==0) {
         var message = cypherMessage(vars.visibleRobots[i].signal, this.me.team);
-        if (message>=2**15) {
-          if (deusVult[0]==null) {
-            //this.log("DEUS VULT 0 RECEIVED");
-            deusVultFrom = vars.visibleRobots[i].id;
-            deusVult = [message-2**15, null];
-            return;
-          }
-          else if (deusVult[1]==null&&vars.visibleRobots[i].id==deusVultFrom) {
-            //this.log("DEUS VULT 1 RECEIVED");
-            deusVult = [deusVult[0], message-2**15];
-          }
+        if (message>=2**15 && deusVult[0]==null) {
+          //this.log("DEUS VULT 0 RECEIVED");
+          deusVultFrom = vars.visibleRobots[i].id;
+          deusVult = [message-2**15, null];
+          return;
+        }
+        if (message>=2**15+2**14 && deusVult[0]!=null && vars.visibleRobots[i].id==deusVultFrom) {
+          //this.log("DEUS VULT 1 RECEIVED");
+          deusVult = [deusVult[0], message-2**15-2**14];
         }
       }
     }
