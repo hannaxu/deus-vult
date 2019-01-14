@@ -4,6 +4,7 @@ import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from './
 
 var enemyCastles = [];
 var symmetry = [false, false];
+var deusVult = false;
 
 export default function prophetTurn() {
   //this.log("I am a Prophet at "+vars.xpos+" "+vars.ypos);
@@ -42,19 +43,41 @@ export default function prophetTurn() {
     return this.attack(bestDir[0], bestDir[1]);
   }
 
-  for (var i = 0; i < enemyCastles.length; i++) {
-    var x = enemyCastles[i][0];
-    var y = enemyCastles[i][1];
-    var id = vars.visibleRobotMap[y][x];
-    if (id==0||(id!=-1&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
-      enemyCastles.splice(i, 1);
-      i--;
-      continue;
+  // check for DEUS VULT signal
+  for (var i = 0; i < vars.radioRobots.length; i++) {
+    var message = cypherMessage(vars.radioRobots[i].signal, this.me.team);
+    if (message==2**16-1) {
+      //this.log("DEUS VULT RECEIVED");
+      deusVult = true;
     }
-    var move = utils.findMove.call(this, [this.me.x, this.me.y], enemyCastles[i]);
+  }
+
+  // goes to creatorPos if there are no known enemyCastles
+  if (enemyCastles.length == 0) {
+    deusVult = false;
+    var move = utils.findMove.call(this, [this.me.x, this.me.y], vars.creatorPos);
     if (move != null) {
       //this.log("Moving towards "+x+" "+y);
       return this.move(move[0], move[1]);
+    }
+  }
+
+  // DEUS VULT, attack enemyCastles
+  if (deusVult) {
+    for (var i = 0; i < enemyCastles.length; i++) {
+      var x = enemyCastles[i][0];
+      var y = enemyCastles[i][1];
+      var id = vars.visibleRobotMap[y][x];
+      if (id==0||(id!=-1&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
+        enemyCastles.splice(i, 1);
+        i--;
+        continue;
+      }
+      var move = utils.findMove.call(this, [this.me.x, this.me.y], enemyCastles[i]);
+      if (move != null) {
+        //this.log("Moving towards "+x+" "+y);
+        return this.move(move[0], move[1]);
+      }
     }
   }
 }

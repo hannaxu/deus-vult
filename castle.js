@@ -8,6 +8,7 @@ var totC;
 var enemyCastles = [];
 var symmetry;
 var buildCount = [0,0,0,0,0,0];
+var lastDeusVult = 0;
 
 export default function castleTurn() {
   //this.log("I am a Castle at "+this.me.x+" "+this.me.y);
@@ -92,7 +93,7 @@ export default function castleTurn() {
   }
 
   // prophet build
-  if(this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
+  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
@@ -110,5 +111,12 @@ export default function castleTurn() {
         return this.buildUnit(vars.SPECS.PROPHET, vars.buildable[i][0], vars.buildable[i][1]);
       }
     }
+  }
+
+  //this.log("attackers "+headcount[3]+headcount[4]+headcount[5]);
+  if (this.me.turn-lastDeusVult>=50 || (this.me.turn-lastDeusVult >= 10 && headcount[3]+headcount[4]+headcount[5] >= 10 && this.fuel >= vars.visionRadius)) {
+    this.log("DEUS VULT");
+    sendMessage.call(this, 2**16-1, vars.visionRadius);
+    lastDeusVult = this.me.turn;
   }
 }
