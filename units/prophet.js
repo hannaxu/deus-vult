@@ -100,7 +100,16 @@ export default function prophetTurn() {
       }
     }
     else {
+      var x = enemyCastles[0][0];
+      var y = enemyCastles[0][1];
+      var id = vars.visibleRobotMap[y][x];
       var curDist = (this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2;
+      var newDist = (x-vars.creatorPos[0])**2+(y-vars.creatorPos[1])**2;
+      var move = utils.findMoveD.call(this, [this.me.x, this.me.y], enemyCastles[0]);
+      if (move != null&&curDist < newDist && newDist <= vars.CAMPDIST) {
+        //this.log("Moving towards "+x+" "+y);
+        return this.move(move[0], move[1]);
+      }
       for (var i = 0; i < vars.moveable.length; i++) {
         var x = this.me.x+vars.moveable[i][0];
         var y = this.me.y+vars.moveable[i][1];
