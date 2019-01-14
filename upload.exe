@@ -1,0 +1,3 @@
+rm compiled_bot.js
+bc19compile -d .
+bc19upload -i compiled_bot.js
