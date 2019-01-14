@@ -8,14 +8,7 @@ export default function pilgrimTurn () {
     //this.log("entering");
     var me=this.me;
     if (vars.firstTurn) {
-        var openRecs=[];
-
-        for (var i=0; i<vars.rLocs.length; i++) {
-            var p=vars.rLocs[i];
-            openRecs.push([p.x,p.y]);
-        }
-        //this.log(openRecs.length);
-        recD=utils.multiDest.call(this, openRecs);
+        
     }
     if (3*(me.karbonite*vars.maxFuel+me.fuel*vars.maxKarb)>(vars.maxFuel*vars.maxKarb)) {
         //this.log("hi");
@@ -31,14 +24,15 @@ export default function pilgrimTurn () {
             }
         }
         if (vars.teamFuel>=2 && (me.karbonite==vars.maxKarb || me.fuel==vars.maxFuel)) {
-            var facts=[]
+            var facts=[];
+            var pris=[];
             for (var h in vars.baseLocs) {
-                facts.push(utils.unhashCoordinates(h));
+                facts.push(utils.soloBFS(utils.unhashCoordinates(h)));
+                pris.push(0);
             }
             //this.log(facts.length);
-            var dists=utils.multiDest.call(this, facts);
-            //this.log("To factory");
-            return pickAdjMove(dists,this);
+            this.log("To factory");
+            return pickAdjMove.call(this,facts,pris);
         }
     }
     if (vars.teamFuel>=1 && (vars.karbMap[me.y][me.x] || vars.fuelMap[me.y][me.x])) {
@@ -46,29 +40,48 @@ export default function pilgrimTurn () {
         return this.mine();
     }
     //this.log(vars.teamFuel);
-    if (vars.teamFuel>2) {
-
-        //this.log("Headed to depot");
-        return pickAdjMove(recD,this);
+    if (vars.teamFuel>=4) {
+        this.log("To rloc");
+        var openRecs=[];
+        var pris=[];
+        for (var i=0; i<vars.rLocs.length; i++) {
+            var p=vars.rLocs[i];
+            openRecs.push(utils.soloBFS([p.x,p.y]));
+            pris.push(p.type*(-6));
+        }
+        return pickAdjMove.call(this,openRecs,pris);
     }
     return null;
 }
 
-function pickAdjMove(costs,thas) {
-    var me=thas.me;
-    if (costs[me.x][me.y]==null) {
-        return null;
+//turns+pri
+function minC(costs, pri,x,y) {
+    var ret=99999;
+    for (var i=0; i<costs.length; i++) {
+        if (costs[i][x][y]!=null) {
+            var c=(costs[i][x][y][0]+pri[i])*200+costs[i][x][y][1];
+            if (c<ret) {
+                ret=c;
+            }
+        }
     }
-    var best=costs[me.x][me.y][1]+costs[me.x][me.y][0];
+    return ret;
+}
+
+function pickAdjMove(costs, pri) {
+    var me=this.me;
+    var best=minC(costs,pri,me.x,me.y);
     var bestd=-1;
     //thas.log(best);
     for (var i=0; i<vars.moveable.length; i++) {
         var x=me.x+vars.moveable[i][0];
         var y=me.y+vars.moveable[i][1];
-        if (utils.checkBounds(x,y) && vars.visibleRobotMap[y][x]==0 && vars.passableMap[x][y] && costs[x][y]!=null && costs[x][y]!=undefined && costs[x][y][1]+costs[x][y][0]+vars.moveable[i][0]**2+vars.moveable[i][1]**2<best) {
-            best=costs[x][y][0]+costs[x][y][1]+vars.moveable[i][0]**2+vars.moveable[i][1]**2;
-            bestd=i;
-
+        if (utils.checkBounds(x,y) && vars.visibleRobotMap[y][x]==0 && vars.passableMap[y][x]) {
+            var c=minC(costs,pri,x,y)+vars.moveable[i][0]**2+vars.moveable[i][1]**2;
+            if (c<best) {
+                best=c;
+                bestd=i;
+            }
         }
     }
     //thas.log("point");
@@ -77,6 +90,6 @@ function pickAdjMove(costs,thas) {
     } else {
         //thas.log(bestd);
         //thas.log(vars.passableMap[y][x]);
-        return thas.move(vars.moveable[bestd][0],vars.moveable[bestd][1]);
+        return this.move(vars.moveable[bestd][0],vars.moveable[bestd][1]);
     }
 }

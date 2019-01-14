@@ -16,6 +16,7 @@ var buildCount = [0,0,0,0,0,0];
 var lastDeusVult = -10;
 var deusVult = null;
 var fullDV = true;
+var defend = false;
 
 export default function castleTurn() {
   //this.log("I am a Castle at "+this.me.x+" "+this.me.y);
@@ -101,6 +102,7 @@ export default function castleTurn() {
 
   //headcount 0: castle, 1: church, 2: pilgrim, 3: crusader, 4: prophet, 5: preacher
   var headcount = [1,0,0,0,0,0];
+  var enemyUnit = 0;
   for( var i = 0; i < vars.commRobots.length; i++ ) {
     if( vars.commRobots[i].team == team ) {
       var u = vars.commRobots[i].unit;
@@ -117,10 +119,18 @@ export default function castleTurn() {
       if( u == vars.SPECS.PREACHER )
         headcount[5] += 1;
     }
+    else
+      enemyUnit += 1;
   }
   //this.log(this.me.turn);
-
-  if (this.me.turn < 10 && headcount[2]<1 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+  if( enemyUnit > 0 ) {
+    defend = true;
+    this.log("defend");
+  }
+  else
+    defend = false;
+  
+  if (!defend && (this.me.turn < 10 || headcount[2]<2) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
@@ -155,7 +165,7 @@ export default function castleTurn() {
   }
 
   // prophet build
-  if (castleOrder == 0 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
+  if ((castleOrder == 0 || defend) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
