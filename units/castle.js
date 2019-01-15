@@ -10,14 +10,16 @@ var castleOrder = 0;
 var teamID = {}; // hashmap stores info
 var symmetry;
 var deposits = 0;
-
-var enemyCastles = [];
-var curAttack = 0;
 var buildCount = [0,0,0,0,0,0];
-var lastDeusVult = -10;
-var deusVult = null;
-var fullDV = true;
-var deusVulters = {};
+
+var enemyCastles = []; // enemyCastle locations based on our castleLocations
+var curAttack = 0; // next enemyCastle to deusVult
+var lastDeusVult = -10; // last turn since deusVult
+var deusVult = null; // where to attack
+var finishedDV = true; // whether or not both signals have been sent
+var deusVulters = {}; // robots currently deusVulting and their target deusVult
+var attackerCount = 0; // how many of our damaging troops in vision
+var farthestAttacker = 0; // r^2 distance of our farthest attacker
 
 var defend = false;
 
@@ -150,9 +152,25 @@ export default function castleTurn() {
             }
           }
         }
+        delete deusVulters[vars.commRobots[x].id];
       }
     }
   }
+
+  attackerCount = 0;
+  farthestAttacker = 0;
+  // updates attacker stats
+  for (var i = 0; i < vars.visibleRobots.length; i++) {
+    if (vars.visibleRobots[i].team==team) {
+      var u = vars.visibleRobots[i].unit;
+      if (3 <= u && u <= 5) {
+        attackerCount++;
+        farthestAttacker = Math.max(farthestAttacker, (vars.visibleRobots[i].x-this.me.x)**2+(vars.visibleRobots[i].y-this.me.y)**2);
+      }
+    }
+  }
+  // this.log("attackerCount "+attackerCount);
+  // this.log("farthestAttacker "+farthestAttacker)
 
   //headcount 0: castle, 1: church, 2: pilgrim, 3: crusader, 4: prophet, 5: preacher
   var headcount = [1,0,0,0,0,0];
@@ -176,6 +194,7 @@ export default function castleTurn() {
     else
       enemyUnit += 1;
   }
+
   //this.log(this.me.turn);
   if( enemyUnit > 0 ) {
     defend = true;
@@ -250,26 +269,27 @@ export default function castleTurn() {
   }
 
   //this.log("attackers "+headcount[3]+headcount[4]+headcount[5]);
-  if (this.me.turn-lastDeusVult>=100 || (this.me.turn-lastDeusVult >= 10 && headcount[3]+headcount[4]+headcount[5] >= 8 && this.fuel >= vars.CAMPDIST)) {
+  var deusVultRadius = 0;
+  if (this.me.turn-lastDeusVult>=100 || (this.me.turn-lastDeusVult >= 10 && attackerCount >= vars.MIN_ATK && this.fuel >= farthestAttacker)) {
     deusVult = enemyCastles[curAttack];
     //this.log(deusVult);
-    sendMessage.call(this, 2**15+deusVult[0], vars.CAMPDIST);
+    sendMessage.call(this, 2**15+deusVult[0], farthestAttacker);
     for (var i = 0; i < vars.visibleRobots.length; i++) {
       var dx = this.me.x-vars.visibleRobots[i].x;
       var dy = this.me.y-vars.visibleRobots[i].y;
-      if (dx**2+dy**2<=vars.CAMPDIST) {
+      if (dx**2+dy**2<=farthestAttacker&&deusVulters[vars.visibleRobots[i].id]==null) {
         deusVulters[vars.visibleRobots[i].id] = enemyCastles[curAttack];
       }
     }
     //this.log(deusVulters);
     lastDeusVult = this.me.turn;
-    fullDV = false;
+    finishedDV = false;
     return;
   }
-  while (!fullDV) {
+  while (!finishedDV) {
     this.log("DEUS VULT "+enemyCastles[curAttack]);
-    sendMessage.call(this, 2**15+2**14+deusVult[1], vars.CAMPDIST);
-    fullDV = true;
+    sendMessage.call(this, 2**15+2**14+deusVult[1], farthestAttacker);
+    finishedDV = true;
     curAttack = (curAttack+1)%enemyCastles.length;
   }
 }
