@@ -1,7 +1,10 @@
 import vars from '../variables';
 import * as utils from '../utils';
 
-
+//type 0 fuel
+//x
+//y
+//closed= last time with worker on it
 var recD;
 export default function pilgrimTurn () {
     //this.log("I am a Pilgrim at "+this.me.x+" "+this.me.y);
@@ -9,6 +12,17 @@ export default function pilgrimTurn () {
     var me=this.me;
     var minDR=-1;
     var minDRv=9999;
+    if (vars.firstTurn) {
+        for (var i=0; i<vars.rLocs.length; i++) {
+            vars.rLocs[i].closed=-2000;
+        }
+    }
+    for (var i=0; i<vars.rLocs.length; i++) {
+        var p=vars.rLocs[i];
+        if (vars.visibleRobotMap[p.y][p.x]>0 && (p.x!=me.x || p.y!=me.y)) {
+            vars.rLocs[i].closed=me.turn;
+        }
+    }
     for (var i=0; i<vars.rLocs.length; i++) {
         var d2=(me.x-vars.rLocs[i].x)**2+(me.y-vars.rLocs[i].y)**2;
         if (d2<minDRv && vars.fuzzyCost[vars.rLocs[i].x][vars.rLocs[i].y].length==0) {
@@ -49,7 +63,7 @@ export default function pilgrimTurn () {
         var pris=[];
         for (var i=0; i<vars.rLocs.length; i++) {
             var p=vars.rLocs[i];
-            if ((p.x-me.x)**2 + (p.y-me.y)**2<400 && vars.fuzzyCost[p.x][p.y].length>0) {
+            if ((p.x-me.x)**2 + (p.y-me.y)**2<400 && vars.fuzzyCost[p.x][p.y].length>0 && me.turn-p.closed>100) {
                 openRecs.push(vars.fuzzyCost[p.x][p.y]);   
                 pris.push(p.type*(-6));
             }
