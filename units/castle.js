@@ -23,7 +23,8 @@ var defend = false;
 
 export default function castleTurn() {
   //this.log("I am a Castle at "+this.me.x+" "+this.me.y);
-
+  // utils.heapTest.call(this);
+  // return;
   if (vars.firstTurn) {
     symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
     this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
@@ -192,7 +193,8 @@ export default function castleTurn() {
   }
 
 
-  if (!defend && closePilgrim < deposits && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+  //if (!defend && (closePilgrim < deposits&&headcount[2]<2) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+  if (!defend && headcount[2]<1 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
