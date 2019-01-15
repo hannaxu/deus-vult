@@ -27,6 +27,29 @@ export default function preacherTurn() {
     vars.firstTurn = false;
   }
 
+  // check for DEUS VULT signal
+  if (deusVult[1]==null) {
+    outer: for (var i = 0; i < vars.visibleRobots.length; i++) {
+      if (!this.isRadioing(vars.visibleRobots[i])||this.me.team!=vars.visibleRobots[i].team) {
+        continue;
+      }
+      var pos = [vars.visibleRobots.x, vars.visibleRobots.y];
+      if (vars.visibleRobots[i].unit==0) {
+        var message = cypherMessage(vars.visibleRobots[i].signal, this.me.team);
+        if ((message & 2**15)>0 && (message & 2**14)==0 && deusVult[0]==null) {
+          //this.log("DEUS VULT 0 RECEIVED");
+          deusVultFrom = vars.visibleRobots[i].id;
+          deusVult = [message-2**15, null];
+          break outer;
+        }
+        if (message>=2**15+2**14 && deusVult[0]!=null && vars.visibleRobots[i].id==deusVultFrom) {
+          //this.log("DEUS VULT 1 RECEIVED");
+          deusVult = [deusVult[0], message-2**15-2**14];
+        }
+      }
+    }
+  }
+
   // attacking
   if (this.fuel >= vars.attackCost) {
     var bestDir = null;
@@ -71,29 +94,6 @@ export default function preacherTurn() {
     }
   }
 
-  // check for DEUS VULT signal
-  if (deusVult[1]==null) {
-    for (var i = 0; i < vars.visibleRobots.length; i++) {
-      if (!this.isRadioing(vars.visibleRobots[i])||this.me.team!=vars.visibleRobots[i].team) {
-        continue;
-      }
-      var pos = [vars.visibleRobots.x, vars.visibleRobots.y];
-      if (vars.visibleRobots[i].unit==0) {
-        var message = cypherMessage(vars.visibleRobots[i].signal, this.me.team);
-        if (message>=2**15 && deusVult[0]==null) {
-          //this.log("DEUS VULT 0 RECEIVED");
-          deusVultFrom = vars.visibleRobots[i].id;
-          deusVult = [message-2**15, null];
-          return;
-        }
-        if (message>=2**15+2**14 && deusVult[0]!=null && vars.visibleRobots[i].id==deusVultFrom) {
-          //this.log("DEUS VULT 1 RECEIVED");
-          deusVult = [deusVult[0], message-2**15-2**14];
-        }
-      }
-    }
-  }
-
   // moving
   if (this.fuel >= vars.moveCost*vars.moveRadius) {
     // goes to creatorPos if there are no known enemyCastles
@@ -112,9 +112,11 @@ export default function preacherTurn() {
       var x = deusVult[0];
       var y = deusVult[1];
       var id = vars.visibleRobotMap[y][x];
+      // check if already dead
       if (id==0||(id>0&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
         deusVult = [null, null];
         deusVultFrom = null;
+        this.castleTalk(64);
         return;
       }
       var move = utils.findMoveD.call(this, [this.me.x, this.me.y], deusVult);
