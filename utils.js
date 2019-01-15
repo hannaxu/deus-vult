@@ -185,6 +185,129 @@ export function djikstra (ends) {
   return costs;
 }
 
+// not actually astar its just bfs that navigates around robots
+export function astar(start, ends, maxDepth=vars.POS_INF, radius=vars.moveRadius) {
+  var time = new Date().getTime();
+  var ret = {};
+  for (var i = 0; i < ends.length; i++) {
+    ret[hashCoordinates(ends[i])] = 0;
+  }
+  var parents = {};
+  var costs = {}
+  var queue = [];
+  var index = 0;
+  var retLength = 0;
+  queue.push([0, 0, start]);
+  costs[hashCoordinates(start)] = [0, 0];
+  parents[hashCoordinates(start)] = null;
+  // this.log(ends);
+  outer: while (index<queue.length&&retLength<ends.length) {
+    // this.log(queue[index]);
+    if (new Date().getTime()-time>20) {
+      throw "OUT OF TIME";
+    }
+
+    var pos = queue[index][2];
+    var curHash = hashCoordinates(pos);
+    var curCost = costs[curHash];
+
+    if (ret[curHash]!=null) {
+      if (ret[curHash]==0) {
+        var path = [];
+        var p = curHash;
+        while (p!=hashCoordinates(start)) {
+          var cPos = unhashCoordinates(p); // final
+          var pPos = unhashCoordinates(parents[p]); // second to last
+          path.push([cPos[0]-pPos[0], cPos[1]-pPos[1]]);
+          p = parents[p];
+        }
+        ret[curHash] = path.reverse();
+        retLength++;
+      }
+      else {
+        index++;
+        continue outer;
+      }
+    }
+
+    if (curCost[0]<maxDepth) {
+      for (var i = 0; i < vars.moveable.length; i++) {
+        var x = pos[0]+vars.moveable[i][0];
+        var y = pos[1]+vars.moveable[i][1];
+        var newHash = hashCoordinates([x, y]);
+        var newCost = [curCost[0]+1, curCost[1]+vars.moveCost*(vars.moveable[i][0]**2+vars.moveable[i][1]**2)];
+        var prevCost = costs[newHash];
+        var empty = checkBounds(x, y)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]<=0;
+        if (empty&&(prevCost==null||heapCompare(newCost, prevCost)<0)) {
+          queue.push([newCost[0], newCost[1], [x, y]]);
+          costs[newHash] = newCost;
+          parents[newHash] = curHash;
+        }
+      }
+    }
+    index++;
+  }
+  for (var e in ends) {
+    if (ret[hashCoordinates(e)]==0)
+    ret[hashCoordinates(e)] = null;
+  }
+  return ret;
+}
+
+export function equalArrays(arr1, arr2) {
+  if (arr1.length!=arr2.length) {
+    return false;
+  }
+  for (var i = 0; i < arr1.length; i++) {
+    if (arr1[i]!=arr2[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+export function bi_astar(start, end, maxDepth=vars.POS_INF, radius=vars.moveRadius) {
+  throw "BI_ASTAR NOT IMPLEMENTED YET";
+  var parents = {};
+  var costs = {}
+  var queue = [];
+  heappush(queue, [0, 0, start]);
+  costs[hashCoordinates(start)] = [0, 0];
+  parents[hashCoordinates(start)] = null;
+  var time = new Date().getTime();
+  while (queue.length>0) {
+    var state = heappop(queue);
+    this.log(state);
+    if (state==end) {
+      var path = [];
+      var p = hashCoordinates(state[2]);
+      while (p!=hashCoordinates(start)) {
+        var cPos = unhashCoordinates(p); // final
+        var pPos = unhashCoordinates(parents[p]); // second to last
+        path.push([cPos[0]-pPos[0], cPos[1]-pPos[1]]);
+        p = parents[p];
+      }
+      return path.reverse();
+    }
+    var curCost = [costs[hashCoordinates(state[2])][0], costs[hashCoordinates(state[2])][0]];
+    if (curCost[0]<maxDepth) {
+      for (var i = 0; i < vars.moveable.length; i++) {
+        var x = state[2][0]+vars.moveable[i][0];
+        var y = state[2][1]+vars.moveable[i][1];
+        var newCost = [curCost[0]+1, curCost[1]+vars.moveCost*(vars.moveable[i][0]**2+vars.moveable[i][1]**2)];
+        var prevCost = costs[hashCoordinates([x, y])];
+        var empty = checkBounds(x, y)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]<=0;
+        if (empty&&(prevCost==null||heapCompare(newCost, prevCost)<0)) {
+          heappush(queue, [newCost[0], newCost[1], [x, y]]);
+          costs[hashCoordinates([x, y])] = newCost;
+          parents[hashCoordinates([x, y])] = hashCoordinates([this.me.x, this.me.y]);
+        }
+      }
+    }
+  }
+  return null;
+}
+
 export function multiDest (ends) {
   throw "DEPRECATED";
   return bfs.call(this, ends);
@@ -264,19 +387,45 @@ export function unhashCoordinates(hashVal) {
   return [Math.floor(hashVal/vars.ymax), hashVal%vars.ymax];
 }
 
+export function heapTest() {
+  var func = function (v1, v2) {
+    if (v1[1]==v2[1]) {
+      return v1[0]-v2[0];
+    }
+    return v1[1]-v2[1];
+  }
+  var queue = [];
+  var poss = [];
+  for (var x = 0; x < 10; x++) {
+    for (var y = 0; y < 10; y++) {
+      poss.push([x, y]);
+    }
+  }
+  var testing = 15;
+  for (var i = 0; i < testing; i++) {
+    heappush(queue, poss[Math.floor(Math.random()*poss.length)], func);
+  }
+  for (var i = 0; i < testing; i++) {
+    this.log(heappop(queue, func));
+  }
+}
+
 export function heapCompare(v1, v2) {
   if (v1[0]==v2[0]) {
     return v1[1]-v2[1];
   }
   return v1[0]-v2[0];
 }
+  var func = function (a, b) {
 
-export function heappush(array, val) {
+  };
+
+export function heappush(array, val, compare=heapCompare) {
   array.push(val);
   var pos = array.length-1;
   var parent = Math.floor((pos-1)/2);
   while (pos > 0) {
-    if (heapCompare(array[pos], array[parent])<0) {
+    if (compare(array[pos], array[parent])<0) {
       var temp = array[pos];
       array[pos] = array[parent];
       array[parent] = temp;
@@ -289,7 +438,7 @@ export function heappush(array, val) {
   }
 }
 
-export function heappop(array) {
+export function heappop(array, compare=heapCompare) {
   if (array.length==0) {
     throw "empty heap";
   }
@@ -298,13 +447,13 @@ export function heappop(array) {
   var pos = 0;
   while (2*pos+1 < array.length) {
     var child;
-    if (2*pos+2==array.length||heapCompare(array[2*pos+1], array[2*pos+2]) < 0) {
+    if (2*pos+2==array.length||compare(array[2*pos+1], array[2*pos+2]) < 0) {
       child = 2*pos+1;
     }
     else {
       child = 2*pos+2;
     }
-    if (heapCompare(array[pos], array[child]) > 0) {
+    if (compare(array[pos], array[child]) > 0) {
       var temp = array[pos];
       array[pos] = array[child];
       array[child] = temp;
