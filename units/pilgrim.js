@@ -46,6 +46,7 @@ export default function pilgrimTurn () {
             }
         }
         if (vars.teamFuel>=2) {
+            //this.log("To factory");
             var facts=[];
             var pris=[];
             for (var h in vars.baseLocs) {
@@ -53,7 +54,7 @@ export default function pilgrimTurn () {
                 pris.push(0);
             }
             //this.log(facts.length);
-            //this.log("To factory");
+            
             return pickAdjMove.call(this,facts,pris);
         }
     }
@@ -68,7 +69,7 @@ export default function pilgrimTurn () {
                 pris.push(p.type*(-6));
             }
         }
-        //this.log(openRecs.length);
+        //this.log("hi");
         var ret= pickAdjMove.call(this,openRecs,pris);
         if (ret!=null) {
             return ret;
@@ -88,7 +89,7 @@ function minC(costs, pri,x,y) {
     //this.log('inc');
     var ret=99999;
     for (var i=0; i<costs.length; i++) {
-        if (costs[i][x][y].length!=0) {
+        if (costs[i][x][y]!=null) {
             var c=(costs[i][x][y][0]+pri[i])*200+costs[i][x][y][1];
             if (c<ret) {
                 ret=c;
@@ -101,9 +102,10 @@ function minC(costs, pri,x,y) {
 
 function pickAdjMove(costs, pri) {
     var me=this.me;
+    //this.log(costs.length);
     var best=minC(costs,pri,me.x,me.y);
     var bestd=-1;
-    //thas.log(best);
+    //this.log('yo');
     for (var i=0; i<vars.moveable.length; i++) {
         var x=me.x+vars.moveable[i][0];
         var y=me.y+vars.moveable[i][1];
