@@ -112,7 +112,7 @@ export default function preacherTurn() {
       var x = deusVult[0];
       var y = deusVult[1];
       var id = vars.visibleRobotMap[y][x];
-      if (id==0||(id!=-1&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
+      if (id==0||(id>0&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
         deusVult = [null, null];
         deusVultFrom = null;
         return;
