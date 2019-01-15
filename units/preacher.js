@@ -96,18 +96,8 @@ export default function preacherTurn() {
 
   // moving
   if (this.fuel >= vars.moveCost*vars.moveRadius) {
-    // goes to creatorPos if there are no known enemyCastles
-    if (deusVult[1]==null) {
-      if ((this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2 > vars.CAMPDIST) {
-        var move = utils.findMoveD.call(this, [this.me.x, this.me.y], vars.creatorPos);
-        if (move != null) {
-          //this.log("Moving towards "+x+" "+y);
-          return this.move(move[0], move[1]);
-        }
-      }
-    }
 
-    // DEUS VULT, attack enemyCastles
+    // DEUS VULT, attack deusVult
     if (deusVult[1]!=null) {
       var x = deusVult[0];
       var y = deusVult[1];
@@ -126,16 +116,75 @@ export default function preacherTurn() {
       }
     }
     else {
-      var curDist = (this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2;
-      for (var i = 0; i < vars.moveable.length; i++) {
-        var x = this.me.x+vars.moveable[i][0];
-        var y = this.me.y+vars.moveable[i][1];
+      // archer lattice
+      var betterPos = [];
+      for (var i = 0; i < vars.visible.length; i++) {
+        var x = this.me.x+vars.visible[i][0];
+        var y = this.me.y+vars.visible[i][1];
+        var curDist = (this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2;
         var newDist = (x-vars.creatorPos[0])**2+(y-vars.creatorPos[1])**2;
-        var open = utils.checkBounds(x, y) && vars.visibleRobotMap[y][x]==0 && vars.passableMap[y][x];
-        if (open && curDist < newDist && newDist <= vars.CAMPDIST) {
-          return this.move(vars.moveable[i][0], vars.moveable[i][1]);
+        // robust addition
+        var empty = utils.checkBounds(x, y)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]<=0;
+        var lattice = (x+y)%2==0&&((this.me.x+this.me.y)%2==1||newDist<curDist);
+        // lattice = curDist<=1 || lattice;
+        // if (newDist <= 1) {
+        //   continue;
+        // }
+        if(empty&&lattice) {
+          betterPos.push([x, y]);
         }
       }
+      betterPos.sort(function (v1, v2) {
+        var d1 = (v1[0]-vars.creatorPos[0])**2+(v1[1]-vars.creatorPos[1])**2;
+        var d2 = (v2[0]-vars.creatorPos[0])**2+(v2[1]-vars.creatorPos[1])**2;
+        return d1-d2;
+      });
+      // this.log("betterPos");
+      // this.log(betterPos);
+
+      var paths = utils.astar.call(this, [this.me.x, this.me.y], betterPos, 5);
+      // this.log("paths");
+      // this.log(paths);
+      for (var i = 0; i < betterPos.length; i++) {
+        var path = paths[utils.hashCoordinates(betterPos[i])];
+        if (path!=null&&path.length>0) {
+          // this.log(this.me.x+" "+this.me.y+" to "+betterPos[i][0]+" "+betterPos[i][1]);
+          // this.log(path);
+          return this.move(path[0][0], path[0][1]);
+        }
+      }
+
+
+      // goes to creatorPos if not deusVult
+      // if ((this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2 > vars.CAMPDIST) {
+      //   var move = utils.findMoveD.call(this, [this.me.x, this.me.y], vars.creatorPos);
+      //   if (move != null) {
+      //     return this.move(move[0], move[1]);
+      //   }
+      // }
+
+      // defend in direction of enemies
+      // var x = enemyCastles[0][0];
+      // var y = enemyCastles[0][1];
+      // var id = vars.visibleRobotMap[y][x];
+      // var curDist = (this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2;
+      // var newDist = (x-vars.creatorPos[0])**2+(y-vars.creatorPos[1])**2;
+      // var move = utils.findMoveD.call(this, [this.me.x, this.me.y], enemyCastles[0]);
+      // if (move != null&&curDist < newDist && newDist <= vars.CAMPDIST) {
+      //   //this.log("Moving towards "+x+" "+y);
+      //   return this.move(move[0], move[1]);
+      // }
+
+      // 1 move to better pos
+      // for (var i = 0; i < vars.moveable.length; i++) {
+      //   var x = this.me.x+vars.moveable[i][0];
+      //   var y = this.me.y+vars.moveable[i][1];
+      //   var newDist = (x-vars.creatorPos[0])**2+(y-vars.creatorPos[1])**2;
+      //   var open = utils.checkBounds(x, y) && vars.visibleRobotMap[y][x]==0 && vars.passableMap[y][x];
+      //   if (open && curDist < newDist && newDist <= vars.CAMPDIST) {
+      //     return this.move(vars.moveable[i][0], vars.moveable[i][1]);
+      //   }
+      // }
     }
   }
 }
