@@ -7,10 +7,18 @@ export default function pilgrimTurn () {
     //this.log("I am a Pilgrim at "+this.me.x+" "+this.me.y);
     //this.log("entering");
     var me=this.me;
-    if (vars.firstTurn) {
-        
+    var minDR=-1;
+    var minDRv=9999;
+    for (var i=0; i<vars.rLocs.length; i++) {
+        var d2=(me.x-vars.rLocs[i].x)**2+(me.y-vars.rLocs[i].y)**2;
+        if (d2<minDRv && vars.fuzzyCost[vars.rLocs[i].x][vars.rLocs[i].y].length==0) {
+            minDR=i;
+            minDRv=d2;
+        }
     }
-    if (3*(me.karbonite*vars.maxFuel+me.fuel*vars.maxKarb)>(vars.maxFuel*vars.maxKarb)) {
+    if (minDR!=-1) utils.soloBFS([vars.rLocs[minDR].x,vars.rLocs[minDR].y]);
+    //this.log("hi");
+    if (me.karbonite==vars.maxKarb || me.fuel==vars.maxFuel) {
         //this.log("hi");
         for (var i=0; i<8; i++) {
             var x=me.x+vars.buildable[i][0];
@@ -23,7 +31,7 @@ export default function pilgrimTurn () {
                 }
             }
         }
-        if (vars.teamFuel>=2 && (me.karbonite==vars.maxKarb || me.fuel==vars.maxFuel)) {
+        if (vars.teamFuel>=2) {
             var facts=[];
             var pris=[];
             for (var h in vars.baseLocs) {
@@ -31,8 +39,25 @@ export default function pilgrimTurn () {
                 pris.push(0);
             }
             //this.log(facts.length);
-            this.log("To factory");
+            //this.log("To factory");
             return pickAdjMove.call(this,facts,pris);
+        }
+    }
+    if (vars.teamFuel>=4) {
+        //this.log("To rloc");
+        var openRecs=[];
+        var pris=[];
+        for (var i=0; i<vars.rLocs.length; i++) {
+            var p=vars.rLocs[i];
+            if ((p.x-me.x)**2 + (p.y-me.y)**2<400 && vars.fuzzyCost[p.x][p.y].length>0) {
+                openRecs.push(vars.fuzzyCost[p.x][p.y]);   
+                pris.push(p.type*(-6));
+            }
+        }
+        //this.log(openRecs.length);
+        var ret= pickAdjMove.call(this,openRecs,pris);
+        if (ret!=null) {
+            return ret;
         }
     }
     if (vars.teamFuel>=1 && (vars.karbMap[me.y][me.x] || vars.fuelMap[me.y][me.x])) {
@@ -40,31 +65,23 @@ export default function pilgrimTurn () {
         return this.mine();
     }
     //this.log(vars.teamFuel);
-    if (vars.teamFuel>=4) {
-        this.log("To rloc");
-        var openRecs=[];
-        var pris=[];
-        for (var i=0; i<vars.rLocs.length; i++) {
-            var p=vars.rLocs[i];
-            openRecs.push(utils.soloBFS([p.x,p.y]));
-            pris.push(p.type*(-6));
-        }
-        return pickAdjMove.call(this,openRecs,pris);
-    }
+    
     return null;
 }
 
 //turns+pri
 function minC(costs, pri,x,y) {
+    //this.log('inc');
     var ret=99999;
     for (var i=0; i<costs.length; i++) {
-        if (costs[i][x][y]!=null) {
+        if (costs[i][x][y].length!=0) {
             var c=(costs[i][x][y][0]+pri[i])*200+costs[i][x][y][1];
             if (c<ret) {
                 ret=c;
             }
         }
     }
+    //this.log('outc');
     return ret;
 }
 
