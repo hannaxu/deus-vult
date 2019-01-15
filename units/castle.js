@@ -130,7 +130,7 @@ export default function castleTurn() {
   else
     defend = false;
 
-  if (!defend && headcount[2] < 1 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+  if (!defend && headcount[2] < 3 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
