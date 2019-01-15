@@ -133,15 +133,16 @@ export function bfs (ends) {
   while (index<queue.length) {
     //this.log("q "+queue[index]);
     var curCost = costs[queue[index][0]][queue[index][1]];
-    for (var i = 0; i < vars.moveable.length; i++) {
-      var x = queue[index][0]+vars.moveable[i][0];
-      var y = queue[index][1]+vars.moveable[i][1];
-      if (checkBounds(x, y)&&vars.passableMap[y][x]&&(costs[x][y]==null || costs[x][y][0]>curCost[0] && costs[x][y][1]>curCost[1]+vars.moveCost*(vars.moveable[i][0]**2+vars.moveable[i][1]**2))) {
-          if (costs[x][y]==null) {
-              queue.push([x, y]);
-          }
-        
-        costs[x][y] = [curCost[0]+1, curCost[1]+vars.moveCost*(vars.moveable[i][0]**2+vars.moveable[i][1]**2)];
+    if (curCost[0]<20) {
+      for (var i = 0; i < vars.moveable.length; i++) {
+        var x = queue[index][0]+vars.moveable[i][0];
+        var y = queue[index][1]+vars.moveable[i][1];
+        if (checkBounds(x, y)&&vars.passableMap[y][x]&&(costs[x][y]==null || costs[x][y][0]>curCost[0] && costs[x][y][1]>curCost[1]+vars.moveCost*(vars.moveable[i][0]**2+vars.moveable[i][1]**2))) {
+            if (costs[x][y]==null) {
+                queue.push([x, y]);
+            }
+          costs[x][y] = [curCost[0]+1, curCost[1]+vars.moveCost*(vars.moveable[i][0]**2+vars.moveable[i][1]**2)];
+        }
       }
     }
     index++;
@@ -185,6 +186,7 @@ export function djikstra (ends) {
 }
 
 export function multiDest (ends) {
+  throw "DEPRECATED";
   return bfs.call(this, ends);
 }
 

@@ -56,17 +56,15 @@ export default function prophetTurn() {
       var pos = [vars.visibleRobots.x, vars.visibleRobots.y];
       if (vars.visibleRobots[i].unit==0) {
         var message = cypherMessage(vars.visibleRobots[i].signal, this.me.team);
-        if (message>=2**15) {
-          if (deusVult[0]==null) {
-            //this.log("DEUS VULT 0 RECEIVED");
-            deusVultFrom = vars.visibleRobots[i].id;
-            deusVult = [message-2**15, null];
-            return;
-          }
-          else if (deusVult[1]==null&&vars.visibleRobots[i].id==deusVultFrom) {
-            //this.log("DEUS VULT 1 RECEIVED");
-            deusVult = [deusVult[0], message-2**15];
-          }
+        if (message>=2**15 && deusVult[0]==null) {
+          //this.log("DEUS VULT 0 RECEIVED");
+          deusVultFrom = vars.visibleRobots[i].id;
+          deusVult = [message-2**15, null];
+          return;
+        }
+        if (message>=2**15+2**14 && deusVult[0]!=null && vars.visibleRobots[i].id==deusVultFrom) {
+          //this.log("DEUS VULT 1 RECEIVED");
+          deusVult = [deusVult[0], message-2**15-2**14];
         }
       }
     }
@@ -90,7 +88,7 @@ export default function prophetTurn() {
       var x = deusVult[0];
       var y = deusVult[1];
       var id = vars.visibleRobotMap[y][x];
-      if (id==0||(id!=-1&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
+      if (id==0||(id>0&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
         deusVult = [null, null];
         deusVultFrom = null;
         return;
@@ -102,7 +100,16 @@ export default function prophetTurn() {
       }
     }
     else {
+      var x = enemyCastles[0][0];
+      var y = enemyCastles[0][1];
+      var id = vars.visibleRobotMap[y][x];
       var curDist = (this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2;
+      var newDist = (x-vars.creatorPos[0])**2+(y-vars.creatorPos[1])**2;
+      var move = utils.findMoveD.call(this, [this.me.x, this.me.y], enemyCastles[0]);
+      if (move != null&&curDist < newDist && newDist <= vars.CAMPDIST) {
+        //this.log("Moving towards "+x+" "+y);
+        return this.move(move[0], move[1]);
+      }
       for (var i = 0; i < vars.moveable.length; i++) {
         var x = this.me.x+vars.moveable[i][0];
         var y = this.me.y+vars.moveable[i][1];
