@@ -9,6 +9,7 @@ var castleID = {};
 var castleOrder = 0;
 var teamID = {}; // hashmap stores info
 var symmetry;
+var deposits = 0;
 
 var enemyCastles = [];
 var curAttack = 0;
@@ -43,6 +44,7 @@ export default function castleTurn() {
         }
       }
     }
+
     if (castleOrder == 2) {
       if (this.getRobot(myCastles[0][0]).castle_talk >= 128+64) {
         var temp = myCastles[0];
@@ -50,6 +52,29 @@ export default function castleTurn() {
         myCastles[1] = temp;
       }
     }
+
+    //this.log(enemyCastles);
+    //this.log("test");
+    var lowX = this.me.x-5;
+    var lowY = this.me.y-5;
+    var highX = lowX+10;
+    var highY = lowY+10;
+    if( lowX < 0 ) lowX = 0;
+    if( lowY < 0 ) lowY = 0;
+    if( highX > vars.xmax ) highX = vars.xmax;
+    if( highY > vars.ymax ) highY = vars.ymax;
+
+    for (var x=lowX; x<highX; x++) {
+      for (var y=lowY; y<highY; y++) {
+        if (vars.fuelMap[y][x]) {
+          deposits += 1;
+        }
+        if (vars.karbMap[y][x]) {
+          deposits += 1;
+        }
+      }
+    }
+    this.log("nearby deposits: " + deposits);
 
     vars.firstTurn = false;
     //this.log("Test: " +vars.firstTurn);
@@ -155,10 +180,19 @@ export default function castleTurn() {
     defend = true;
     //this.log("defend");
   }
-  else
+  else {
     defend = false;
+  }
 
-  if (!defend && headcount[2] < 1 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+  var closePilgrim = 0;
+  for( var i = 0; i < vars.visibleRobots.length; i++ ) {
+    if( vars.visibleRobots[i].team == team )
+      if( vars.visibleRobots[i].unit == vars.SPECS.PILGRIM )
+        closePilgrim += 1;
+  }
+
+
+  if (!defend && closePilgrim < deposits && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
