@@ -204,6 +204,7 @@ export function astar(start, ends, maxDepth=vars.POS_INF, radius=vars.moveRadius
   outer: while (index<queue.length&&retLength<ends.length) {
     // this.log(queue[index]);
     if (new Date().getTime()-time>15) {
+      return null;
       this.log("BFS OUT OF TIME");
       for (var e in ends) {
         if (ret[hashCoordinates(e)]==0)
@@ -217,23 +218,36 @@ export function astar(start, ends, maxDepth=vars.POS_INF, radius=vars.moveRadius
     var curCost = costs[curHash];
 
     if (ret[curHash]!=null) {
-      if (ret[curHash]==0) {
-        var path = [];
-        var p = curHash;
-        while (p!=hashCoordinates(start)) {
-          var cPos = unhashCoordinates(p); // final
-          var pPos = unhashCoordinates(parents[p]); // second to last
-          path.push([cPos[0]-pPos[0], cPos[1]-pPos[1]]);
-          p = parents[p];
-        }
-        ret[curHash] = path.reverse();
-        retLength++;
+      var path = [];
+      var p = curHash;
+      while (p!=hashCoordinates(start)) {
+        var cPos = unhashCoordinates(p); // final
+        var pPos = unhashCoordinates(parents[p]); // second to last
+        path.push([cPos[0]-pPos[0], cPos[1]-pPos[1]]);
+        p = parents[p];
       }
-      else {
-        index++;
-        continue outer;
-      }
+      return path.reverse();
     }
+
+    // all rets
+    // if (ret[curHash]!=null) {
+    //   if (ret[curHash]==0) {
+    //     var path = [];
+    //     var p = curHash;
+    //     while (p!=hashCoordinates(start)) {
+    //       var cPos = unhashCoordinates(p); // final
+    //       var pPos = unhashCoordinates(parents[p]); // second to last
+    //       path.push([cPos[0]-pPos[0], cPos[1]-pPos[1]]);
+    //       p = parents[p];
+    //     }
+    //     ret[curHash] = path.reverse();
+    //     retLength++;
+    //   }
+    //   else {
+    //     index++;
+    //     continue outer;
+    //   }
+    // }
 
     if (curCost[0]<maxDepth) {
       for (var i = 0; i < vars.moveable.length; i++) {
@@ -252,11 +266,12 @@ export function astar(start, ends, maxDepth=vars.POS_INF, radius=vars.moveRadius
     }
     index++;
   }
-  for (var e in ends) {
-    if (ret[hashCoordinates(e)]==0)
-    ret[hashCoordinates(e)] = null;
-  }
-  return ret;
+  // for (var e in ends) {
+  //   if (ret[hashCoordinates(e)]==0)
+  //   ret[hashCoordinates(e)] = null;
+  // }
+  // return ret;
+  return null;
 }
 
 export function equalArrays(arr1, arr2) {
