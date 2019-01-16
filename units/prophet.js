@@ -73,13 +73,19 @@ export default function prophetTurn() {
   if (this.fuel >= vars.moveCost*vars.moveRadius) {
 
     // IMPLEMENT LATER get in range of enemies
-    // var damageLoc = {};
-    // for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
-    //     var u = vars.visibleRobots[i].unit;
-    //     if (3 <= u && u <= 5) {
-    //
-    //     }
-    // }
+    /*
+    var damageLoc = {};
+    for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
+        var u = vars.visibleRobots[i].unit;
+        if (3 <= u && u <= 5) {
+          var dx = vars.visibleRobots[i].x-this.me.x;
+          var dy = vars.visibleRobots[i].y-this.me.y;
+          if (dx**2+dy**2 < vars.attackRadius[0]) {
+            this.log(1);
+          }
+        }
+    }
+    */
 
     // DEUS VULT, attack deusVult
     if (deusVult!=null) {
@@ -132,18 +138,21 @@ export default function prophetTurn() {
       // this.log("betterPos");
       // this.log(betterPos);
 
+      var path = utils.astar.call(this, [this.me.x, this.me.y], betterPos, 15);
+      if (path!=null) {
+        //this.log(path);
+        return this.move(path[0][0], path[0][1]);
+      }
+
+      /*
       var paths = utils.astar.call(this, [this.me.x, this.me.y], betterPos, 5);
-      // this.log("paths");
-      // this.log(paths);
       for (var i = 0; i < betterPos.length; i++) {
         var path = paths[utils.hashCoordinates(betterPos[i])];
         if (path!=null&&path.length>0) {
-          // this.log(this.me.x+" "+this.me.y+" to "+betterPos[i][0]+" "+betterPos[i][1]);
-          // this.log(path);
           return this.move(path[0][0], path[0][1]);
         }
       }
-
+      */
 
       // goes to creatorPos if not deusVult
       // if ((this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2 > vars.CAMPDIST) {
