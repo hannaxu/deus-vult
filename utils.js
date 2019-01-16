@@ -203,13 +203,8 @@ export function astar(start, ends, maxDepth=vars.POS_INF, radius=vars.moveRadius
   // this.log(ends);
   outer: while (index<queue.length&&retLength<ends.length) {
     // this.log(queue[index]);
-    if (new Date().getTime()-time>15) {
-      this.log("BFS OUT OF TIME");
-      for (var e in ends) {
-        if (ret[hashCoordinates(e)]==0)
-        ret[hashCoordinates(e)] = null;
-      }
-      return ret;
+    if (new Date().getTime()-time>20) {
+      throw "OUT OF TIME";
     }
 
     var pos = queue[index][2];

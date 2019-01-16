@@ -3,7 +3,7 @@ export default {
   CAMPDIST: 5,
   POS_INF: 2147483647,
   NEG_INF: -2147483648,
-  MIN_ATK: 15,
+  MIN_ATK: 10,
   SPECS: null,
   firstTurn: true,
   creatorPos: null,

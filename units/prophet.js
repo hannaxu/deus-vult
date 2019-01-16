@@ -70,23 +70,10 @@ export default function prophetTurn() {
     }
   }
 
-  if (vars.creatorPos==null)
-    return;
-
   // moving
   if (this.fuel >= vars.moveCost*vars.moveRadius) {
 
-    // IMPLEMENT LATER get in range of enemies
-    // var damageLoc = {};
-    // for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
-    //     var u = vars.visibleRobots[i].unit;
-    //     if (3 <= u && u <= 5) {
-    //
-    //     }
-    // }
-
     // DEUS VULT, attack deusVult
-    try{
     if (deusVult[1]!=null) {
       var x = deusVult[0];
       var y = deusVult[1];
@@ -114,14 +101,11 @@ export default function prophetTurn() {
         var newDist = (x-vars.creatorPos[0])**2+(y-vars.creatorPos[1])**2;
         // robust addition
         var empty = utils.checkBounds(x, y)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]<=0;
-        var lattice = (x+y)%2==0&&((this.me.x+this.me.y)%2==1||vars.fuelMap[y][x]||vars.karbMap[y][x]||newDist<curDist);
+        var lattice = (x+y)%2==0&&((this.me.x+this.me.y)%2==1||newDist<curDist);
         // lattice = curDist<=1 || lattice;
         // if (newDist <= 1) {
         //   continue;
         // }
-        if (vars.fuelMap[y][x]||vars.karbMap[y][x]) {
-          continue;
-        }
         if(empty&&lattice) {
           betterPos.push([x, y]);
         }
@@ -178,6 +162,5 @@ export default function prophetTurn() {
       //   }
       // }
     }
-  }catch (err){}
   }
 }
