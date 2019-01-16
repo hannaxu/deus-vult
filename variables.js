@@ -3,7 +3,8 @@ export default {
   CAMPDIST: 5,
   POS_INF: 2147483647,
   NEG_INF: -2147483648,
-  MIN_ATK: 15,
+  MIN_ATK: 1000,
+  MIN_LAT_DIST: 2, // must be strictly greater than this
   SPECS: null,
   firstTurn: true,
   creatorPos: null,

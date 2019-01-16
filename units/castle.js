@@ -16,12 +16,14 @@ var enemyCastles = []; // enemyCastle locations based on our castleLocations
 var curAttack = 0; // next enemyCastle to deusVult
 var lastDeusVult = -10; // last turn since deusVult
 var deusVult = null; // where to attack
-var finishedDV = true; // whether or not both signals have been sent
 var deusVulters = {}; // robots currently deusVulting and their target deusVult
 var attackerCount = 0; // how many of our damaging troops in vision
 var farthestAttacker = 0; // r^2 distance of our farthest attacker
 
 export default function castleTurn() {
+  if (this.me.team==0) {
+    this.log("Round "+this.me.turn);
+  }
   //this.log("I am a Castle at "+this.me.x+" "+this.me.y);
   // utils.heapTest.call(this);
   // return;
@@ -228,7 +230,7 @@ export default function castleTurn() {
   }
 
   // preacher build
-  if(false && 3*buildCount[4] >= buildCount[5] && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_FUEL)  {
+  if(false && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_FUEL)  {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
@@ -271,10 +273,11 @@ export default function castleTurn() {
 
   //this.log("attackers "+headcount[3]+headcount[4]+headcount[5]);
   var deusVultRadius = 0;
-  if (this.me.turn-lastDeusVult>=100 || (this.me.turn-lastDeusVult >= 10 && attackerCount >= vars.MIN_ATK && this.fuel >= farthestAttacker)) {
+  if (this.me.turn-lastDeusVult >= 20 && attackerCount >= vars.MIN_ATK && this.fuel >= farthestAttacker) {
+    this.log("DEUS VULT "+enemyCastles[curAttack]);
     deusVult = enemyCastles[curAttack];
     //this.log(deusVult);
-    sendMessage.call(this, 2**15+deusVult[0], farthestAttacker);
+    sendMessage.call(this, 2**15+utils.hashCoordinates(deusVult), farthestAttacker);
     for (var i = 0; i < vars.visibleRobots.length; i++) {
       var dx = this.me.x-vars.visibleRobots[i].x;
       var dy = this.me.y-vars.visibleRobots[i].y;
@@ -284,13 +287,7 @@ export default function castleTurn() {
     }
     //this.log(deusVulters);
     lastDeusVult = this.me.turn;
-    finishedDV = false;
+    curAttack++;
     return;
-  }
-  while (!finishedDV) {
-    this.log("DEUS VULT "+enemyCastles[curAttack]);
-    sendMessage.call(this, 2**15+2**14+deusVult[1], farthestAttacker);
-    finishedDV = true;
-    curAttack = (curAttack+1)%enemyCastles.length;
   }
 }
