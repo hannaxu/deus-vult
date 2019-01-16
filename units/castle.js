@@ -21,8 +21,6 @@ var deusVulters = {}; // robots currently deusVulting and their target deusVult
 var attackerCount = 0; // how many of our damaging troops in vision
 var farthestAttacker = 0; // r^2 distance of our farthest attacker
 
-var defend = false;
-
 export default function castleTurn() {
   //this.log("I am a Castle at "+this.me.x+" "+this.me.y);
   // utils.heapTest.call(this);
@@ -180,28 +178,31 @@ export default function castleTurn() {
       var u = vars.commRobots[i].unit;
       if( u == vars.SPECS.CASTLE )
         headcount[0] += 1;
-      if( u == vars.SPECS.CHURCH )
+      else if( u == vars.SPECS.CHURCH )
         headcount[1] += 1;
-      if( u == vars.SPECS.PILGRIM )
+      else if( u == vars.SPECS.PILGRIM )
         headcount[2] += 1;
-      if( u == vars.SPECS.CRUSADER )
+      else if( u == vars.SPECS.CRUSADER )
         headcount[3] += 1;
-      if( u == vars.SPECS.PROPHET )
+      else if( u == vars.SPECS.PROPHET )
         headcount[4] += 1;
-      if( u == vars.SPECS.PREACHER )
+      else if( u == vars.SPECS.PREACHER )
         headcount[5] += 1;
     }
-    else
-      enemyUnit += 1;
+    else {
+      if( u == vars.SPECS.CRUSADER )
+        enemyUnit += 1;
+      else if( u == vars.SPECS.PROPHET )
+        enemyUnit += 1;
+      else if( u == vars.SPECS.PREACHER )
+        enemyUnit += 1;
+    }
   }
-
   //this.log(this.me.turn);
+  var defend = false;
   if( enemyUnit > 0 ) {
     defend = true;
     //this.log("defend");
-  }
-  else {
-    defend = false;
   }
 
   var closePilgrim = 0;
@@ -213,7 +214,7 @@ export default function castleTurn() {
 
 
   //if (!defend && (closePilgrim < deposits&&headcount[2]<2) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
-  if (!defend && headcount[2]<1 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+  if (!defend && (headcount[2]<1 || (headcount[2]<3 && this.me.turn > 10 && closePilgrim < deposits && castleOrder != 0)) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
