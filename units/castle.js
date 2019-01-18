@@ -8,8 +8,10 @@ var myCastles = {}; // contains locations
 var castleOrder = 0;
 var teamID = {}; // hashmap stores info
 var symmetry;
-var deposits = 0;
+var deposits = [0,[],[]]; //total, karb locs, fuel locs
 var buildCount = [0,0,0,0,0,0];
+var buildOptPil = []; //pilgrims,
+var buildOptUnit = []; //units
 
 var enemyCastles = []; // enemyCastle locations based on our castleLocations
 var curAttack = 0; // next enemyCastle to deusVult
@@ -23,7 +25,7 @@ var trackMap = []; // [id, unit]
 var trackRobots = {}; // trackRobots[id] = [pos, unit]
 
 export default function castleTurn() {
-  vars.usedBuild = false;
+  vars.buildRobot = 0;
   if (this.me.team==0) {
     this.log("Castle Round "+this.me.turn);
   }
@@ -51,26 +53,55 @@ export default function castleTurn() {
 
     //this.log(enemyCastles);
     //this.log("test");
-    var lowX = this.me.x-5;
-    var lowY = this.me.y-5;
-    var highX = lowX+10;
-    var highY = lowY+10;
-    if( lowX < 0 ) lowX = 0;
-    if( lowY < 0 ) lowY = 0;
-    if( highX > vars.xmax ) highX = vars.xmax;
-    if( highY > vars.ymax ) highY = vars.ymax;
 
-    for (var x=lowX; x<highX; x++) {
-      for (var y=lowY; y<highY; y++) {
-        if (vars.fuelMap[y][x]) {
-          deposits += 1;
+    //resource consideration
+    var di = 1;
+    var dj = 0;
+    var seg = 1;
+    var i = this.me.x;
+    var j = this.me.y;
+    var segPass = 0;
+    for (var k = 0; k < 100; ++k) {
+      if( !(i < 0 || j < 0 || i > vars.xmax || j > vars.ymax) ) {
+        if (vars.karbMap[j][i]) {
+          deposits[0] += 1;
+          deposits[1].push([j,i]);
         }
-        if (vars.karbMap[y][x]) {
-          deposits += 1;
+        if (vars.fuelMap[j][i]) {
+          deposits[0] += 1;
+          deposits[2].push([j,i]);
         }
       }
+      i += di;
+      j += dj;
+      ++segPass;
+      if (segPass == seg) {
+        segPass = 0;
+        var temp = di;
+        di = -dj;
+        dj = temp;
+        if (dj == 0)
+            ++seg;
+      }
     }
-    this.log("nearby deposits: " + deposits);
+
+    function transferPt(coor, mx, my) {
+      var y = coor[0]-my;
+      if( y != 0 ) y = y/Math.abs(y);
+      var x = coor[1]-mx;
+      if( x != 0 ) x = x/Math.abs(x);
+      return [y, x];
+    }
+
+    for(var i = 0; i < deposits[1].length; i++) {
+      buildOptPil.push(transferPt(deposits[1][i], this.me.x, this.me.y));
+    }
+    for(var i = 0; i < deposits[2].length; i++) {
+      buildOptPil.push(transferPt(deposits[2][i], this.me.x, this.me.y));
+    }
+    buildOptPil = buildOptPil.concat(vars.buildable);
+
+    //this.log("nearby deposits: " + buildOptPil);
 
     // tracking robots
     for (var x = 0; x < vars.xmax; x++) {
@@ -220,16 +251,16 @@ export default function castleTurn() {
 
   //if (!defend && (headcount[2]<1 || (headcount[2]<3 && this.me.turn > 10 && closePilgrim < deposits && castleOrder != 0)) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
-    if (!defend && (headcount[2]<1 || (headcount[4] > 4 && this.me.turn > 10 && closePilgrim < deposits))) {
-      for (var i = 0; i < vars.buildable.length; i++) {
-        var x = this.me.x+vars.buildable[i][0];
-        var y = this.me.y+vars.buildable[i][1];
+    if ( !defend && ( headcount[2]<1 || (headcount[4] > 4 && this.me.turn > 10 && closePilgrim < Math.min(deposits[1].length+1, deposits[0])) ) ) {
+      for (var i = 0; i < buildOptPil.length; i++) {
+        var x = this.me.x+buildOptPil[i][1];
+        var y = this.me.y+buildOptPil[i][0];
         if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-          sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
+          sendMessage.call(this, castleOrder, buildOptPil[i][1]**2+buildOptPil[i][0]**2);
           //this.log("Building pilgrim at "+x+" "+y);
           buildCount[2]++;
           vars.buildRobot = 2;
-          return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
+          return this.buildUnit(vars.SPECS.PILGRIM, buildOptPil[i][1], buildOptPil[i][0]);
         }
       }
     }
@@ -251,16 +282,18 @@ export default function castleTurn() {
   }
 
   // prophet build
-  if ((castleOrder == 0 || this.me.turn > 10) && headcount[4] < 20 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
-    for (var i = 0; i < vars.buildable.length; i++) {
-      var x = this.me.x+vars.buildable[i][0];
-      var y = this.me.y+vars.buildable[i][1];
-      if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-        sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
-        //this.log("Building pilgrim at "+x+" "+y);
-        buildCount[4]++;
-        vars.buildRobot = 4;
-        return this.buildUnit(vars.SPECS.PROPHET, vars.buildable[i][0], vars.buildable[i][1]);
+  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
+    if ( ((castleOrder == 0 || this.me.turn > 10) && headcount[4] < 20) || this.karbonite >= 100 ) {
+      for (var i = 0; i < vars.buildable.length; i++) {
+        var x = this.me.x+vars.buildable[i][0];
+        var y = this.me.y+vars.buildable[i][1];
+        if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
+          sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
+          //this.log("Building pilgrim at "+x+" "+y);
+          buildCount[4]++;
+          vars.buildRobot = 4;
+          return this.buildUnit(vars.SPECS.PROPHET, vars.buildable[i][0], vars.buildable[i][1]);
+        }
       }
     }
   }
