@@ -96,7 +96,7 @@ export default function prophetTurn() {
       var move = utils.findMoveD.call(this, [this.me.x, this.me.y], deusVult);
       if (move != null) {
         //this.log("Moving towards "+x+" "+y);
-        this.castleTalk(utils.connIndexOf(vars.moveable, move));
+        //this.castleTalk(utils.connIndexOf(vars.moveable, move));
         return this.move(move[0], move[1]);
       }
     }
@@ -138,7 +138,7 @@ export default function prophetTurn() {
         //this.log(path);
         var move = path.splice(0, 1)[0];
         curPath = path;
-        this.castleTalk(utils.connIndexOf(vars.moveable, move));
+        //this.castleTalk(utils.connIndexOf(vars.moveable, move));
         return this.move(move[0], move[1]);
       }
     }

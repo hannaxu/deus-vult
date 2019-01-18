@@ -20,8 +20,6 @@ class MyRobot extends BCAbstractRobot {
 
   turn () {
     try {
-      this.castleTalk(127);
-
       vars.visibleRobotMap = this.getVisibleRobotMap();
       vars.xpos = this.me.x;
       vars.ypos = this.me.y;
@@ -107,45 +105,48 @@ class MyRobot extends BCAbstractRobot {
         }
         if(this.isRadioing(other_r))
           vars.radioRobots.push(other_r);
-        if(this.castleTalkRobots != null)
+        if(vars.castleTalkRobots != null && other_r.team==this.me.team) {
           vars.castleTalkRobots.push(other_r);
+        }
       }
       utils.updateLocs.call(this);
       readMessages.call(this);
 
-      var ret=null;
+      var ret = null;
       switch (this.me.unit) {
         case vars.SPECS.PILGRIM:
-          ret= this.pilgrimTurn();
+          ret = this.pilgrimTurn();
           break;
         case vars.SPECS.CRUSADER:
-          ret= this.crusaderTurn();
+          ret = this.crusaderTurn();
           break;
         case vars.SPECS.PROPHET:
-          ret= this.prophetTurn();
+          ret = this.prophetTurn();
           break;
         case vars.SPECS.PREACHER:
-          ret= this.preacherTurn();
+          ret = this.preacherTurn();
           break;
         case vars.SPECS.CHURCH:
-          ret= this.churchTurn();
+          ret = this.churchTurn();
           break;
         case vars.SPECS.CASTLE:
           castleLocsComm.call(this);
-          ret= this.castleTurn();
+          ret = this.castleTurn();
+          if (this.me.turn == 1) this.castleTalk(this.me.x+128+64*(Math.ceil(vars.buildRobot/10)));
+          if (this.me.turn == 2) this.castleTalk(this.me.y+128+64*(Math.ceil(vars.buildRobot/10)));
           break;
       }
 
       // temporary failsafe
-      if(vars.creatorPos != null){
-        var creatorId = vars.visibleRobotMap[vars.creatorPos[1]][vars.creatorPos[0]];
-        if(creatorId > 0){
-          var creator = this.getRobot(creatorId);
-          if(creator.unit == SPECS.CASTLE && creator.turn <= 2){
-            this.castleTalk(0);
-          }
-        }
-      }
+      // if(vars.creatorPos != null){
+      //   var creatorId = vars.visibleRobotMap[vars.creatorPos[1]][vars.creatorPos[0]];
+      //   if(creatorId > 0){
+      //     var creator = this.getRobot(creatorId);
+      //     if(creator.unit == SPECS.CASTLE && creator.turn <= 2){
+      //       this.castleTalk(0);
+      //     }
+      //   }
+      // }
       return ret;
     }
     catch (err) {

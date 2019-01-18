@@ -28,7 +28,6 @@ export default {
   maxKarb: null,
   maxFuel: null,
   unitType: null,
-  rLocs: [], //.type 0 for fuel .x .y
 
   // List of viable [x, y] locations for this unit
   moveable: [],
@@ -40,6 +39,7 @@ export default {
 
   // UPDATED EVERY TURN
 
+  buildRobot: null,
   xpos: null,
   ypos: null,
   teamFuel: null,

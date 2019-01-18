@@ -125,7 +125,7 @@ function pickAdjMove(costs, pri) {
     } else {
         //thas.log(bestd);
         //thas.log(vars.passableMap[y][x]);
-        this.castleTalk(bestd);
+        //this.castleTalk(bestd);
         return this.move(vars.moveable[bestd][0],vars.moveable[bestd][1]);
     }
 }

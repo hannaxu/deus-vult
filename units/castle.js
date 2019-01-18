@@ -3,9 +3,8 @@ import * as utils from '../utils';
 import { sendMessage } from '../communication';
 
 var team;
-var totC = 0;
-var myCastles = []; // in turn order, contains IDs and locations
-var castleID = {};
+var totC = 1;
+var myCastles = {}; // contains locations
 var castleOrder = 0;
 var teamID = {}; // hashmap stores info
 var symmetry;
@@ -24,6 +23,7 @@ var trackMap = []; // [id, unit]
 var trackRobots = {}; // trackRobots[id] = [pos, unit]
 
 export default function castleTurn() {
+  vars.usedBuild = false;
   if (this.me.team==0) {
     this.log("Castle Round "+this.me.turn);
   }
@@ -38,26 +38,16 @@ export default function castleTurn() {
     //determine if enemy castles are visible and number
     //  try to determine if map is truly horizontal or vertical if symmetry returned both
     team = this.me.team;
-    for( var x = 0; x < vars.commRobots.length; x++ ) {
-      if(vars.commRobots[x].team == team) {
-        if (vars.commRobots[x].castle_talk==0) {
-          totC++;
-        }
-        else {
-          myCastles.push([vars.commRobots[x].id, [null, null]]);
-          castleID[vars.commRobots[x].id] = 0;
-          castleOrder++;
-        }
+    for(var i = 0; i < vars.castleTalkRobots.length; i++) {
+      totC++;
+      if (vars.castleTalkRobots[i].castle_talk == 0) continue;
+      if ((vars.castleTalkRobots[i].castle_talk & (1<<6)) > 0) {
+        totC--;
       }
+      castleOrder++;
     }
-
-    if (castleOrder == 2) {
-      if (this.getRobot(myCastles[0][0]).castle_talk >= 128+64) {
-        var temp = myCastles[0];
-        myCastles[0] = myCastles[1];
-        myCastles[1] = temp;
-      }
-    }
+    // this.log("co "+castleOrder)
+    // this.log("totC "+totC)
 
     //this.log(enemyCastles);
     //this.log("test");
@@ -93,80 +83,58 @@ export default function castleTurn() {
   }
 
   // determines myCastles
-  if (this.me.turn == 1) {
-    for (var i = 0; i < castleOrder; i++) {
-      myCastles[i][1][0] = this.getRobot(myCastles[i][0]).castle_talk-128-(i%2)*64;
-    }
-    this.castleTalk(this.me.x+128+64*(castleOrder%2));
-    myCastles.push([this.me.id, [this.me.x, this.me.y]]);
-  }
-  if (this.me.turn == 2) {
-    outer: for( var x = 0; x < vars.commRobots.length; x++ ) {
-      if(vars.commRobots[x].team == team && vars.commRobots[x].castle_talk>=128) {
-        for (var i = 0; i < myCastles.length; i++) {
-          if (myCastles[i][0]==vars.commRobots[x].id) {
-            continue outer;
-          }
+  if (this.me.turn<=3) {
+    for (var i = 0; i < vars.castleTalkRobots.length; i++) {
+      var robot = vars.castleTalkRobots[i];
+      if ((robot.id!=this.me.id && robot.castle_talk&(1<<7)) > 0) {
+        if (robot.turn==1) {
+          myCastles[robot.id] = [robot.castle_talk % (1<<6), null];
         }
-        myCastles.push([vars.commRobots[x].id, [null, null]]);
+        if (robot.turn==2) {
+          myCastles[robot.id][1] = robot.castle_talk % (1<<6);
+        }
       }
     }
-    if (castleOrder==0&&myCastles.length==3) {
-      if (this.getRobot(myCastles[2][0]).castle_talk >= 128+64) {
-        var temp = myCastles[1];
-        myCastles[1] = myCastles[2];
-        myCastles[2] = temp;
-      }
-    }
-    for (var i = 0; i < castleOrder; i++) {
-      myCastles[i][1][1] = this.getRobot(myCastles[i][0]).castle_talk-128-64*(i%2);
-    }
-    for (var i = castleOrder+1; i < myCastles.length; i++) {
-      myCastles[i][1][0] = this.getRobot(myCastles[i][0]).castle_talk-128-64*(i%2);
-    }
-    this.castleTalk(this.me.y+128+64*(castleOrder%2));
+    myCastles[this.me.id] = [this.me.x, this.me.y];
   }
-  if (this.me.turn == 3) {
-    for (var i = castleOrder+1; i < myCastles.length; i++) {
-      myCastles[i][1][1] = this.getRobot(myCastles[i][0]).castle_talk-128-64*(i%2);
-    }
+
+  if (this.me.turn==3) {
+    this.log(myCastles);
     if (symmetry[0]) {
-      for (var i = 0; i < myCastles.length; i++) {
-        enemyCastles.push([vars.xmax-1-myCastles[i][1][0], myCastles[i][1][1]]);
+      for (var c in myCastles) {
+        enemyCastles.push([vars.xmax-1-myCastles[c][0], myCastles[c][1]]);
       }
     }
     if (symmetry[1]) {
-      for (var i = 0; i < myCastles.length; i++) {
-        enemyCastles.push([myCastles[i][1][0], vars.ymax-1-myCastles[i][1][1]]);
+      for (var c in myCastles) {
+        enemyCastles.push([myCastles[c][0], vars.ymax-1-myCastles[c][1]]);
       }
-    }
-    this.log(myCastles);
-    //this.log(vars.castleLocs);
-  }
-
-  // tracks moving robots
-  for (var i = 0; i < vars.castleTalkRobots.length; i++) {
-    var robot = vars.castleTalkRobots[i];
-    var message = robot.castle_talk % (1<<6);
-    if (robot.unit < 2) continue;
-    if (trackRobots[robot.id] != null) {
-      var u = trackRobots[robot.id][1];
-      var move = utils.findConnections(this.SPECS.UNITS[u].MOVERADIUS)[message];
-      if (trackMap[trackRobots[robot.id][0][0]][trackRobots[robot.id][0][1]]==robot.id) {
-        trackMap[trackRobots[robot.id][0][0]][trackRobots[robot.id][0][1]] = 0;
-      }
-      trackRobots[robot.id][0][0] = utils.add(trackRobots[robot.id][0], move);
-      trackMap[trackRobots[robot.id][0][0]][trackRobots[robot.id][0][1]] = robot.id;
     }
   }
 
-  for (var i = 0; i < vars.visibleRobots.length; i++) {
-    var robot = vars.visibleRobots[i];
-    if (robot.team==this.me.team) {
-      trackRobots[robot.id] = [[robot.x, robot.y], robot.unit];
-      trackMap[robot.y][robot.x] = robot.id;
-    }
-  }
+  // tracks moving robots BROKEN
+  // for (var i = 0; i < vars.castleTalkRobots.length; i++) {
+  //   var robot = vars.castleTalkRobots[i];
+  //   var message = robot.castle_talk % (1<<6);
+  //   if (robot.unit < 2) continue;
+  //   if (trackRobots[robot.id] != null) {
+  //     var u = trackRobots[robot.id][1];
+  //     var move = utils.findConnections(vars.SPECS.UNITS[u].MOVERADIUS)[message];
+  //     if (trackMap[trackRobots[robot.id][0][0]][trackRobots[robot.id][0][1]]==robot.id) {
+  //       trackMap[trackRobots[robot.id][0][0]][trackRobots[robot.id][0][1]] = 0;
+  //     }
+  //     trackRobots[robot.id][0][0] = utils.add(trackRobots[robot.id][0], move);
+  //     trackMap[trackRobots[robot.id][0][0]][trackRobots[robot.id][0][1]] = robot.id;
+  //   }
+  // }
+  //
+  // for (var i = 0; i < vars.visibleRobots.length; i++) {
+  //   var robot = vars.visibleRobots[i];
+  //   if (robot.team==this.me.team) {
+  //     trackRobots[robot.id] = [[robot.x, robot.y], robot.unit];
+  //     trackMap[robot.y][robot.x] = robot.id;
+  //   }
+  // }
   // this.log("track");
   // this.log(trackRobots);
 
@@ -260,6 +228,7 @@ export default function castleTurn() {
           sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
           //this.log("Building pilgrim at "+x+" "+y);
           buildCount[2]++;
+          vars.buildRobot = 2;
           return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
         }
       }
@@ -275,6 +244,7 @@ export default function castleTurn() {
         sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
         //this.log("Building pilgrim at "+x+" "+y);
         buildCount[5]++;
+        vars.buildRobot = 5;
         return this.buildUnit(vars.SPECS.PREACHER, vars.buildable[i][0], vars.buildable[i][1]);
       }
     }
@@ -289,6 +259,7 @@ export default function castleTurn() {
         sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
         //this.log("Building pilgrim at "+x+" "+y);
         buildCount[4]++;
+        vars.buildRobot = 4;
         return this.buildUnit(vars.SPECS.PROPHET, vars.buildable[i][0], vars.buildable[i][1]);
       }
     }
