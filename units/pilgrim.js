@@ -12,7 +12,7 @@ export default function pilgrimTurn () {
     var me=this.me;
     var minDR=-1;
     var minDRv=9999;
-    if (vars.firstTurn) {
+    if (this.me.turn==1) {
         for (var i=0; i<vars.rLocs.length; i++) {
             vars.rLocs[i].closed=-2000;
         }
@@ -123,6 +123,7 @@ function pickAdjMove(costs, pri) {
     } else {
         //thas.log(bestd);
         //thas.log(vars.passableMap[y][x]);
+        this.castleTalk(bestd);
         return this.move(vars.moveable[bestd][0],vars.moveable[bestd][1]);
     }
 }

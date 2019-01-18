@@ -6,8 +6,9 @@ export default {
   MIN_ATK: 1000,
   MIN_LAT_DIST: 0, // must be strictly greater than this
   SPECS: null,
-  firstTurn: true,
   creatorPos: null,
+  creatorOrder: null,
+  myPos: null,
 
   // Map information
   passableMap: null,
@@ -27,7 +28,6 @@ export default {
   maxKarb: null,
   maxFuel: null,
   unitType: null,
-  creatorPos: null,
   rLocs: [], //.type 0 for fuel .x .y
 
   // List of viable [x, y] locations for this unit
@@ -35,7 +35,8 @@ export default {
   buildable: [],
   attackable: [],
   visible: [],
-
+  connections: {},
+  firstTurnPoss: {},
 
   // UPDATED EVERY TURN
 

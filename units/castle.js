@@ -20,6 +20,9 @@ var deusVulters = {}; // robots currently deusVulting and their target deusVult
 var attackerCount = 0; // how many of our damaging troops in vision
 var farthestAttacker = 0; // r^2 distance of our farthest attacker
 
+var trackMap = []; // [id, unit]
+var trackRobots = {}; // trackRobots[id] = [pos, unit]
+
 export default function castleTurn() {
   if (this.me.team==0) {
     this.log("Round "+this.me.turn);
@@ -27,7 +30,7 @@ export default function castleTurn() {
   //this.log("I am a Castle at "+this.me.x+" "+this.me.y);
   // utils.heapTest.call(this);
   // return;
-  if (vars.firstTurn) {
+  if (this.me.turn==1) {
     symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
     this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
     //Castle information, first turn only
@@ -79,8 +82,14 @@ export default function castleTurn() {
     }
     this.log("nearby deposits: " + deposits);
 
-    vars.firstTurn = false;
-    //this.log("Test: " +vars.firstTurn);
+    // tracking robots
+    for (var x = 0; x < vars.xmax; x++) {
+      trackMap.push([]);
+      for (var y = 0; y < vars.ymax; y++) {
+        trackMap[x].push(null);
+      }
+    }
+    trackMap[this.me.y][this.me.x] = [this.me.id, this.me.unit];
   }
 
   // determines myCastles
@@ -134,6 +143,32 @@ export default function castleTurn() {
     this.log(myCastles);
     //this.log(vars.castleLocs);
   }
+
+  // tracks moving robots
+  for (var i = 0; i < vars.castleTalkRobots.length; i++) {
+    var robot = vars.castleTalkRobots[i];
+    var message = robot.castle_talk;
+    if (robot.unit < 2) continue;
+    if (trackRobots[robot.id] != null) {
+      var u = trackRobots[robot.id][1];
+      var move = utils.findConnections(this.SPECS.UNITS[u].MOVERADIUS)[message];
+      if (trackMap[trackRobots[robot.id][0][0]][trackRobots[robot.id][0][1]]==robot.id) {
+        trackMap[trackRobots[robot.id][0][0]][trackRobots[robot.id][0][1]] = 0;
+      }
+      trackRobots[robot.id][0][0] = utils.add(trackRobots[robot.id][0], move);
+      trackMap[trackRobots[robot.id][0][0]][trackRobots[robot.id][0][1]] = robot.id;
+    }
+  }
+
+  for (var i = 0; i < vars.visibleRobots.length; i++) {
+    var robot = vars.visibleRobots[i];
+    if (robot.team==this.me.team) {
+      trackRobots[robot.id] = [[robot.x, robot.y], robot.unit];
+      trackMap[robot.y][robot.x] = robot.id;
+    }
+  }
+  // this.log("track");
+  // this.log(trackRobots);
 
   // deletes dead enemyCastles
   for( var x = 0; x < vars.commRobots.length; x++ ) {
@@ -222,7 +257,7 @@ export default function castleTurn() {
         var x = this.me.x+vars.buildable[i][0];
         var y = this.me.y+vars.buildable[i][1];
         if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-          sendMessage.call(this, i, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
+          sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
           //this.log("Building pilgrim at "+x+" "+y);
           buildCount[2]++;
           return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
@@ -237,14 +272,7 @@ export default function castleTurn() {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
       if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-        var message = i;
-        if (symmetry[0]) {
-          message += vars.buildable.length;
-        }
-        if (symmetry[1]) {
-          message += vars.buildable.length*2;
-        }
-        sendMessage.call(this, message, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
+        sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
         //this.log("Building pilgrim at "+x+" "+y);
         buildCount[5]++;
         return this.buildUnit(vars.SPECS.PREACHER, vars.buildable[i][0], vars.buildable[i][1]);
@@ -258,14 +286,7 @@ export default function castleTurn() {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
       if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-        var message = i;
-        if (symmetry[0]) {
-          message += vars.buildable.length;
-        }
-        if (symmetry[1]) {
-          message += vars.buildable.length*2;
-        }
-        sendMessage.call(this, message, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
+        sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
         //this.log("Building pilgrim at "+x+" "+y);
         buildCount[4]++;
         return this.buildUnit(vars.SPECS.PROPHET, vars.buildable[i][0], vars.buildable[i][1]);

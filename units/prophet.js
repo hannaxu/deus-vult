@@ -9,22 +9,8 @@ var deusVultFrom = null;
 
 export default function prophetTurn() {
   // this.log("I am a Prophet at "+vars.xpos+" "+vars.ypos);
-  if (vars.firstTurn) {
-    var creator = this.getRobot(vars.visibleRobotMap[vars.creatorPos[1]][vars.creatorPos[0]]);
-    var message = Math.floor(cypherMessage(creator.signal, this.me.team)/8);
-    if (message%2==1) {
-      symmetry[0] = true;
-    }
-    if (Math.floor(message/2)==1) {
-      symmetry[1] = true;
-    }
-    if (symmetry[0]) {
-      enemyCastles.push([vars.xmax-1-vars.creatorPos[0], vars.creatorPos[1]]);
-    }
-    if (symmetry[1]) {
-      enemyCastles.push([vars.creatorPos[0], vars.ymax-1-vars.creatorPos[1]]);
-    }
-    vars.firstTurn = false;
+  if (this.me.turn==1) {
+
   }
 
   // check for DEUS VULT signal
@@ -102,6 +88,7 @@ export default function prophetTurn() {
       var move = utils.findMoveD.call(this, [this.me.x, this.me.y], deusVult);
       if (move != null) {
         //this.log("Moving towards "+x+" "+y);
+        this.castleTalk(utils.connIndexOf(vars.moveable, move));
         return this.move(move[0], move[1]);
       }
     }
@@ -117,7 +104,7 @@ export default function prophetTurn() {
         var newDist = (x-vars.creatorPos[0])**2+(y-vars.creatorPos[1])**2;
         // robust addition
         var empty = utils.checkBounds(x, y)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]<=0;
-        var onLattice = (x+y)%2==0;
+        var onLattice = utils.onLattice(x, y);
         if (!empty || !onLattice || newDist <= vars.MIN_LAT_DIST) {
           continue;
         }
@@ -141,38 +128,9 @@ export default function prophetTurn() {
       var path = utils.astar.call(this, [this.me.x, this.me.y], betterPos, 15);
       if (path!=null) {
         //this.log(path);
+        this.castleTalk(utils.connIndexOf(vars.moveable, path[0]));
         return this.move(path[0][0], path[0][1]);
       }
-
-      /*
-      var paths = utils.astar.call(this, [this.me.x, this.me.y], betterPos, 5);
-      for (var i = 0; i < betterPos.length; i++) {
-        var path = paths[utils.hashCoordinates(betterPos[i])];
-        if (path!=null&&path.length>0) {
-          return this.move(path[0][0], path[0][1]);
-        }
-      }
-      */
-
-      // goes to creatorPos if not deusVult
-      // if ((this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2 > vars.CAMPDIST) {
-      //   var move = utils.findMoveD.call(this, [this.me.x, this.me.y], vars.creatorPos);
-      //   if (move != null) {
-      //     return this.move(move[0], move[1]);
-      //   }
-      // }
-
-      // defend in direction of enemies
-      // var x = enemyCastles[0][0];
-      // var y = enemyCastles[0][1];
-      // var id = vars.visibleRobotMap[y][x];
-      // var curDist = (this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2;
-      // var newDist = (x-vars.creatorPos[0])**2+(y-vars.creatorPos[1])**2;
-      // var move = utils.findMoveD.call(this, [this.me.x, this.me.y], enemyCastles[0]);
-      // if (move != null&&curDist < newDist && newDist <= vars.CAMPDIST) {
-      //   //this.log("Moving towards "+x+" "+y);
-      //   return this.move(move[0], move[1]);
-      // }
     }
   }
 }

@@ -334,22 +334,37 @@ export function multiDest (ends) {
 }
 
 export function findConnections (r2) {
-  var reachable = [];
+  if (vars.connections[r2] != null) {
+    return vars.connections[r2];
+  }
+  vars.connections[r2] = [];
   for (var x = 1; x*x <= r2; x++) {
     for (var y = 0; y*y <= r2; y++) {
       if (x*x+y*y <= r2) {
-        reachable.push([x, y]);
-        reachable.push([-x, -y]);
-        reachable.push([-y, x]);
-        reachable.push([y, -x]);
+        vars.connections[r2].push([x, y]);
+        vars.connections[r2].push([-x, -y]);
+        vars.connections[r2].push([-y, x]);
+        vars.connections[r2].push([y, -x]);
       }
     }
   }
-  reachable.sort(function(x, y) {
+  vars.connections[r2].sort(function(x, y) {
     return x[0]**2+x[1]**2-y[0]**2-y[1]**2;
   });
-  //this.log(reachable);
-  return reachable;
+  //this.log(vars.connections[r2]);
+  return vars.connections[r2];
+}
+
+export function connIndexOf (conn, val) {
+  for (var i = 0; i < conn.length; i++) {
+    if (conn[i][0]==val[0]&&conn[i][1]==val[1]) {
+      return i;
+    }
+  }
+  this.log(""+conn);
+  this.log(""+val);
+  throw "ERROR Not in connection";
+  return -1;
 }
 
 export function updateLocs () {
@@ -485,4 +500,14 @@ export function heappop(array, compare=heapCompare) {
   }
   array.splice(array.length-1, 1);
   return ret;
+}
+
+export function add (v1, v2) {
+  return [v1[0]+v2[0], v1[1]+v2[1]];
+}
+
+export function onLattice (x, y) {
+  var dx = x-vars.creatorPos[0];
+  var dy = y-vars.creatorPos[1];
+  return dx != 0 && dy != 0;// && Math.abs(dx) != Math.abs(dy);
 }

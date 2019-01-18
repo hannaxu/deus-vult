@@ -23,10 +23,11 @@ class MyRobot extends BCAbstractRobot {
       vars.visibleRobotMap = this.getVisibleRobotMap();
       vars.xpos = this.me.x;
       vars.ypos = this.me.y;
+      vars.myPos = [this.me.x, this.me.y];
       vars.teamFuel = this.fuel;
       vars.teamKarb = this.kabonite;
 
-      if (vars.firstTurn) {
+      if (this.me.turn==1) {
         vars.passableMap = this.map;
         vars.karbMap = this.getKarboniteMap();
         vars.fuelMap = this.getFuelMap();
@@ -60,21 +61,18 @@ class MyRobot extends BCAbstractRobot {
             vars.fuzzyCost[x].push([]);
           }
         }
-          //this.log("low init");
-        if (this.me.unit!=vars.SPECS.CASTLE) {
+
+        // for moving robots only
+        if (this.me.unit >= 2) {
           for (var i = 0; i < vars.buildable.length; i++) {
             var x = this.me.x+vars.buildable[i][0];
             var y = this.me.y+vars.buildable[i][1];
             if (!utils.checkBounds(x, y)) continue;
             var id = this.getRobot(vars.visibleRobotMap[y][x]);
             if (id==null||id.signal==-1||(id.unit!=vars.SPECS.CASTLE&&id.unit!=vars.SPECS.CHURCH)) continue;
-            var dir = vars.buildable[cypherMessage(id.signal, this.me.team)%vars.buildable.length];
-              //this.log(dir+"");
-            var correctSignal = dir[0]==-vars.buildable[i][0]&&dir[1]==-vars.buildable[i][1];
-            if (correctSignal) {
-              vars.creatorPos = [x, y];
-            }
-              //
+            if (vars.buildable[i][0]**2+vars.buildable[i][1]**2!=id.signal_radius) continue;
+            vars.creatorOrder = cypherMessage(id.signal, this.me.team);
+            vars.creatorPos = [x, y];
           }
           //this.log("Created by "+vars.creatorPos);
         }
@@ -146,8 +144,6 @@ class MyRobot extends BCAbstractRobot {
           }
         }
       }
-
-      vars.firstTurn = false;
       return ret;
     }
     catch (err) {
