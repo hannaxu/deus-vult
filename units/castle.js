@@ -177,7 +177,7 @@ export default function castleTurn() {
       if (message >= 64) {
         for (var i = 0; i < enemyCastles.length; i++) {
           if (enemyCastles[i]==deusVulters[vars.commRobots[x].id]) {
-            this.log("deleted "+enemyCastles[i]);
+            this.log("Killed enemy castle at "+enemyCastles[i]);
             enemyCastles.splice(i, 1);
             if(curAttack > i) {
               curAttack--;

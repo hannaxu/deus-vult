@@ -157,7 +157,7 @@ export default function preacherTurn() {
       // this.log("betterPos");
       // this.log(betterPos);
 
-      var path = utils.astar.call(this, [this.me.x, this.me.y], betterPos, 15);
+      var path = utils.astar.call(this, [this.me.x, this.me.y], betterPos, vars.DEFENSE_DEPTH);
       if (path!=null) {
         //this.log(path);
         var move = path.splice(0, 1)[0];

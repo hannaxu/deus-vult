@@ -5,6 +5,7 @@ export default {
   NEG_INF: -2147483648,
   MIN_ATK: 1000,
   MIN_LAT_DIST: 2, // must be strictly greater than this
+  DEFENSE_DEPTH: 15,
   SPECS: null,
   creatorPos: null,
   creatorOrder: null,
