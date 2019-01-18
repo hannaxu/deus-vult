@@ -6,6 +6,7 @@ var enemyCastles = [];
 var symmetry = [false, false];
 var deusVult = null;
 var deusVultFrom = null;
+var curPath = [];
 
 export default function prophetTurn() {
   // this.log("I am a Prophet at "+vars.xpos+" "+vars.ypos);
@@ -72,6 +73,13 @@ export default function prophetTurn() {
         }
     }
     */
+    if (curPath.length>0) {
+      var move = curPath.splice(0, 1)[0];
+      if (vars.visibleRobotMap[this.me.y+move[1]][this.me.x+move[0]] == 0) {
+        return this.move(move[0], move[1])
+      }
+      curPath = [];
+    }
 
     // DEUS VULT, attack deusVult
     if (deusVult!=null) {
@@ -97,7 +105,7 @@ export default function prophetTurn() {
       var betterPos = [];
       var curDist = (this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2;
       // minimum distance AND on even tile AND not on resource tile
-      var alreadyOk = vars.MIN_LAT_DIST < curDist && (this.me.x+this.me.y)%2==0 && !vars.fuelMap[this.me.y][this.me.x] && !vars.karbMap[this.me.y][this.me.x];
+      var alreadyOk = vars.MIN_LAT_DIST < curDist && utils.onLattice(this.me.x, this.me.y) && !vars.fuelMap[this.me.y][this.me.x] && !vars.karbMap[this.me.y][this.me.x];
       for (var i = 0; i < vars.visible.length; i++) {
         var x = this.me.x+vars.visible[i][0];
         var y = this.me.y+vars.visible[i][1];
@@ -128,8 +136,10 @@ export default function prophetTurn() {
       var path = utils.astar.call(this, [this.me.x, this.me.y], betterPos, 15);
       if (path!=null) {
         //this.log(path);
-        this.castleTalk(utils.connIndexOf(vars.moveable, path[0]));
-        return this.move(path[0][0], path[0][1]);
+        var move = path.splice(0, 1)[0];
+        curPath = path;
+        this.castleTalk(utils.connIndexOf(vars.moveable, move));
+        return this.move(move[0], move[1]);
       }
     }
   }

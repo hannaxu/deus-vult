@@ -6,6 +6,7 @@ var enemyCastles = [];
 var symmetry = [false, false];
 var deusVult = null; // boolean for whether or not in attack phase
 var deusVultFrom = null;
+var curPath = [];
 
 export default function preacherTurn() {
   //this.log("I am a Preacher at "+vars.xpos+" "+vars.ypos);
@@ -83,13 +84,26 @@ export default function preacherTurn() {
   if (this.fuel >= vars.moveCost*vars.moveRadius) {
 
     // IMPLEMENT LATER get in range of enemies
-    // var damageLoc = {};
-    // for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
-    //     var u = vars.visibleRobots[i].unit;
-    //     if (3 <= u && u <= 5) {
-    //
-    //     }
-    // }
+    /*
+    var damageLoc = {};
+    for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
+        var u = vars.visibleRobots[i].unit;
+        if (3 <= u && u <= 5) {
+          var dx = vars.visibleRobots[i].x-this.me.x;
+          var dy = vars.visibleRobots[i].y-this.me.y;
+          if (dx**2+dy**2 < vars.attackRadius[0]) {
+            this.log(1);
+          }
+        }
+    }
+    */
+    if (curPath.length>0) {
+      var move = curPath.splice(0, 1)[0];
+      if (vars.visibleRobotMap[this.me.y+move[1]][this.me.x+move[0]] == 0) {
+        return this.move(move[0], move[1])
+      }
+      curPath = [];
+    }
 
     // DEUS VULT, attack deusVult
     if (deusVult!=null) {
@@ -115,7 +129,7 @@ export default function preacherTurn() {
       var betterPos = [];
       var curDist = (this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2;
       // minimum distance AND on even tile AND not on resource tile
-      var alreadyOk = vars.MIN_LAT_DIST < curDist && (this.me.x+this.me.y)%2==0 && !vars.fuelMap[this.me.y][this.me.x] && !vars.karbMap[this.me.y][this.me.x];
+      var alreadyOk = vars.MIN_LAT_DIST < curDist && utils.onLattice(this.me.x, this.me.y) && !vars.fuelMap[this.me.y][this.me.x] && !vars.karbMap[this.me.y][this.me.x];
       for (var i = 0; i < vars.visible.length; i++) {
         var x = this.me.x+vars.visible[i][0];
         var y = this.me.y+vars.visible[i][1];
@@ -146,8 +160,10 @@ export default function preacherTurn() {
       var path = utils.astar.call(this, [this.me.x, this.me.y], betterPos, 15);
       if (path!=null) {
         //this.log(path);
-        this.castleTalk(utils.connIndexOf(vars.moveable, path[0]));
-        return this.move(path[0][0], path[0][1]);
+        var move = path.splice(0, 1)[0];
+        curPath = path;
+        this.castleTalk(utils.connIndexOf(vars.moveable, move));
+        return this.move(move[0], move[1]);
       }
     }
   }

@@ -54,7 +54,7 @@ export default function pilgrimTurn () {
                 pris.push(0);
             }
             //this.log(facts.length);
-            
+
             return pickAdjMove.call(this,facts,pris);
         }
     }
@@ -65,7 +65,7 @@ export default function pilgrimTurn () {
         for (var i=0; i<vars.rLocs.length; i++) {
             var p=vars.rLocs[i];
             if ((p.x-me.x)**2 + (p.y-me.y)**2<200 && vars.fuzzyCost[p.x][p.y].length>0 && me.turn-p.closed>100) {
-                openRecs.push(vars.fuzzyCost[p.x][p.y]);   
+                openRecs.push(vars.fuzzyCost[p.x][p.y]);
                 pris.push(p.type*(-6));
             }
         }
@@ -80,7 +80,7 @@ export default function pilgrimTurn () {
         return this.mine();
     }
     //this.log(vars.teamFuel);
-    
+
     return null;
 }
 

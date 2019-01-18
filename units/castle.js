@@ -25,7 +25,7 @@ var trackRobots = {}; // trackRobots[id] = [pos, unit]
 
 export default function castleTurn() {
   if (this.me.team==0) {
-    this.log("Round "+this.me.turn);
+    this.log("Castle Round "+this.me.turn);
   }
   //this.log("I am a Castle at "+this.me.x+" "+this.me.y);
   // utils.heapTest.call(this);
@@ -147,7 +147,7 @@ export default function castleTurn() {
   // tracks moving robots
   for (var i = 0; i < vars.castleTalkRobots.length; i++) {
     var robot = vars.castleTalkRobots[i];
-    var message = robot.castle_talk;
+    var message = robot.castle_talk % (1<<6);
     if (robot.unit < 2) continue;
     if (trackRobots[robot.id] != null) {
       var u = trackRobots[robot.id][1];
@@ -295,11 +295,11 @@ export default function castleTurn() {
   }
 
   //this.log("attackers "+headcount[3]+headcount[4]+headcount[5]);
-  if (enemyCastles.length > 0 && this.me.turn-lastDeusVult >= 20 && attackerCount >= vars.MIN_ATK && this.fuel >= vars.CAMPDIST) {
+  if (this.me.turn%200==0 || enemyCastles.length > 0 && this.me.turn-lastDeusVult >= 20 && attackerCount >= vars.MIN_ATK && this.fuel >= vars.CAMPDIST) {
     this.log("DEUS VULT "+enemyCastles[curAttack]);
     deusVult = enemyCastles[curAttack];
     //this.log(deusVult);
-    sendMessage.call(this, 2**15+utils.hashCoordinates(deusVult), vars.CAMPDIST);
+    sendMessage.call(this, 2**15+utils.hashCoordinates(deusVult), 100);
     for (var i = 0; i < vars.visibleRobots.length; i++) {
       var dx = this.me.x-vars.visibleRobots[i].x;
       var dy = this.me.y-vars.visibleRobots[i].y;

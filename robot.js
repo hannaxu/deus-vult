@@ -20,6 +20,8 @@ class MyRobot extends BCAbstractRobot {
 
   turn () {
     try {
+      this.castleTalk(127);
+
       vars.visibleRobotMap = this.getVisibleRobotMap();
       vars.xpos = this.me.x;
       vars.ypos = this.me.y;
@@ -105,7 +107,7 @@ class MyRobot extends BCAbstractRobot {
         }
         if(this.isRadioing(other_r))
           vars.radioRobots.push(other_r);
-        if(this.castleTalkRobots != null && other_r.castle_talk != 0)
+        if(this.castleTalkRobots != null)
           vars.castleTalkRobots.push(other_r);
       }
       utils.updateLocs.call(this);
