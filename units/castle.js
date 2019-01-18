@@ -55,6 +55,7 @@ export default function castleTurn() {
     //this.log("test");
 
     //resource consideration
+    //this.log("hello");
     var di = 1;
     var dj = 0;
     var seg = 1;
@@ -62,7 +63,7 @@ export default function castleTurn() {
     var j = this.me.y;
     var segPass = 0;
     for (var k = 0; k < 100; ++k) {
-      if( !(i < 0 || j < 0 || i > vars.xmax || j > vars.ymax) ) {
+      if( !(i < 0 || j < 0 || i >= vars.xmax || j >= vars.ymax) ) {
         if (vars.karbMap[j][i]) {
           deposits[0] += 1;
           deposits[1].push([j,i]);
@@ -84,7 +85,7 @@ export default function castleTurn() {
             ++seg;
       }
     }
-
+    //this.log("hel");
     function transferPt(coor, mx, my) {
       var y = coor[0]-my;
       if( y != 0 ) y = y/Math.abs(y);
@@ -101,7 +102,7 @@ export default function castleTurn() {
     }
     buildOptPil = buildOptPil.concat(vars.buildable);
 
-    //this.log("nearby deposits: " + buildOptPil);
+    this.log("nearby deposits: " + buildOptPil);
 
     // tracking robots
     for (var x = 0; x < vars.xmax; x++) {
