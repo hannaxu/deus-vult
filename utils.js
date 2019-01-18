@@ -361,8 +361,6 @@ export function connIndexOf (conn, val) {
       return i;
     }
   }
-  this.log(""+conn);
-  this.log(""+val);
   throw "ERROR Not in connection";
   return -1;
 }
