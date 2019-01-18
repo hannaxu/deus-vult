@@ -35,21 +35,9 @@ export default function prophetTurn() {
 
   // attacking
   if (this.fuel >= vars.attackCost) {
-    var bestDir = null;
-    for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
-      var x = vars.visibleEnemyRobots[i].x;
-      var y = vars.visibleEnemyRobots[i].y;
-      var dx = x-this.me.x;
-      var dy = y-this.me.y;
-      if (vars.attackRadius[0]<=dx**2+dy**2&&dx**2+dy**2<=vars.attackRadius[1]) {
-        if (bestDir==null||dx**2+dy**2 < bestDir[0]**2+bestDir[1]**2) {
-          bestDir = [dx, dy];
-        }
-      }
-    }
-    if (bestDir!=null) {
-      //this.log("Attacking "+(this.me.x+bestDir[0])+" "+(this.me.y+bestDir[1]));
-      return this.attack(bestDir[0], bestDir[1]);
+    var attackableEnemies = utils.findAttackableEnemies.call(this);
+    if (attackableEnemies.length>0) {
+      return this.attack(attackableEnemies[0][0], attackableEnemies[0][1])
     }
   }
 

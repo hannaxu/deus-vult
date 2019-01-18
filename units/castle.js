@@ -248,6 +248,10 @@ export default function castleTurn() {
         closePilgrim += 1;
   }
 
+  var attackLocation = attackPhase.call(this);
+  if (attackLocation!=null) {
+    return this.attack(attackLocation[0], attackLocation[1]);
+  }
 
   //if (!defend && (headcount[2]<1 || (headcount[2]<3 && this.me.turn > 10 && closePilgrim < deposits && castleOrder != 0)) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
@@ -315,5 +319,18 @@ export default function castleTurn() {
     lastDeusVult = this.me.turn;
     curAttack = (curAttack+1)%enemyCastles.length;
     return;
+  }
+}
+
+export function attackPhase() {
+  if (this.fuel < 10) {
+    return null;
+  }
+  if (this.karbonite >= vars.SPECS.UNITS[4]) {
+    return null;
+  }
+  var attackableEnemies = utils.findAttackableEnemies.call(this);
+  if (attackableEnemies.length>0) {
+    return attackableEnemies[0];
   }
 }
