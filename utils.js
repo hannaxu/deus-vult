@@ -58,7 +58,7 @@ export function checkBounds (x, y) {
 
 export function findMoveB (start, end) {
   if (vars.fuzzyCost[end[0]][end[1]].length==0) {
-    vars.fuzzyCost[end[0]][end[1]] = bfs.call(this, [end]);
+    vars.fuzzyCost[end[0]][end[1]] = bfs.call(this, [end],20);
     //this.log("Conducted bfs "+start+" "+end);
   }
   if (vars.fuzzyCost[end[0]][end[1]][start[0]][start[1]]==null) {
@@ -107,16 +107,16 @@ export function findMoveD (start, end) {
   return bestMove[2];
 }
 
-export function soloBFS(end) {
+export function soloBFS(end,maxdist) {
     if (vars.fuzzyCost[end[0]][end[1]].length==0) {
-    vars.fuzzyCost[end[0]][end[1]] = bfs.call(this, [end]);
+    vars.fuzzyCost[end[0]][end[1]] = bfs.call(this, [end],maxdist);
     //this.log("Conducted bfs "+start+" "+end);
   }
     return vars.fuzzyCost[end[0]][end[1]]
 }
 
 //list of [x,y]
-export function bfs (ends) {
+export function bfs (ends,maxdist) {
   var costs = []
   for (var x = 0; x < vars.xmax; x++) {
     costs.push([]);
@@ -133,7 +133,7 @@ export function bfs (ends) {
   while (index<queue.length) {
     //this.log("q "+queue[index]);
     var curCost = costs[queue[index][0]][queue[index][1]];
-    if (curCost[0]<20) {
+    if (curCost[0]<maxdist) {
       for (var i = 0; i < vars.moveable.length; i++) {
         var x = queue[index][0]+vars.moveable[i][0];
         var y = queue[index][1]+vars.moveable[i][1];

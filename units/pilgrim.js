@@ -30,7 +30,7 @@ export default function pilgrimTurn () {
             minDRv=d2;
         }
     }
-    if (minDR!=-1) utils.soloBFS([vars.rLocs[minDR].x,vars.rLocs[minDR].y]);
+    if (minDR!=-1) utils.soloBFS([vars.rLocs[minDR].x,vars.rLocs[minDR].y],16);
     //this.log("hi");
     if (me.karbonite==vars.maxKarb || me.fuel==vars.maxFuel) {
         //this.log("hi");
@@ -50,7 +50,7 @@ export default function pilgrimTurn () {
             var facts=[];
             var pris=[];
             for (var h in vars.baseLocs) {
-                facts.push(utils.soloBFS(utils.unhashCoordinates(h)));
+                facts.push(utils.soloBFS(utils.unhashCoordinates(h),20));
                 pris.push(0);
             }
             //this.log(facts.length);
@@ -64,7 +64,7 @@ export default function pilgrimTurn () {
         var pris=[];
         for (var i=0; i<vars.rLocs.length; i++) {
             var p=vars.rLocs[i];
-            if ((p.x-me.x)**2 + (p.y-me.y)**2<400 && vars.fuzzyCost[p.x][p.y].length>0 && me.turn-p.closed>100) {
+            if ((p.x-me.x)**2 + (p.y-me.y)**2<200 && vars.fuzzyCost[p.x][p.y].length>0 && me.turn-p.closed>100) {
                 openRecs.push(vars.fuzzyCost[p.x][p.y]);   
                 pris.push(p.type*(-6));
             }
@@ -84,13 +84,15 @@ export default function pilgrimTurn () {
     return null;
 }
 
+
+
 //turns+pri
 function minC(costs, pri,x,y) {
     //this.log('inc');
     var ret=99999;
     for (var i=0; i<costs.length; i++) {
         if (costs[i][x][y]!=null) {
-            var c=(costs[i][x][y][0]+pri[i])*200+costs[i][x][y][1];
+            var c=(costs[i][x][y][0]+pri[i])*200+costs[i][x][y][1]*4;
             if (c<ret) {
                 ret=c;
             }
