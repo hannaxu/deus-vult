@@ -4,7 +4,7 @@ export default {
   POS_INF: 2147483647,
   NEG_INF: -2147483648,
   MIN_ATK: 1000,
-  MIN_LAT_DIST: 0, // must be strictly greater than this
+  MIN_LAT_DIST: 2, // must be strictly greater than this
   SPECS: null,
   creatorPos: null,
   creatorOrder: null,
