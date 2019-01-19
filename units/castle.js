@@ -1,6 +1,7 @@
 import vars from '../variables';
 import * as utils from '../utils';
 import { sendMessage } from '../communication';
+import * as buildUtils from '../buildUtils';
 
 var team;
 var totC = 1;
@@ -54,55 +55,9 @@ export default function castleTurn() {
     //this.log(enemyCastles);
     //this.log("test");
 
-    //resource consideration
-    //this.log("hello");
-    var di = 1;
-    var dj = 0;
-    var seg = 1;
-    var i = this.me.x;
-    var j = this.me.y;
-    var segPass = 0;
-    for (var k = 0; k < 100; ++k) {
-      if( !(i < 0 || j < 0 || i >= vars.xmax || j >= vars.ymax) ) {
-        if (vars.karbMap[j][i]) {
-          deposits[0] += 1;
-          deposits[1].push([j,i]);
-        }
-        if (vars.fuelMap[j][i]) {
-          deposits[0] += 1;
-          deposits[2].push([j,i]);
-        }
-      }
-      i += di;
-      j += dj;
-      ++segPass;
-      if (segPass == seg) {
-        segPass = 0;
-        var temp = di;
-        di = -dj;
-        dj = temp;
-        if (dj == 0)
-            ++seg;
-      }
-    }
-    //this.log("hel");
-    function transferPt(coor, mx, my) {
-      var y = coor[0]-my;
-      if( y != 0 ) y = y/Math.abs(y);
-      var x = coor[1]-mx;
-      if( x != 0 ) x = x/Math.abs(x);
-      return [y, x];
-    }
-
-    for(var i = 0; i < deposits[1].length; i++) {
-      buildOptPil.push(transferPt(deposits[1][i], this.me.x, this.me.y));
-    }
-    for(var i = 0; i < deposits[2].length; i++) {
-      buildOptPil.push(transferPt(deposits[2][i], this.me.x, this.me.y));
-    }
-    buildOptPil = buildOptPil.concat(vars.buildable);
-
-    this.log("nearby deposits: " + buildOptPil);
+    var locs = buildUtils.optBuild(this.me.x, this.me.y);
+    deposits = locs[0];
+    buildOptPil = locs[1];
 
     // tracking robots
     for (var x = 0; x < vars.xmax; x++) {

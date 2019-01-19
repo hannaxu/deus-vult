@@ -515,9 +515,8 @@ export function findAttackableEnemies (pos=[this.me.x, this.me.y], range=vars.at
   for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
     var dx = vars.visibleEnemyRobots[i].x-this.me.x;
     var dy = vars.visibleEnemyRobots[i].y-this.me.y;
-    var u = vars.visibleEnemyRobots[i].unit;
     if (range[0]<=dx**2+dy**2&&dx**2+dy**2<=range[1]) {
-      ret.push([dx, dy, u]);
+      ret.push([dx, dy, vars.visibleEnemyRobots[i].unit]);
     }
   }
   ret.sort(function(x, y) {
