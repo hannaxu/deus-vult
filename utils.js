@@ -333,16 +333,16 @@ export function multiDest (ends) {
   return bfs.call(this, ends);
 }
 
-export function findConnections (r2) {
+export function findConnections (r2_min, r2_max) {
   var reachable = [];
-  for (var x = 1; x*x <= r2; x++) {
-    for (var y = 0; y*y <= r2; y++) {
-      if (x*x+y*y <= r2) {
-        reachable.push([x, y]);
-        reachable.push([-x, -y]);
-        reachable.push([-y, x]);
-        reachable.push([y, -x]);
-      }
+  for (var x = 1; x*x <= r2_max; x++) {
+    for (var y = 0; x*x+y*y <= r2_max; y++) {
+      if(x*x+y*y < r2_min)
+        continue;
+      reachable.push([x, y]);
+      reachable.push([-x, -y]);
+      reachable.push([-y, x]);
+      reachable.push([y, -x]);
     }
   }
   reachable.sort(function(x, y) {

@@ -11,6 +11,7 @@ import preacherTurn from './units/preacher';
 
 import * as utils from './utils';
 import { sendMessage, sendMessageTrusted, readMessages, castleLocsComm, cypherMessage } from './communication';
+import CastleTalk from './castleTalk';
 
 class MyRobot extends BCAbstractRobot {
   constructor () {
@@ -32,7 +33,6 @@ class MyRobot extends BCAbstractRobot {
         vars.fuelMap = this.getFuelMap();
         vars.ymax = vars.passableMap.length;
         vars.xmax = vars.passableMap[0].length;
-        vars.moveRadius = vars.SPECS.UNITS[this.me.unit].SPEED;
         vars.attackRadius = vars.SPECS.UNITS[this.me.unit].ATTACK_RADIUS;
         vars.buildRadius = 2;
         vars.visionRadius = vars.SPECS.UNITS[this.me.unit].VISION_RADIUS;
@@ -42,18 +42,13 @@ class MyRobot extends BCAbstractRobot {
         vars.maxFuel = vars.SPECS.UNITS[this.me.unit].FUEL_CAPACITY;
         utils.initRecList();
 
-        vars.visible = utils.findConnections.call(this, vars.visionRadius);
-        if (vars.attackRadius!=null) {
-          var temp = utils.findConnections.call(this, vars.attackRadius[1]);
-          for (var i = 0; i < temp.length; i++) {
-            if (temp[i][0]**2+temp[i][1]**2 >= vars.attackRadius[0]) {
-              vars.attackable.push(temp[i]);
-            }
-          }
-        }
-        vars.moveable = utils.findConnections.call(this, vars.moveRadius);
-        vars.buildable = utils.findConnections.call(this, vars.buildRadius);
+        vars.visible = utils.findConnections.call(this, 1, vars.visionRadius);
+        if (vars.attackRadius!=null)
+          vars.attackable = utils.findConnections.call(this, vars.attackRadius[0], vars.attackRadius[1]);
+        vars.buildable = utils.findConnections.call(this, 1, vars.buildRadius);
 
+        vars.CastleTalk = new CastleTalk(this);
+        
         for (var x = 0; x < vars.xmax; x++) {
           vars.fuzzyCost.push([]);
           for (var y = 0; y < vars.ymax; y++) {

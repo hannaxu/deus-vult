@@ -1,7 +1,8 @@
-import { equalArrays } from './utils';
+import { equalArrays, findConnections } from './utils';
+import vars from './variables';
 
 var actions = [{}, {}, {}, {}, {}, {}];
-var max_message = [1, 1, 1, 1, 1, 1];
+var max_message = [0, 0, 0, 0, 0, 0];
 var ret = null;
 
 export default class {
@@ -9,6 +10,39 @@ export default class {
       this.send = this.send.bind(_this);
       this.registerAction = this.registerAction.bind(_this);
       this.performAction = this.performAction.bind(_this);
+
+      var units;
+      if(_this.me.unit == vars.SPECS.CASTLE)
+        units = [
+          vars.SPECS.CHURCH,
+          vars.SPECS.PILGRIM,
+          vars.SPECS.CRUSADER,
+          vars.SPECS.PROPHET,
+          vars.SPECS.PREACHER,
+          vars.SPECS.CASTLE
+        ];
+      else
+        units = [_this.me.unit];
+
+      for(var unit in units) {
+        vars.moveRadius = vars.SPECS.UNITS[unit].SPEED;
+        vars.moveable = findConnections.call(_this, 1, vars.moveRadius);
+
+        if(vars.moveRadius > 0)
+          this.registerAction(unit, 'move', {'dxdy': vars.moveable});
+        if(unit < 3) {
+          var values = {'dxdy': vars.buildable}
+          if(unit < 2)
+            values['unit'] = [2, 3, 4, 5];
+          this.registerAction(unit, 'build', values);
+        }
+        if(unit == vars.SPECS.PILGRIM)
+          this.registerAction(unit, 'mine', {});
+        if(unit >= 2)
+          this.registerAction(unit, 'give', {'dxdy': vars.buildable});
+      }
+      //_this.log(actions);
+      //_this.log(max_message);
     }
 
     // Getters
@@ -87,17 +121,17 @@ export default class {
     }
 
     // Call during first turn.
-    registerAction(name, values) {
+    registerAction(unit, name, values) {
       // update overall maximum
       var combs = 1;
       for(var n in values) {
         combs *= values[n].length;
       }
-      max_message[this.me.unit] += combs;
+      max_message[unit] += combs;
 
-      actions[this.me.unit][name] = values;
+      actions[unit][name] = values;
 
-      return max_message[this.me.unit];
+      return max_message[unit];
     }
 
     // Call immediately before performing action.

@@ -44,6 +44,9 @@ export default {
   teamFuel: null,
   teamKarb: null,
 
+  // Managers
+  CastleTalk: null,
+
   // Robots visible to me
   visibleRobotMap: null,
   commRobots: null,         // all visible and radioable (for castles, all team robots, including yourself)
