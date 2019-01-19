@@ -102,7 +102,7 @@ class MyRobot extends BCAbstractRobot {
         }
         if(this.isRadioing(other_r))
           vars.radioRobots.push(other_r);
-        if(this.castleTalkRobots != null && other_r.castle_talk != 0)
+        if(vars.castleTalkRobots != null && other_r.castle_talk != 0)
           vars.castleTalkRobots.push(other_r);
       }
       utils.updateLocs.call(this);
@@ -141,7 +141,6 @@ class MyRobot extends BCAbstractRobot {
           }
         }
       }
-
       vars.firstTurn = false;
       return ret;
     }
