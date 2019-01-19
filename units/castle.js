@@ -217,7 +217,7 @@ export default function castleTurn() {
         var x = this.me.x+buildOptPil[i][1];
         var y = this.me.y+buildOptPil[i][0];
         if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-          sendMessage.call(this, castleOrder, buildOptPil[i][1]**2+buildOptPil[i][0]**2);
+          //sendMessage.call(this, castleOrder, buildOptPil[i][1]**2+buildOptPil[i][0]**2);
           //this.log("Building pilgrim at "+x+" "+y);
           buildCount[2]++;
           vars.buildRobot = 2;
@@ -233,7 +233,7 @@ export default function castleTurn() {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
       if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-        sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
+        //sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
         //this.log("Building pilgrim at "+x+" "+y);
         buildCount[5]++;
         vars.buildRobot = 5;
@@ -249,7 +249,7 @@ export default function castleTurn() {
         var x = this.me.x+vars.buildable[i][0];
         var y = this.me.y+vars.buildable[i][1];
         if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-          sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
+          //sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
           //this.log("Building pilgrim at "+x+" "+y);
           buildCount[4]++;
           vars.buildRobot = 4;

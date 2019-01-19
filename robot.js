@@ -71,7 +71,6 @@ class MyRobot extends BCAbstractRobot {
             var id = this.getRobot(vars.visibleRobotMap[y][x]);
             if (id==null||id.signal==-1||(id.unit!=vars.SPECS.CASTLE&&id.unit!=vars.SPECS.CHURCH)) continue;
             if (vars.buildable[i][0]**2+vars.buildable[i][1]**2!=id.signal_radius) continue;
-            vars.creatorOrder = cypherMessage(id.signal, this.me.team);
             vars.creatorPos = [x, y];
           }
           //this.log("Created by "+vars.creatorPos);

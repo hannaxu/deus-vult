@@ -9,7 +9,6 @@ export default {
   DEFENSE_DEPTH: 15,
   SPECS: null,
   creatorPos: null,
-  creatorOrder: null,
   myPos: null,
 
   // Map information
