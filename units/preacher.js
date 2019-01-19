@@ -42,7 +42,7 @@ export default function preacherTurn() {
       var y = this.me.y+vars.attackable[i][1];
       var dx = vars.attackable[i][0];
       var dy = vars.attackable[i][1];
-      if (utils.checkBounds(x, y)&&vars.passableMap[y][x]) {
+      if (utils.checkBounds(x, y)) {
         var hit = 0;
         var damaging = false;
         vars.buildable.push([0, 0]);
