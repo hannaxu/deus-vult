@@ -25,7 +25,7 @@ class MyRobot extends BCAbstractRobot {
       vars.ypos = this.me.y;
       vars.myPos = [this.me.x, this.me.y];
       vars.teamFuel = this.fuel;
-      vars.teamKarb = this.kabonite;
+      vars.teamKarb = this.karbonite;
 
       if (this.me.turn==1) {
         vars.passableMap = this.map;

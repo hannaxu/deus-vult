@@ -32,14 +32,14 @@ export default function pilgrimTurn () {
     }
     if (minDR!=-1) utils.soloBFS([vars.rLocs[minDR].x,vars.rLocs[minDR].y],16);
     //this.log("hi");
-    if (me.karbonite==vars.maxKarb || me.fuel==vars.maxFuel) {
+    if ( me.fuel==vars.maxFuel || me.karbonite== vars.maxKarb || (me.karbonite == vars.maxKarb/2 && vars.teamKarb <=15) ) {
         //this.log("hi");
         for (var i=0; i<8; i++) {
             var x=me.x+vars.buildable[i][0];
             var y=me.y+vars.buildable[i][1];
             if (utils.checkBounds(x,y) && vars.visibleRobotMap[y][x]>0) {
                 var r=this.getRobot(vars.visibleRobotMap[y][x]);
-                if (r!=null && (r.unit==vars.SPECS.CASTLE || r.unit==vars.SPECS.CASTLE)) {
+                if (r!=null && (r.unit==vars.SPECS.CASTLE || r.unit==vars.SPECS.CHURCH)) {
                     //this.log("giving stuff");
                     return this.give(vars.buildable[i][0],vars.buildable[i][1],me.karbonite,me.fuel);
                 }
