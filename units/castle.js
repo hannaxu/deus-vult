@@ -239,7 +239,7 @@ export default function castleTurn() {
   var defend = false;
   if( enemyUnit > 0 ) {
     defend = true;
-    //this.log("defend");
+    this.log("defend");
   }
 
   var closePilgrim = 0;
@@ -249,10 +249,30 @@ export default function castleTurn() {
         closePilgrim += 1;
   }
 
+  if (this.fuel >= vars.attackCost) {
+    var bestDir = null;
+    for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
+      if( vars.visibleEnemyRobots[i].unit == 2 || (this.karb >= 25 && this.fuel >= 50) )
+        continue;
+      var x = vars.visibleEnemyRobots[i].x;
+      var y = vars.visibleEnemyRobots[i].y;
+      var dx = x-this.me.x;
+      var dy = y-this.me.y;
+      if (vars.attackRadius[0]<=dx**2+dy**2&&dx**2+dy**2<=vars.attackRadius[1]) {
+        if (bestDir==null||dx**2+dy**2 < bestDir[0]**2+bestDir[1]**2) {
+          bestDir = [dx, dy];
+        }
+      }
+    }
+    if (bestDir!=null) {
+      this.log("Attacking "+(this.me.x+bestDir[0])+" "+(this.me.y+bestDir[1]));
+      return this.attack(bestDir[0], bestDir[1]);
+    }
+  }
 
   //if (!defend && (headcount[2]<1 || (headcount[2]<3 && this.me.turn > 10 && closePilgrim < deposits && castleOrder != 0)) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
-    if ( !defend && ( headcount[2]<1 || (headcount[4] > 4 && this.me.turn > 10 && closePilgrim < Math.min(deposits[1].length+1, deposits[0])) ) ) {
+    if ( !defend && ( headcount[2]<1 || (headcount[4] > 3 && this.me.turn > 10 && closePilgrim < Math.min(deposits[1].length+1, deposits[0])) ) ) {
       for (var i = 0; i < buildOptPil.length; i++) {
         var x = this.me.x+buildOptPil[i][1];
         var y = this.me.y+buildOptPil[i][0];
@@ -284,7 +304,7 @@ export default function castleTurn() {
 
   // prophet build
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
-    if ( ((castleOrder == 0 || this.me.turn > 10) && headcount[4] < 20) || this.karbonite >= 100 ) {
+    if ( ((castleOrder == 0 || this.me.turn > 10) && headcount[4] < 20) || (this.karbonite >= 100 && this.fuel >= 300)) {
       for (var i = 0; i < vars.buildable.length; i++) {
         var x = this.me.x+vars.buildable[i][0];
         var y = this.me.y+vars.buildable[i][1];
