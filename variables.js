@@ -4,7 +4,7 @@ export default {
   POS_INF: 2147483647,
   NEG_INF: -2147483648,
   MIN_ATK_ROBOTS: 30,
-  MIN_ATK_FUEL: 30,
+  MIN_ATK_FUEL: 5000,
   MIN_LAT_DIST: 2, // must be strictly greater than this
   DEFENSE_DEPTH: 15,
   SPECS: null,
