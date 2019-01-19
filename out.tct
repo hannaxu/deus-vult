@@ -1,0 +1,2580 @@
+[31m[Robot 3844 Log][0m "Castle Round 1"
+[31m[Robot 3844 Log][0m "VERTICAL: true; HORIZONTAL: false"
+[31m[Robot 3844 Log][0m "nearby deposits: 0,1,0,-1,1,-1,1,0,-1,0,0,1,0,-1,1,1,-1,-1,-1,1,1,-1"
+[34m[Robot 715 Log][0m "VERTICAL: true; HORIZONTAL: false"
+[34m[Robot 715 Log][0m "nearby deposits: 0,1,0,-1,1,1,1,0,-1,0,0,1,0,-1,1,1,-1,-1,-1,1,1,-1"
+[31m[Robot 767 Log][0m "Castle Round 1"
+[31m[Robot 767 Log][0m "VERTICAL: true; HORIZONTAL: false"
+[31m[Robot 767 Log][0m "nearby deposits: 0,-1,-1,-1,1,0,-1,0,0,1,0,-1,1,1,-1,-1,-1,1,1,-1"
+[34m[Robot 3141 Log][0m "VERTICAL: true; HORIZONTAL: false"
+[34m[Robot 3141 Log][0m "nearby deposits: 0,1,-1,1,1,0,-1,0,0,1,0,-1,1,1,-1,-1,-1,1,1,-1"
+[31m[Robot 3844 Log][0m "Castle Round 2"
+[31m[Robot 767 Log][0m "Castle Round 2"
+[31m[Robot 3844 Log][0m "Castle Round 3"
+[31m[Robot 3844 Log][0m {"767":[4,8],"3844":[4,29]}
+[34m[Robot 715 Log][0m {"715":[27,29],"3141":[27,8]}
+[31m[Robot 767 Log][0m "Castle Round 3"
+[31m[Robot 767 Log][0m {"767":[4,8],"3844":[4,29]}
+[34m[Robot 3141 Log][0m {"715":[27,29],"3141":[27,8]}
+[31m[Robot 3844 Log][0m "Castle Round 4"
+[31m[Robot 767 Log][0m "Castle Round 4"
+[31m[Robot 3844 Log][0m "Castle Round 5"
+[31m[Robot 767 Log][0m "Castle Round 5"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 112ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 22ms.
+[31m[Robot 3331 Error][0m Robot is frozen due to clock overdrawn by 14ms.
+[31m[Robot 3844 Log][0m "Castle Round 6"
+[31m[Robot 767 Log][0m "Castle Round 6"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 92ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 2ms.
+[31m[Robot 3331 Error][0m Robot is frozen due to clock overdrawn by 45ms.
+[34m[Robot 3972 Error][0m Robot is frozen due to clock overdrawn by 8ms.
+[31m[Robot 3844 Log][0m "Castle Round 7"
+[31m[Robot 767 Log][0m "Castle Round 7"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 72ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 116ms.
+[31m[Robot 3331 Error][0m Robot is frozen due to clock overdrawn by 25ms.
+[34m[Robot 3972 Error][0m Robot is frozen due to clock overdrawn by 16ms.
+[31m[Robot 3844 Log][0m "Castle Round 8"
+[31m[Robot 767 Log][0m "Castle Round 8"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 52ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 96ms.
+[31m[Robot 3331 Error][0m Robot is frozen due to clock overdrawn by 5ms.
+[34m[Robot 3972 Error][0m Robot is frozen due to clock overdrawn by 35ms.
+[31m[Robot 3844 Log][0m "Castle Round 9"
+[31m[Robot 767 Log][0m "Castle Round 9"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 33ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 76ms.
+[31m[Robot 3331 Error][0m Robot is frozen due to clock overdrawn by 4ms.
+[34m[Robot 3972 Error][0m Robot is frozen due to clock overdrawn by 15ms.
+[31m[Robot 3844 Log][0m "Castle Round 10"
+[31m[Robot 767 Log][0m "Castle Round 10"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 13ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 56ms.
+[31m[Robot 3331 Error][0m Robot is frozen due to clock overdrawn by 24ms.
+[34m[Robot 3972 Error][0m Robot is frozen due to clock overdrawn by 30ms.
+[31m[Robot 3844 Log][0m "Castle Round 11"
+[31m[Robot 767 Log][0m "Castle Round 11"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 66ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 36ms.
+[31m[Robot 3331 Error][0m Robot is frozen due to clock overdrawn by 4ms.
+[34m[Robot 3972 Error][0m Robot is frozen due to clock overdrawn by 10ms.
+[31m[Robot 3844 Log][0m "Castle Round 12"
+[31m[Robot 767 Log][0m "Castle Round 12"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 46ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 16ms.
+[31m[Robot 3331 Error][0m Robot is frozen due to clock overdrawn by 33ms.
+[34m[Robot 3972 Error][0m Robot is frozen due to clock overdrawn by 16ms.
+[31m[Robot 3844 Log][0m "Castle Round 13"
+[31m[Robot 767 Log][0m "Castle Round 13"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 26ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 47ms.
+[31m[Robot 3331 Error][0m Robot is frozen due to clock overdrawn by 13ms.
+[31m[Robot 3844 Log][0m "Castle Round 14"
+[31m[Robot 767 Log][0m "Castle Round 14"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 6ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 27ms.
+[31m[Robot 3331 Error][0m Robot is frozen due to clock overdrawn by 30ms.
+[31m[Robot 3844 Log][0m "Castle Round 15"
+[31m[Robot 767 Log][0m "Castle Round 15"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 22ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 7ms.
+[31m[Robot 3331 Error][0m Robot is frozen due to clock overdrawn by 10ms.
+[31m[Robot 3844 Log][0m "Castle Round 16"
+[31m[Robot 767 Log][0m "Castle Round 16"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 2ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 58ms.
+[31m[Robot 3844 Log][0m "Castle Round 17"
+[31m[Robot 767 Log][0m "Castle Round 17"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 15ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 38ms.
+[31m[Robot 3844 Log][0m "Castle Round 18"
+[31m[Robot 767 Log][0m "Castle Round 18"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 42ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 18ms.
+[31m[Robot 3844 Log][0m "Castle Round 19"
+[31m[Robot 767 Log][0m "Castle Round 19"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 22ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 58ms.
+[31m[Robot 3844 Log][0m "Castle Round 20"
+[31m[Robot 767 Log][0m "Castle Round 20"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 2ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 38ms.
+[31m[Robot 3844 Log][0m "Castle Round 21"
+[31m[Robot 767 Log][0m "Castle Round 21"
+[31m[Robot 765 Error][0m Robot is frozen due to clock overdrawn by 4ms.
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 18ms.
+[31m[Robot 3844 Log][0m "Castle Round 22"
+[31m[Robot 767 Log][0m "Castle Round 22"
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 30ms.
+[31m[Robot 3844 Log][0m "Castle Round 23"
+[31m[Robot 767 Log][0m "Castle Round 23"
+[34m[Robot 124 Error][0m Robot is frozen due to clock overdrawn by 10ms.
+[31m[Robot 3844 Log][0m "Castle Round 24"
+[31m[Robot 767 Log][0m "Castle Round 24"
+[31m[Robot 3844 Log][0m "Castle Round 25"
+[31m[Robot 767 Log][0m "Castle Round 25"
+[31m[Robot 3844 Log][0m "Castle Round 26"
+[31m[Robot 767 Log][0m "Castle Round 26"
+[31m[Robot 3844 Log][0m "Castle Round 27"
+[31m[Robot 767 Log][0m "Castle Round 27"
+[31m[Robot 3844 Log][0m "Castle Round 28"
+[31m[Robot 767 Log][0m "Castle Round 28"
+[31m[Robot 3844 Log][0m "Castle Round 29"
+[31m[Robot 767 Log][0m "Castle Round 29"
+[31m[Robot 3844 Log][0m "Castle Round 30"
+[31m[Robot 767 Log][0m "Castle Round 30"
+[31m[Robot 3844 Log][0m "Castle Round 31"
+[31m[Robot 767 Log][0m "Castle Round 31"
+[31m[Robot 3844 Log][0m "Castle Round 32"
+[31m[Robot 767 Log][0m "Castle Round 32"
+[31m[Robot 3844 Log][0m "Castle Round 33"
+[31m[Robot 767 Log][0m "Castle Round 33"
+[31m[Robot 3844 Log][0m "Castle Round 34"
+[31m[Robot 767 Log][0m "Castle Round 34"
+[31m[Robot 3844 Log][0m "Castle Round 35"
+[31m[Robot 767 Log][0m "Castle Round 35"
+[31m[Robot 3844 Log][0m "Castle Round 36"
+[31m[Robot 767 Log][0m "Castle Round 36"
+[31m[Robot 3844 Log][0m "Castle Round 37"
+[31m[Robot 767 Log][0m "Castle Round 37"
+[31m[Robot 3844 Log][0m "Castle Round 38"
+[31m[Robot 767 Log][0m "Castle Round 38"
+[31m[Robot 3844 Log][0m "Castle Round 39"
+[31m[Robot 767 Log][0m "Castle Round 39"
+[31m[Robot 764 Error][0m Robot is frozen due to clock overdrawn by 24ms.
+[31m[Robot 3844 Log][0m "Castle Round 40"
+[31m[Robot 767 Log][0m "Castle Round 40"
+[31m[Robot 764 Error][0m Robot is frozen due to clock overdrawn by 4ms.
+[31m[Robot 3844 Log][0m "Castle Round 41"
+[31m[Robot 767 Log][0m "Castle Round 41"
+[31m[Robot 3844 Log][0m "Castle Round 42"
+[31m[Robot 767 Log][0m "Castle Round 42"
+[31m[Robot 3844 Log][0m "Castle Round 43"
+[31m[Robot 767 Log][0m "Castle Round 43"
+[31m[Robot 3844 Log][0m "Castle Round 44"
+[31m[Robot 767 Log][0m "Castle Round 44"
+[31m[Robot 3844 Log][0m "Castle Round 45"
+[31m[Robot 767 Log][0m "Castle Round 45"
+[31m[Robot 3844 Log][0m "Castle Round 46"
+[31m[Robot 767 Log][0m "Castle Round 46"
+[31m[Robot 3844 Log][0m "Castle Round 47"
+[31m[Robot 767 Log][0m "Castle Round 47"
+[31m[Robot 3844 Log][0m "Castle Round 48"
+[31m[Robot 767 Log][0m "Castle Round 48"
+[31m[Robot 3844 Log][0m "Castle Round 49"
+[31m[Robot 767 Log][0m "Castle Round 49"
+[31m[Robot 3844 Log][0m "Castle Round 50"
+[31m[Robot 767 Log][0m "Castle Round 50"
+[31m[Robot 3844 Log][0m "Castle Round 51"
+[31m[Robot 767 Log][0m "Castle Round 51"
+[31m[Robot 3844 Log][0m "Castle Round 52"
+[31m[Robot 767 Log][0m "Castle Round 52"
+[31m[Robot 3844 Log][0m "Castle Round 53"
+[31m[Robot 767 Log][0m "Castle Round 53"
+[31m[Robot 3844 Log][0m "Castle Round 54"
+[31m[Robot 767 Log][0m "Castle Round 54"
+[31m[Robot 3844 Log][0m "Castle Round 55"
+[31m[Robot 767 Log][0m "Castle Round 55"
+[31m[Robot 3844 Log][0m "Castle Round 56"
+[31m[Robot 767 Log][0m "Castle Round 56"
+[31m[Robot 3844 Log][0m "Castle Round 57"
+[31m[Robot 767 Log][0m "Castle Round 57"
+[31m[Robot 3844 Log][0m "Castle Round 58"
+[31m[Robot 767 Log][0m "Castle Round 58"
+[31m[Robot 3844 Log][0m "Castle Round 59"
+[31m[Robot 767 Log][0m "Castle Round 59"
+[31m[Robot 3844 Log][0m "Castle Round 60"
+[31m[Robot 767 Log][0m "Castle Round 60"
+[31m[Robot 3844 Log][0m "Castle Round 61"
+[31m[Robot 767 Log][0m "Castle Round 61"
+[31m[Robot 3844 Log][0m "Castle Round 62"
+[31m[Robot 767 Log][0m "Castle Round 62"
+[31m[Robot 3844 Log][0m "Castle Round 63"
+[31m[Robot 767 Log][0m "Castle Round 63"
+[31m[Robot 3844 Log][0m "Castle Round 64"
+[31m[Robot 767 Log][0m "Castle Round 64"
+[31m[Robot 3844 Log][0m "Castle Round 65"
+[31m[Robot 767 Log][0m "Castle Round 65"
+[31m[Robot 3844 Log][0m "Castle Round 66"
+[31m[Robot 767 Log][0m "Castle Round 66"
+[31m[Robot 3844 Log][0m "Castle Round 67"
+[31m[Robot 767 Log][0m "Castle Round 67"
+[31m[Robot 3844 Log][0m "Castle Round 68"
+[31m[Robot 767 Log][0m "Castle Round 68"
+[31m[Robot 3844 Log][0m "Castle Round 69"
+[31m[Robot 767 Log][0m "Castle Round 69"
+[31m[Robot 3844 Log][0m "Castle Round 70"
+[31m[Robot 767 Log][0m "Castle Round 70"
+[31m[Robot 3844 Log][0m "Castle Round 71"
+[31m[Robot 767 Log][0m "Castle Round 71"
+[31m[Robot 3844 Log][0m "Castle Round 72"
+[31m[Robot 767 Log][0m "Castle Round 72"
+[31m[Robot 3844 Log][0m "Castle Round 73"
+[31m[Robot 767 Log][0m "Castle Round 73"
+[31m[Robot 3844 Log][0m "Castle Round 74"
+[31m[Robot 767 Log][0m "Castle Round 74"
+[31m[Robot 3844 Log][0m "Castle Round 75"
+[31m[Robot 767 Log][0m "Castle Round 75"
+[31m[Robot 3844 Log][0m "Castle Round 76"
+[31m[Robot 767 Log][0m "Castle Round 76"
+[31m[Robot 3844 Log][0m "Castle Round 77"
+[31m[Robot 767 Log][0m "Castle Round 77"
+[31m[Robot 3844 Log][0m "Castle Round 78"
+[31m[Robot 767 Log][0m "Castle Round 78"
+[31m[Robot 3844 Log][0m "Castle Round 79"
+[31m[Robot 767 Log][0m "Castle Round 79"
+[31m[Robot 3844 Log][0m "Castle Round 80"
+[31m[Robot 767 Log][0m "Castle Round 80"
+[31m[Robot 3844 Log][0m "Castle Round 81"
+[31m[Robot 767 Log][0m "Castle Round 81"
+[31m[Robot 3844 Log][0m "Castle Round 82"
+[31m[Robot 767 Log][0m "Castle Round 82"
+[31m[Robot 3844 Log][0m "Castle Round 83"
+[31m[Robot 767 Log][0m "Castle Round 83"
+[31m[Robot 3844 Log][0m "Castle Round 84"
+[31m[Robot 767 Log][0m "Castle Round 84"
+[31m[Robot 3844 Log][0m "Castle Round 85"
+[31m[Robot 767 Log][0m "Castle Round 85"
+[31m[Robot 3844 Log][0m "Castle Round 86"
+[31m[Robot 767 Log][0m "Castle Round 86"
+[31m[Robot 3844 Log][0m "Castle Round 87"
+[31m[Robot 767 Log][0m "Castle Round 87"
+[31m[Robot 3844 Log][0m "Castle Round 88"
+[31m[Robot 767 Log][0m "Castle Round 88"
+[31m[Robot 3844 Log][0m "Castle Round 89"
+[31m[Robot 767 Log][0m "Castle Round 89"
+[31m[Robot 3844 Log][0m "Castle Round 90"
+[31m[Robot 767 Log][0m "Castle Round 90"
+[31m[Robot 3844 Log][0m "Castle Round 91"
+[31m[Robot 767 Log][0m "Castle Round 91"
+[31m[Robot 3844 Log][0m "Castle Round 92"
+[31m[Robot 767 Log][0m "Castle Round 92"
+[31m[Robot 3844 Log][0m "Castle Round 93"
+[31m[Robot 767 Log][0m "Castle Round 93"
+[31m[Robot 3844 Log][0m "Castle Round 94"
+[31m[Robot 767 Log][0m "Castle Round 94"
+[31m[Robot 3844 Log][0m "Castle Round 95"
+[31m[Robot 767 Log][0m "Castle Round 95"
+[31m[Robot 3844 Log][0m "Castle Round 96"
+[31m[Robot 767 Log][0m "Castle Round 96"
+[31m[Robot 3844 Log][0m "Castle Round 97"
+[31m[Robot 767 Log][0m "Castle Round 97"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 143ms.
+[31m[Robot 3844 Log][0m "Castle Round 98"
+[31m[Robot 767 Log][0m "Castle Round 98"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 123ms.
+[31m[Robot 3844 Log][0m "Castle Round 99"
+[31m[Robot 767 Log][0m "Castle Round 99"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 103ms.
+[31m[Robot 3844 Log][0m "Castle Round 100"
+[31m[Robot 767 Log][0m "Castle Round 100"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 83ms.
+[31m[Robot 3844 Log][0m "Castle Round 101"
+[31m[Robot 767 Log][0m "Castle Round 101"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 63ms.
+[31m[Robot 3844 Log][0m "Castle Round 102"
+[31m[Robot 767 Log][0m "Castle Round 102"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 43ms.
+[31m[Robot 3844 Log][0m "Castle Round 103"
+[31m[Robot 767 Log][0m "Castle Round 103"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 23ms.
+[31m[Robot 3844 Log][0m "Castle Round 104"
+[31m[Robot 767 Log][0m "Castle Round 104"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 3ms.
+[31m[Robot 3844 Log][0m "Castle Round 105"
+[31m[Robot 767 Log][0m "Castle Round 105"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 74ms.
+[31m[Robot 3844 Log][0m "Castle Round 106"
+[31m[Robot 767 Log][0m "Castle Round 106"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 54ms.
+[31m[Robot 3844 Log][0m "Castle Round 107"
+[31m[Robot 767 Log][0m "Castle Round 107"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 34ms.
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 31ms.
+[31m[Robot 3844 Log][0m "Castle Round 108"
+[31m[Robot 767 Log][0m "Castle Round 108"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 14ms.
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 11ms.
+[31m[Robot 3844 Log][0m "Castle Round 109"
+[31m[Robot 767 Log][0m "Castle Round 109"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 40ms.
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 96ms.
+[31m[Robot 3844 Log][0m "Castle Round 110"
+[31m[Robot 767 Log][0m "Castle Round 110"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 20ms.
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 76ms.
+[31m[Robot 3844 Log][0m "Castle Round 111"
+[31m[Robot 767 Log][0m "Castle Round 111"
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 56ms.
+[31m[Robot 3844 Log][0m "Castle Round 112"
+[31m[Robot 767 Log][0m "Castle Round 112"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 5ms.
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 36ms.
+[31m[Robot 3844 Log][0m "Castle Round 113"
+[31m[Robot 767 Log][0m "Castle Round 113"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 31ms.
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 16ms.
+[31m[Robot 3844 Log][0m "Castle Round 114"
+[31m[Robot 767 Log][0m "Castle Round 114"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 11ms.
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 79ms.
+[31m[Robot 3844 Log][0m "Castle Round 115"
+[31m[Robot 767 Log][0m "Castle Round 115"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 34ms.
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 59ms.
+[31m[Robot 3844 Log][0m "Castle Round 116"
+[31m[Robot 767 Log][0m "Castle Round 116"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 14ms.
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 39ms.
+[31m[Robot 3844 Log][0m "Castle Round 117"
+[31m[Robot 767 Log][0m "Castle Round 117"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 33ms.
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 19ms.
+[31m[Robot 3844 Log][0m "Castle Round 118"
+[31m[Robot 767 Log][0m "Castle Round 118"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 13ms.
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 42ms.
+[31m[Robot 3844 Log][0m "Castle Round 119"
+[31m[Robot 767 Log][0m "Castle Round 119"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 26ms.
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 22ms.
+[31m[Robot 3844 Log][0m "Castle Round 120"
+[31m[Robot 767 Log][0m "Castle Round 120"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 6ms.
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 2ms.
+[31m[Robot 3844 Log][0m "Castle Round 121"
+[31m[Robot 767 Log][0m "Castle Round 121"
+[31m[Robot 722 Error][0m Robot is frozen due to clock overdrawn by 20ms.
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 16ms.
+[31m[Robot 3844 Log][0m "Castle Round 122"
+[31m[Robot 767 Log][0m "Castle Round 122"
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 12ms.
+[31m[Robot 3844 Log][0m "Castle Round 123"
+[31m[Robot 767 Log][0m "Castle Round 123"
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 10ms.
+[31m[Robot 3844 Log][0m "Castle Round 124"
+[31m[Robot 767 Log][0m "Castle Round 124"
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 35ms.
+[31m[Robot 3844 Log][0m "Castle Round 125"
+[31m[Robot 767 Log][0m "Castle Round 125"
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 15ms.
+[31m[Robot 3844 Log][0m "Castle Round 126"
+[31m[Robot 767 Log][0m "Castle Round 126"
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 30ms.
+[31m[Robot 3844 Log][0m "Castle Round 127"
+[31m[Robot 767 Log][0m "Castle Round 127"
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 10ms.
+[31m[Robot 3844 Log][0m "Castle Round 128"
+[31m[Robot 767 Log][0m "Castle Round 128"
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 24ms.
+[31m[Robot 3844 Log][0m "Castle Round 129"
+[31m[Robot 767 Log][0m "Castle Round 129"
+[34m[Robot 1988 Error][0m Robot is frozen due to clock overdrawn by 4ms.
+[31m[Robot 3844 Log][0m "Castle Round 130"
+[31m[Robot 767 Log][0m "Castle Round 130"
+[31m[Robot 3844 Log][0m "Castle Round 131"
+[31m[Robot 767 Log][0m "Castle Round 131"
+[31m[Robot 3844 Log][0m "Castle Round 132"
+[31m[Robot 767 Log][0m "Castle Round 132"
+[31m[Robot 3844 Log][0m "Castle Round 133"
+[31m[Robot 767 Log][0m "Castle Round 133"
+[31m[Robot 3844 Log][0m "Castle Round 134"
+[31m[Robot 767 Log][0m "Castle Round 134"
+[31m[Robot 3844 Log][0m "Castle Round 135"
+[31m[Robot 767 Log][0m "Castle Round 135"
+[31m[Robot 3844 Log][0m "Castle Round 136"
+[31m[Robot 767 Log][0m "Castle Round 136"
+[31m[Robot 3844 Log][0m "Castle Round 137"
+[31m[Robot 767 Log][0m "Castle Round 137"
+[31m[Robot 3844 Log][0m "Castle Round 138"
+[31m[Robot 767 Log][0m "Castle Round 138"
+[31m[Robot 3844 Log][0m "Castle Round 139"
+[31m[Robot 767 Log][0m "Castle Round 139"
+[31m[Robot 3844 Log][0m "Castle Round 140"
+[31m[Robot 767 Log][0m "Castle Round 140"
+[31m[Robot 3844 Log][0m "Castle Round 141"
+[31m[Robot 767 Log][0m "Castle Round 141"
+[31m[Robot 3844 Log][0m "Castle Round 142"
+[31m[Robot 767 Log][0m "Castle Round 142"
+[31m[Robot 3844 Log][0m "Castle Round 143"
+[31m[Robot 767 Log][0m "Castle Round 143"
+[31m[Robot 3844 Log][0m "Castle Round 144"
+[31m[Robot 767 Log][0m "Castle Round 144"
+[31m[Robot 3844 Log][0m "Castle Round 145"
+[31m[Robot 767 Log][0m "Castle Round 145"
+[31m[Robot 3844 Log][0m "Castle Round 146"
+[31m[Robot 767 Log][0m "Castle Round 146"
+[31m[Robot 3844 Log][0m "Castle Round 147"
+[31m[Robot 767 Log][0m "Castle Round 147"
+[31m[Robot 3844 Log][0m "Castle Round 148"
+[31m[Robot 767 Log][0m "Castle Round 148"
+[31m[Robot 3844 Log][0m "Castle Round 149"
+[31m[Robot 767 Log][0m "Castle Round 149"
+[31m[Robot 3844 Log][0m "Castle Round 150"
+[31m[Robot 767 Log][0m "Castle Round 150"
+[31m[Robot 3844 Log][0m "Castle Round 151"
+[31m[Robot 767 Log][0m "Castle Round 151"
+[31m[Robot 3844 Log][0m "Castle Round 152"
+[31m[Robot 767 Log][0m "Castle Round 152"
+[31m[Robot 3844 Log][0m "Castle Round 153"
+[31m[Robot 767 Log][0m "Castle Round 153"
+[31m[Robot 3844 Log][0m "Castle Round 154"
+[31m[Robot 767 Log][0m "Castle Round 154"
+[31m[Robot 3844 Log][0m "Castle Round 155"
+[31m[Robot 767 Log][0m "Castle Round 155"
+[31m[Robot 3844 Log][0m "Castle Round 156"
+[31m[Robot 767 Log][0m "Castle Round 156"
+[31m[Robot 3844 Log][0m "Castle Round 157"
+[31m[Robot 767 Log][0m "Castle Round 157"
+[31m[Robot 3844 Log][0m "Castle Round 158"
+[31m[Robot 767 Log][0m "Castle Round 158"
+[31m[Robot 3844 Log][0m "Castle Round 159"
+[31m[Robot 767 Log][0m "Castle Round 159"
+[31m[Robot 3844 Log][0m "Castle Round 160"
+[31m[Robot 767 Log][0m "Castle Round 160"
+[31m[Robot 3844 Log][0m "Castle Round 161"
+[31m[Robot 767 Log][0m "Castle Round 161"
+[31m[Robot 3844 Log][0m "Castle Round 162"
+[31m[Robot 767 Log][0m "Castle Round 162"
+[31m[Robot 3844 Log][0m "Castle Round 163"
+[31m[Robot 767 Log][0m "Castle Round 163"
+[31m[Robot 3844 Log][0m "Castle Round 164"
+[31m[Robot 767 Log][0m "Castle Round 164"
+[31m[Robot 3844 Log][0m "Castle Round 165"
+[31m[Robot 767 Log][0m "Castle Round 165"
+[31m[Robot 3844 Log][0m "Castle Round 166"
+[31m[Robot 767 Log][0m "Castle Round 166"
+[31m[Robot 3844 Log][0m "Castle Round 167"
+[31m[Robot 767 Log][0m "Castle Round 167"
+[31m[Robot 3844 Log][0m "Castle Round 168"
+[31m[Robot 767 Log][0m "Castle Round 168"
+[31m[Robot 3844 Log][0m "Castle Round 169"
+[31m[Robot 767 Log][0m "Castle Round 169"
+[31m[Robot 3844 Log][0m "Castle Round 170"
+[31m[Robot 767 Log][0m "Castle Round 170"
+[31m[Robot 3844 Log][0m "Castle Round 171"
+[31m[Robot 767 Log][0m "Castle Round 171"
+[31m[Robot 3844 Log][0m "Castle Round 172"
+[31m[Robot 767 Log][0m "Castle Round 172"
+[31m[Robot 3844 Log][0m "Castle Round 173"
+[31m[Robot 767 Log][0m "Castle Round 173"
+[31m[Robot 3844 Log][0m "Castle Round 174"
+[31m[Robot 767 Log][0m "Castle Round 174"
+[31m[Robot 3844 Log][0m "Castle Round 175"
+[31m[Robot 767 Log][0m "Castle Round 175"
+[31m[Robot 3844 Log][0m "Castle Round 176"
+[31m[Robot 767 Log][0m "Castle Round 176"
+[31m[Robot 3844 Log][0m "Castle Round 177"
+[31m[Robot 767 Log][0m "Castle Round 177"
+[31m[Robot 3844 Log][0m "Castle Round 178"
+[31m[Robot 767 Log][0m "Castle Round 178"
+[31m[Robot 3844 Log][0m "Castle Round 179"
+[31m[Robot 767 Log][0m "Castle Round 179"
+[31m[Robot 3844 Log][0m "Castle Round 180"
+[31m[Robot 767 Log][0m "Castle Round 180"
+[31m[Robot 3844 Log][0m "Castle Round 181"
+[31m[Robot 767 Log][0m "Castle Round 181"
+[31m[Robot 3844 Log][0m "Castle Round 182"
+[31m[Robot 767 Log][0m "Castle Round 182"
+[31m[Robot 3844 Log][0m "Castle Round 183"
+[31m[Robot 767 Log][0m "Castle Round 183"
+[31m[Robot 3844 Log][0m "Castle Round 184"
+[31m[Robot 767 Log][0m "Castle Round 184"
+[31m[Robot 3844 Log][0m "Castle Round 185"
+[31m[Robot 767 Log][0m "Castle Round 185"
+[31m[Robot 3844 Log][0m "Castle Round 186"
+[31m[Robot 767 Log][0m "Castle Round 186"
+[31m[Robot 3844 Log][0m "Castle Round 187"
+[31m[Robot 767 Log][0m "Castle Round 187"
+[31m[Robot 3844 Log][0m "Castle Round 188"
+[31m[Robot 767 Log][0m "Castle Round 188"
+[31m[Robot 3844 Log][0m "Castle Round 189"
+[31m[Robot 767 Log][0m "Castle Round 189"
+[31m[Robot 3844 Log][0m "Castle Round 190"
+[31m[Robot 767 Log][0m "Castle Round 190"
+[31m[Robot 3844 Log][0m "Castle Round 191"
+[31m[Robot 767 Log][0m "Castle Round 191"
+[31m[Robot 3844 Log][0m "Castle Round 192"
+[31m[Robot 767 Log][0m "Castle Round 192"
+[31m[Robot 3844 Log][0m "Castle Round 193"
+[31m[Robot 767 Log][0m "Castle Round 193"
+[31m[Robot 3844 Log][0m "Castle Round 194"
+[31m[Robot 767 Log][0m "Castle Round 194"
+[31m[Robot 3844 Log][0m "Castle Round 195"
+[31m[Robot 767 Log][0m "Castle Round 195"
+[31m[Robot 3844 Log][0m "Castle Round 196"
+[31m[Robot 767 Log][0m "Castle Round 196"
+[31m[Robot 3844 Log][0m "Castle Round 197"
+[31m[Robot 767 Log][0m "Castle Round 197"
+[31m[Robot 3844 Log][0m "Castle Round 198"
+[31m[Robot 767 Log][0m "Castle Round 198"
+[31m[Robot 3844 Log][0m "Castle Round 199"
+[31m[Robot 767 Log][0m "Castle Round 199"
+[31m[Robot 3844 Log][0m "Castle Round 200"
+[31m[Robot 3844 Log][0m "DEUS VULT 27,8"
+[34m[Robot 715 Log][0m "DEUS VULT 4,29"
+[31m[Robot 767 Log][0m "Castle Round 200"
+[31m[Robot 767 Log][0m "DEUS VULT 27,8"
+[34m[Robot 3141 Log][0m "DEUS VULT 4,29"
+[31m[Robot 68 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[31m[Robot 3844 Log][0m "Castle Round 201"
+[31m[Robot 767 Log][0m "Castle Round 201"
+[31m[Robot 3844 Log][0m "Castle Round 202"
+[31m[Robot 767 Log][0m "Castle Round 202"
+[31m[Robot 3844 Log][0m "Castle Round 203"
+[31m[Robot 767 Log][0m "Castle Round 203"
+[31m[Robot 3844 Log][0m "Castle Round 204"
+[31m[Robot 767 Log][0m "Castle Round 204"
+[31m[Robot 3844 Log][0m "Castle Round 205"
+[31m[Robot 767 Log][0m "Castle Round 205"
+[31m[Robot 3844 Log][0m "Castle Round 206"
+[31m[Robot 767 Log][0m "Castle Round 206"
+[31m[Robot 3844 Log][0m "Castle Round 207"
+[31m[Robot 767 Log][0m "Castle Round 207"
+[31m[Robot 3844 Log][0m "Castle Round 208"
+[31m[Robot 767 Log][0m "Castle Round 208"
+[31m[Robot 3844 Log][0m "Castle Round 209"
+[31m[Robot 767 Log][0m "Castle Round 209"
+[34m[Robot 3141 Log][0m "defend"
+[31m[Robot 3844 Log][0m "Castle Round 210"
+[31m[Robot 767 Log][0m "Castle Round 210"
+[31m[Robot 3844 Log][0m "Castle Round 211"
+[31m[Robot 767 Log][0m "Castle Round 211"
+[34m[Robot 3141 Log][0m "Attacking 20 6"
+[31m[Robot 3844 Log][0m "Castle Round 212"
+[31m[Robot 767 Log][0m "Castle Round 212"
+[31m[Robot 3844 Log][0m "Castle Round 213"
+[31m[Robot 767 Log][0m "Castle Round 213"
+[31m[Robot 3844 Log][0m "Castle Round 214"
+[31m[Robot 767 Log][0m "Castle Round 214"
+[31m[Robot 3844 Log][0m "Castle Round 215"
+[31m[Robot 767 Log][0m "Castle Round 215"
+[31m[Robot 3844 Log][0m "Castle Round 216"
+[31m[Robot 767 Log][0m "Castle Round 216"
+[31m[Robot 3844 Log][0m "Castle Round 217"
+[31m[Robot 767 Log][0m "Castle Round 217"
+[31m[Robot 3844 Log][0m "Castle Round 218"
+[31m[Robot 3844 Log][0m "defend"
+[31m[Robot 767 Log][0m "Castle Round 218"
+[31m[Robot 3844 Log][0m "Castle Round 219"
+[31m[Robot 767 Log][0m "Castle Round 219"
+[31m[Robot 3844 Log][0m "Castle Round 220"
+[31m[Robot 3844 Log][0m "Attacking 9 24"
+[31m[Robot 767 Log][0m "Castle Round 220"
+[31m[Robot 3844 Log][0m "Castle Round 221"
+[31m[Robot 3844 Log][0m "Attacking 9 25"
+[31m[Robot 767 Log][0m "Castle Round 221"
+[31m[Robot 3844 Log][0m "Castle Round 222"
+[31m[Robot 3844 Log][0m "Attacking 9 24"
+[31m[Robot 767 Log][0m "Castle Round 222"
+[31m[Robot 3844 Log][0m "Castle Round 223"
+[31m[Robot 3844 Log][0m "defend"
+[31m[Robot 3844 Log][0m "Attacking 10 24"
+[31m[Robot 767 Log][0m "Castle Round 223"
+[31m[Robot 3844 Log][0m "Castle Round 224"
+[31m[Robot 3844 Log][0m "Attacking 9 23"
+[31m[Robot 767 Log][0m "Castle Round 224"
+[31m[Robot 3844 Log][0m "Castle Round 225"
+[31m[Robot 3844 Log][0m "Attacking 9 23"
+[31m[Robot 767 Log][0m "Castle Round 225"
+[31m[Robot 3844 Log][0m "Castle Round 226"
+[31m[Robot 3844 Log][0m "Attacking 10 24"
+[31m[Robot 767 Log][0m "Castle Round 226"
+[31m[Robot 3844 Log][0m "Castle Round 227"
+[31m[Robot 767 Log][0m "Castle Round 227"
+[31m[Robot 3844 Log][0m "Castle Round 228"
+[31m[Robot 767 Log][0m "Castle Round 228"
+[31m[Robot 3844 Log][0m "Castle Round 229"
+[31m[Robot 767 Log][0m "Castle Round 229"
+[31m[Robot 3844 Log][0m "Castle Round 230"
+[31m[Robot 767 Log][0m "Castle Round 230"
+[31m[Robot 3844 Log][0m "Castle Round 231"
+[31m[Robot 767 Log][0m "Castle Round 231"
+[31m[Robot 3844 Log][0m "Castle Round 232"
+[31m[Robot 767 Log][0m "Castle Round 232"
+[31m[Robot 3844 Log][0m "Castle Round 233"
+[31m[Robot 767 Log][0m "Castle Round 233"
+[31m[Robot 3844 Log][0m "Castle Round 234"
+[31m[Robot 767 Log][0m "Castle Round 234"
+[31m[Robot 3844 Log][0m "Castle Round 235"
+[31m[Robot 767 Log][0m "Castle Round 235"
+[31m[Robot 3844 Log][0m "Castle Round 236"
+[31m[Robot 767 Log][0m "Castle Round 236"
+[31m[Robot 3844 Log][0m "Castle Round 237"
+[31m[Robot 767 Log][0m "Castle Round 237"
+[31m[Robot 3844 Log][0m "Castle Round 238"
+[31m[Robot 767 Log][0m "Castle Round 238"
+[31m[Robot 3844 Log][0m "Castle Round 239"
+[31m[Robot 767 Log][0m "Castle Round 239"
+[31m[Robot 3844 Log][0m "Castle Round 240"
+[31m[Robot 767 Log][0m "Castle Round 240"
+[31m[Robot 3844 Log][0m "Castle Round 241"
+[31m[Robot 767 Log][0m "Castle Round 241"
+[31m[Robot 3844 Log][0m "Castle Round 242"
+[31m[Robot 767 Log][0m "Castle Round 242"
+[31m[Robot 2595 Error][0m Robot is frozen due to clock overdrawn by 22ms.
+[31m[Robot 3844 Log][0m "Castle Round 243"
+[31m[Robot 767 Log][0m "Castle Round 243"
+[31m[Robot 2595 Error][0m Robot is frozen due to clock overdrawn by 2ms.
+[31m[Robot 3844 Log][0m "Castle Round 244"
+[31m[Robot 767 Log][0m "Castle Round 244"
+[31m[Robot 3844 Log][0m "Castle Round 245"
+[31m[Robot 767 Log][0m "Castle Round 245"
+[31m[Robot 2595 Error][0m Robot is frozen due to clock overdrawn by 29ms.
+[31m[Robot 3844 Log][0m "Castle Round 246"
+[31m[Robot 767 Log][0m "Castle Round 246"
+[31m[Robot 2595 Error][0m Robot is frozen due to clock overdrawn by 9ms.
+[31m[Robot 3844 Log][0m "Castle Round 247"
+[31m[Robot 767 Log][0m "Castle Round 247"
+[31m[Robot 2595 Error][0m Robot is frozen due to clock overdrawn by 26ms.
+[31m[Robot 3844 Log][0m "Castle Round 248"
+[31m[Robot 767 Log][0m "Castle Round 248"
+[31m[Robot 2595 Error][0m Robot is frozen due to clock overdrawn by 6ms.
+[31m[Robot 3844 Log][0m "Castle Round 249"
+[31m[Robot 767 Log][0m "Castle Round 249"
+[31m[Robot 2595 Error][0m Robot is frozen due to clock overdrawn by 22ms.
+[31m[Robot 3844 Log][0m "Castle Round 250"
+[31m[Robot 767 Log][0m "Castle Round 250"
+[31m[Robot 2595 Error][0m Robot is frozen due to clock overdrawn by 2ms.
+[31m[Robot 3844 Log][0m "Castle Round 251"
+[31m[Robot 767 Log][0m "Castle Round 251"
+[31m[Robot 2595 Error][0m Robot is frozen due to clock overdrawn by 37ms.
+[31m[Robot 3844 Log][0m "Castle Round 252"
+[31m[Robot 767 Log][0m "Castle Round 252"
+[31m[Robot 2595 Error][0m Robot is frozen due to clock overdrawn by 17ms.
+[31m[Robot 3844 Log][0m "Castle Round 253"
+[31m[Robot 767 Log][0m "Castle Round 253"
+[31m[Robot 2595 Error][0m Robot is frozen due to clock overdrawn by 42ms.
+[31m[Robot 3844 Log][0m "Castle Round 254"
+[31m[Robot 767 Log][0m "Castle Round 254"
+[31m[Robot 2595 Error][0m Robot is frozen due to clock overdrawn by 22ms.
+[31m[Robot 3844 Log][0m "Castle Round 255"
+[31m[Robot 767 Log][0m "Castle Round 255"
+[31m[Robot 2595 Error][0m Robot is frozen due to clock overdrawn by 2ms.
+[31m[Robot 3844 Log][0m "Castle Round 256"
+[31m[Robot 767 Log][0m "Castle Round 256"
+[31m[Robot 3844 Log][0m "Castle Round 257"
+[31m[Robot 767 Log][0m "Castle Round 257"
+[31m[Robot 3844 Log][0m "Castle Round 258"
+[31m[Robot 767 Log][0m "Castle Round 258"
+[31m[Robot 3844 Log][0m "Castle Round 259"
+[31m[Robot 767 Log][0m "Castle Round 259"
+[31m[Robot 3844 Log][0m "Castle Round 260"
+[31m[Robot 767 Log][0m "Castle Round 260"
+[31m[Robot 3844 Log][0m "Castle Round 261"
+[31m[Robot 767 Log][0m "Castle Round 261"
+[31m[Robot 3844 Log][0m "Castle Round 262"
+[31m[Robot 767 Log][0m "Castle Round 262"
+[31m[Robot 3844 Log][0m "Castle Round 263"
+[31m[Robot 767 Log][0m "Castle Round 263"
+[31m[Robot 3844 Log][0m "Castle Round 264"
+[31m[Robot 767 Log][0m "Castle Round 264"
+[31m[Robot 3844 Log][0m "Castle Round 265"
+[31m[Robot 767 Log][0m "Castle Round 265"
+[31m[Robot 3844 Log][0m "Castle Round 266"
+[31m[Robot 767 Log][0m "Castle Round 266"
+[31m[Robot 3844 Log][0m "Castle Round 267"
+[31m[Robot 767 Log][0m "Castle Round 267"
+[31m[Robot 3844 Log][0m "Castle Round 268"
+[31m[Robot 767 Log][0m "Castle Round 268"
+[31m[Robot 3844 Log][0m "Castle Round 269"
+[31m[Robot 767 Log][0m "Castle Round 269"
+[31m[Robot 3844 Log][0m "Castle Round 270"
+[31m[Robot 767 Log][0m "Castle Round 270"
+[31m[Robot 3844 Log][0m "Castle Round 271"
+[31m[Robot 767 Log][0m "Castle Round 271"
+[31m[Robot 3844 Log][0m "Castle Round 272"
+[31m[Robot 767 Log][0m "Castle Round 272"
+[31m[Robot 3844 Log][0m "Castle Round 273"
+[31m[Robot 767 Log][0m "Castle Round 273"
+[31m[Robot 3844 Log][0m "Castle Round 274"
+[31m[Robot 767 Log][0m "Castle Round 274"
+[31m[Robot 3844 Log][0m "Castle Round 275"
+[31m[Robot 767 Log][0m "Castle Round 275"
+[31m[Robot 3844 Log][0m "Castle Round 276"
+[31m[Robot 767 Log][0m "Castle Round 276"
+[31m[Robot 3844 Log][0m "Castle Round 277"
+[31m[Robot 767 Log][0m "Castle Round 277"
+[31m[Robot 3844 Log][0m "Castle Round 278"
+[31m[Robot 767 Log][0m "Castle Round 278"
+[31m[Robot 3844 Log][0m "Castle Round 279"
+[31m[Robot 767 Log][0m "Castle Round 279"
+[31m[Robot 3844 Log][0m "Castle Round 280"
+[31m[Robot 767 Log][0m "Castle Round 280"
+[31m[Robot 3844 Log][0m "Castle Round 281"
+[31m[Robot 767 Log][0m "Castle Round 281"
+[31m[Robot 3844 Log][0m "Castle Round 282"
+[31m[Robot 767 Log][0m "Castle Round 282"
+[31m[Robot 3844 Log][0m "Castle Round 283"
+[31m[Robot 767 Log][0m "Castle Round 283"
+[31m[Robot 3844 Log][0m "Castle Round 284"
+[31m[Robot 767 Log][0m "Castle Round 284"
+[31m[Robot 3844 Log][0m "Castle Round 285"
+[31m[Robot 767 Log][0m "Castle Round 285"
+[31m[Robot 3844 Log][0m "Castle Round 286"
+[31m[Robot 767 Log][0m "Castle Round 286"
+[31m[Robot 3844 Log][0m "Castle Round 287"
+[31m[Robot 767 Log][0m "Castle Round 287"
+[31m[Robot 3844 Log][0m "Castle Round 288"
+[31m[Robot 767 Log][0m "Castle Round 288"
+[31m[Robot 3844 Log][0m "Castle Round 289"
+[31m[Robot 767 Log][0m "Castle Round 289"
+[31m[Robot 3844 Log][0m "Castle Round 290"
+[31m[Robot 767 Log][0m "Castle Round 290"
+[31m[Robot 3844 Log][0m "Castle Round 291"
+[31m[Robot 767 Log][0m "Castle Round 291"
+[31m[Robot 3844 Log][0m "Castle Round 292"
+[31m[Robot 767 Log][0m "Castle Round 292"
+[31m[Robot 3844 Log][0m "Castle Round 293"
+[31m[Robot 767 Log][0m "Castle Round 293"
+[31m[Robot 3844 Log][0m "Castle Round 294"
+[31m[Robot 767 Log][0m "Castle Round 294"
+[31m[Robot 3844 Log][0m "Castle Round 295"
+[31m[Robot 767 Log][0m "Castle Round 295"
+[31m[Robot 3844 Log][0m "Castle Round 296"
+[31m[Robot 767 Log][0m "Castle Round 296"
+[31m[Robot 3844 Log][0m "Castle Round 297"
+[31m[Robot 767 Log][0m "Castle Round 297"
+[31m[Robot 3844 Log][0m "Castle Round 298"
+[31m[Robot 767 Log][0m "Castle Round 298"
+[31m[Robot 3844 Log][0m "Castle Round 299"
+[31m[Robot 767 Log][0m "Castle Round 299"
+[31m[Robot 3844 Log][0m "Castle Round 300"
+[31m[Robot 767 Log][0m "Castle Round 300"
+[31m[Robot 3844 Log][0m "Castle Round 301"
+[31m[Robot 767 Log][0m "Castle Round 301"
+[31m[Robot 3844 Log][0m "Castle Round 302"
+[31m[Robot 767 Log][0m "Castle Round 302"
+[31m[Robot 3844 Log][0m "Castle Round 303"
+[31m[Robot 767 Log][0m "Castle Round 303"
+[31m[Robot 3844 Log][0m "Castle Round 304"
+[31m[Robot 767 Log][0m "Castle Round 304"
+[31m[Robot 3844 Log][0m "Castle Round 305"
+[31m[Robot 767 Log][0m "Castle Round 305"
+[31m[Robot 3844 Log][0m "Castle Round 306"
+[31m[Robot 767 Log][0m "Castle Round 306"
+[31m[Robot 3844 Log][0m "Castle Round 307"
+[31m[Robot 767 Log][0m "Castle Round 307"
+[31m[Robot 3844 Log][0m "Castle Round 308"
+[31m[Robot 767 Log][0m "Castle Round 308"
+[31m[Robot 3844 Log][0m "Castle Round 309"
+[31m[Robot 767 Log][0m "Castle Round 309"
+[31m[Robot 3844 Log][0m "Castle Round 310"
+[31m[Robot 767 Log][0m "Castle Round 310"
+[31m[Robot 3844 Log][0m "Castle Round 311"
+[31m[Robot 767 Log][0m "Castle Round 311"
+[31m[Robot 3844 Log][0m "Castle Round 312"
+[31m[Robot 767 Log][0m "Castle Round 312"
+[31m[Robot 3844 Log][0m "Castle Round 313"
+[31m[Robot 767 Log][0m "Castle Round 313"
+[31m[Robot 3844 Log][0m "Castle Round 314"
+[31m[Robot 767 Log][0m "Castle Round 314"
+[31m[Robot 3844 Log][0m "Castle Round 315"
+[31m[Robot 767 Log][0m "Castle Round 315"
+[31m[Robot 3844 Log][0m "Castle Round 316"
+[31m[Robot 767 Log][0m "Castle Round 316"
+[31m[Robot 3844 Log][0m "Castle Round 317"
+[31m[Robot 767 Log][0m "Castle Round 317"
+[31m[Robot 3844 Log][0m "Castle Round 318"
+[31m[Robot 767 Log][0m "Castle Round 318"
+[31m[Robot 3844 Log][0m "Castle Round 319"
+[31m[Robot 767 Log][0m "Castle Round 319"
+[31m[Robot 3844 Log][0m "Castle Round 320"
+[31m[Robot 767 Log][0m "Castle Round 320"
+[31m[Robot 3844 Log][0m "Castle Round 321"
+[31m[Robot 767 Log][0m "Castle Round 321"
+[31m[Robot 3844 Log][0m "Castle Round 322"
+[31m[Robot 767 Log][0m "Castle Round 322"
+[31m[Robot 3844 Log][0m "Castle Round 323"
+[31m[Robot 767 Log][0m "Castle Round 323"
+[31m[Robot 3844 Log][0m "Castle Round 324"
+[31m[Robot 767 Log][0m "Castle Round 324"
+[31m[Robot 3844 Log][0m "Castle Round 325"
+[31m[Robot 767 Log][0m "Castle Round 325"
+[31m[Robot 3844 Log][0m "Castle Round 326"
+[31m[Robot 767 Log][0m "Castle Round 326"
+[31m[Robot 3844 Log][0m "Castle Round 327"
+[31m[Robot 767 Log][0m "Castle Round 327"
+[31m[Robot 3844 Log][0m "Castle Round 328"
+[31m[Robot 767 Log][0m "Castle Round 328"
+[31m[Robot 3844 Log][0m "Castle Round 329"
+[31m[Robot 767 Log][0m "Castle Round 329"
+[31m[Robot 3844 Log][0m "Castle Round 330"
+[31m[Robot 767 Log][0m "Castle Round 330"
+[31m[Robot 3844 Log][0m "Castle Round 331"
+[31m[Robot 767 Log][0m "Castle Round 331"
+[31m[Robot 3844 Log][0m "Castle Round 332"
+[31m[Robot 767 Log][0m "Castle Round 332"
+[31m[Robot 3844 Log][0m "Castle Round 333"
+[31m[Robot 767 Log][0m "Castle Round 333"
+[31m[Robot 3844 Log][0m "Castle Round 334"
+[31m[Robot 767 Log][0m "Castle Round 334"
+[31m[Robot 3844 Log][0m "Castle Round 335"
+[31m[Robot 767 Log][0m "Castle Round 335"
+[31m[Robot 3844 Log][0m "Castle Round 336"
+[31m[Robot 767 Log][0m "Castle Round 336"
+[31m[Robot 3844 Log][0m "Castle Round 337"
+[31m[Robot 767 Log][0m "Castle Round 337"
+[31m[Robot 3844 Log][0m "Castle Round 338"
+[31m[Robot 767 Log][0m "Castle Round 338"
+[31m[Robot 3844 Log][0m "Castle Round 339"
+[31m[Robot 767 Log][0m "Castle Round 339"
+[31m[Robot 3844 Log][0m "Castle Round 340"
+[31m[Robot 767 Log][0m "Castle Round 340"
+[31m[Robot 3844 Log][0m "Castle Round 341"
+[31m[Robot 767 Log][0m "Castle Round 341"
+[31m[Robot 3844 Log][0m "Castle Round 342"
+[31m[Robot 767 Log][0m "Castle Round 342"
+[31m[Robot 3844 Log][0m "Castle Round 343"
+[31m[Robot 767 Log][0m "Castle Round 343"
+[31m[Robot 3844 Log][0m "Castle Round 344"
+[31m[Robot 767 Log][0m "Castle Round 344"
+[31m[Robot 3844 Log][0m "Castle Round 345"
+[31m[Robot 767 Log][0m "Castle Round 345"
+[31m[Robot 3844 Log][0m "Castle Round 346"
+[31m[Robot 767 Log][0m "Castle Round 346"
+[31m[Robot 3844 Log][0m "Castle Round 347"
+[31m[Robot 767 Log][0m "Castle Round 347"
+[31m[Robot 3844 Log][0m "Castle Round 348"
+[31m[Robot 767 Log][0m "Castle Round 348"
+[31m[Robot 3844 Log][0m "Castle Round 349"
+[31m[Robot 767 Log][0m "Castle Round 349"
+[31m[Robot 3844 Log][0m "Castle Round 350"
+[31m[Robot 767 Log][0m "Castle Round 350"
+[31m[Robot 3844 Log][0m "Castle Round 351"
+[31m[Robot 767 Log][0m "Castle Round 351"
+[31m[Robot 3844 Log][0m "Castle Round 352"
+[31m[Robot 767 Log][0m "Castle Round 352"
+[31m[Robot 3844 Log][0m "Castle Round 353"
+[31m[Robot 767 Log][0m "Castle Round 353"
+[31m[Robot 3844 Log][0m "Castle Round 354"
+[31m[Robot 767 Log][0m "Castle Round 354"
+[31m[Robot 3844 Log][0m "Castle Round 355"
+[31m[Robot 767 Log][0m "Castle Round 355"
+[31m[Robot 3844 Log][0m "Castle Round 356"
+[31m[Robot 767 Log][0m "Castle Round 356"
+[31m[Robot 3844 Log][0m "Castle Round 357"
+[31m[Robot 767 Log][0m "Castle Round 357"
+[31m[Robot 3844 Log][0m "Castle Round 358"
+[31m[Robot 767 Log][0m "Castle Round 358"
+[31m[Robot 3844 Log][0m "Castle Round 359"
+[31m[Robot 767 Log][0m "Castle Round 359"
+[31m[Robot 3844 Log][0m "Castle Round 360"
+[31m[Robot 767 Log][0m "Castle Round 360"
+[31m[Robot 3844 Log][0m "Castle Round 361"
+[31m[Robot 767 Log][0m "Castle Round 361"
+[31m[Robot 3844 Log][0m "Castle Round 362"
+[31m[Robot 767 Log][0m "Castle Round 362"
+[31m[Robot 3844 Log][0m "Castle Round 363"
+[31m[Robot 767 Log][0m "Castle Round 363"
+[31m[Robot 3844 Log][0m "Castle Round 364"
+[31m[Robot 767 Log][0m "Castle Round 364"
+[31m[Robot 3844 Log][0m "Castle Round 365"
+[31m[Robot 767 Log][0m "Castle Round 365"
+[31m[Robot 3844 Log][0m "Castle Round 366"
+[31m[Robot 767 Log][0m "Castle Round 366"
+[31m[Robot 3844 Log][0m "Castle Round 367"
+[31m[Robot 767 Log][0m "Castle Round 367"
+[31m[Robot 3844 Log][0m "Castle Round 368"
+[31m[Robot 767 Log][0m "Castle Round 368"
+[31m[Robot 3844 Log][0m "Castle Round 369"
+[31m[Robot 767 Log][0m "Castle Round 369"
+[31m[Robot 3844 Log][0m "Castle Round 370"
+[31m[Robot 767 Log][0m "Castle Round 370"
+[31m[Robot 3844 Log][0m "Castle Round 371"
+[31m[Robot 767 Log][0m "Castle Round 371"
+[31m[Robot 3844 Log][0m "Castle Round 372"
+[31m[Robot 767 Log][0m "Castle Round 372"
+[31m[Robot 3844 Log][0m "Castle Round 373"
+[31m[Robot 767 Log][0m "Castle Round 373"
+[31m[Robot 3844 Log][0m "Castle Round 374"
+[31m[Robot 767 Log][0m "Castle Round 374"
+[31m[Robot 3844 Log][0m "Castle Round 375"
+[31m[Robot 767 Log][0m "Castle Round 375"
+[31m[Robot 3844 Log][0m "Castle Round 376"
+[31m[Robot 767 Log][0m "Castle Round 376"
+[31m[Robot 3844 Log][0m "Castle Round 377"
+[31m[Robot 767 Log][0m "Castle Round 377"
+[31m[Robot 3844 Log][0m "Castle Round 378"
+[31m[Robot 767 Log][0m "Castle Round 378"
+[31m[Robot 3844 Log][0m "Castle Round 379"
+[31m[Robot 767 Log][0m "Castle Round 379"
+[31m[Robot 3844 Log][0m "Castle Round 380"
+[31m[Robot 767 Log][0m "Castle Round 380"
+[31m[Robot 3844 Log][0m "Castle Round 381"
+[31m[Robot 767 Log][0m "Castle Round 381"
+[31m[Robot 3844 Log][0m "Castle Round 382"
+[31m[Robot 767 Log][0m "Castle Round 382"
+[31m[Robot 3844 Log][0m "Castle Round 383"
+[31m[Robot 767 Log][0m "Castle Round 383"
+[31m[Robot 3844 Log][0m "Castle Round 384"
+[31m[Robot 767 Log][0m "Castle Round 384"
+[31m[Robot 3844 Log][0m "Castle Round 385"
+[31m[Robot 767 Log][0m "Castle Round 385"
+[31m[Robot 3844 Log][0m "Castle Round 386"
+[31m[Robot 767 Log][0m "Castle Round 386"
+[31m[Robot 3844 Log][0m "Castle Round 387"
+[31m[Robot 767 Log][0m "Castle Round 387"
+[31m[Robot 3844 Log][0m "Castle Round 388"
+[31m[Robot 767 Log][0m "Castle Round 388"
+[31m[Robot 3844 Log][0m "Castle Round 389"
+[31m[Robot 767 Log][0m "Castle Round 389"
+[31m[Robot 3844 Log][0m "Castle Round 390"
+[31m[Robot 767 Log][0m "Castle Round 390"
+[31m[Robot 3844 Log][0m "Castle Round 391"
+[31m[Robot 767 Log][0m "Castle Round 391"
+[31m[Robot 3844 Log][0m "Castle Round 392"
+[31m[Robot 767 Log][0m "Castle Round 392"
+[31m[Robot 3844 Log][0m "Castle Round 393"
+[31m[Robot 767 Log][0m "Castle Round 393"
+[31m[Robot 3844 Log][0m "Castle Round 394"
+[31m[Robot 767 Log][0m "Castle Round 394"
+[31m[Robot 3844 Log][0m "Castle Round 395"
+[31m[Robot 767 Log][0m "Castle Round 395"
+[31m[Robot 3844 Log][0m "Castle Round 396"
+[31m[Robot 767 Log][0m "Castle Round 396"
+[31m[Robot 3844 Log][0m "Castle Round 397"
+[31m[Robot 767 Log][0m "Castle Round 397"
+[31m[Robot 3844 Log][0m "Castle Round 398"
+[31m[Robot 767 Log][0m "Castle Round 398"
+[31m[Robot 3844 Log][0m "Castle Round 399"
+[31m[Robot 767 Log][0m "Castle Round 399"
+[31m[Robot 3844 Log][0m "Castle Round 400"
+[31m[Robot 3844 Log][0m "DEUS VULT 27,29"
+[34m[Robot 715 Log][0m "DEUS VULT 4,8"
+[31m[Robot 767 Log][0m "Castle Round 400"
+[31m[Robot 767 Log][0m "DEUS VULT 27,29"
+[34m[Robot 3141 Log][0m "DEUS VULT 4,8"
+[31m[Robot 2705 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[31m[Robot 3844 Log][0m "Castle Round 401"
+[31m[Robot 767 Log][0m "Castle Round 401"
+[31m[Robot 3844 Log][0m "Castle Round 402"
+[31m[Robot 767 Log][0m "Castle Round 402"
+[31m[Robot 3844 Log][0m "Castle Round 403"
+[31m[Robot 767 Log][0m "Castle Round 403"
+[31m[Robot 3844 Log][0m "Castle Round 404"
+[31m[Robot 767 Log][0m "Castle Round 404"
+[31m[Robot 3844 Log][0m "Castle Round 405"
+[31m[Robot 767 Log][0m "Castle Round 405"
+[31m[Robot 3844 Log][0m "Castle Round 406"
+[31m[Robot 767 Log][0m "Castle Round 406"
+[31m[Robot 3844 Log][0m "Castle Round 407"
+[31m[Robot 767 Log][0m "Castle Round 407"
+[31m[Robot 3844 Log][0m "Castle Round 408"
+[31m[Robot 767 Log][0m "Castle Round 408"
+[31m[Robot 767 Log][0m "defend"
+[31m[Robot 3844 Log][0m "Castle Round 409"
+[31m[Robot 767 Log][0m "Castle Round 409"
+[31m[Robot 767 Log][0m "defend"
+[31m[Robot 767 Log][0m "Attacking 10 5"
+[31m[Robot 3844 Log][0m "Castle Round 410"
+[31m[Robot 767 Log][0m "Castle Round 410"
+[31m[Robot 767 Log][0m "Attacking 10 6"
+[31m[Robot 3844 Log][0m "Castle Round 411"
+[31m[Robot 767 Log][0m "Castle Round 411"
+[31m[Robot 767 Log][0m "Attacking 10 5"
+[31m[Robot 3844 Log][0m "Castle Round 412"
+[31m[Robot 767 Log][0m "Castle Round 412"
+[31m[Robot 767 Log][0m "Attacking 11 7"
+[31m[Robot 3844 Log][0m "Castle Round 413"
+[31m[Robot 767 Log][0m "Castle Round 413"
+[31m[Robot 767 Log][0m "Attacking 10 7"
+[31m[Robot 3844 Log][0m "Castle Round 414"
+[31m[Robot 767 Log][0m "Castle Round 414"
+[31m[Robot 767 Log][0m "Attacking 10 7"
+[31m[Robot 3844 Log][0m "Castle Round 415"
+[31m[Robot 767 Log][0m "Castle Round 415"
+[31m[Robot 767 Log][0m "Attacking 11 7"
+[31m[Robot 3844 Log][0m "Castle Round 416"
+[31m[Robot 767 Log][0m "Castle Round 416"
+[31m[Robot 767 Log][0m "Attacking 11 6"
+[31m[Robot 3844 Log][0m "Castle Round 417"
+[31m[Robot 3844 Log][0m "Castle Round 418"
+[34m[Robot 3141 Log][0m "deleted 4,8"
+[31m[Robot 3844 Log][0m "Castle Round 419"
+[31m[Robot 3844 Log][0m "Castle Round 420"
+[34m[Robot 715 Log][0m "defend"
+[31m[Robot 3844 Log][0m "Castle Round 421"
+[34m[Robot 715 Log][0m "defend"
+[31m[Robot 3844 Log][0m "Castle Round 422"
+[31m[Robot 3844 Log][0m "Castle Round 423"
+[31m[Robot 3844 Log][0m "Castle Round 424"
+[31m[Robot 3844 Log][0m "Castle Round 425"
+[31m[Robot 3844 Log][0m "Castle Round 426"
+[31m[Robot 3844 Log][0m "Castle Round 427"
+[31m[Robot 3844 Log][0m "Castle Round 428"
+[31m[Robot 3844 Log][0m "Castle Round 429"
+[31m[Robot 3844 Log][0m "Castle Round 430"
+[31m[Robot 3844 Log][0m "Castle Round 431"
+[31m[Robot 3844 Log][0m "Castle Round 432"
+[31m[Robot 3844 Log][0m "Castle Round 433"
+[31m[Robot 3844 Log][0m "Castle Round 434"
+[31m[Robot 3844 Log][0m "Castle Round 435"
+[31m[Robot 3844 Log][0m "Castle Round 436"
+[31m[Robot 3844 Log][0m "Castle Round 437"
+[31m[Robot 3844 Log][0m "Castle Round 438"
+[31m[Robot 3844 Log][0m "Castle Round 439"
+[31m[Robot 3844 Log][0m "Castle Round 440"
+[31m[Robot 3844 Log][0m "Castle Round 441"
+[31m[Robot 3844 Log][0m "Castle Round 442"
+[31m[Robot 3844 Log][0m "Castle Round 443"
+[31m[Robot 3844 Log][0m "Castle Round 444"
+[31m[Robot 3844 Log][0m "Castle Round 445"
+[31m[Robot 3844 Log][0m "Castle Round 446"
+[31m[Robot 3844 Log][0m "Castle Round 447"
+[31m[Robot 3844 Log][0m "Castle Round 448"
+[31m[Robot 3844 Log][0m "Castle Round 449"
+[31m[Robot 3844 Log][0m "Castle Round 450"
+[31m[Robot 3844 Log][0m "Castle Round 451"
+[31m[Robot 3844 Log][0m "Castle Round 452"
+[31m[Robot 3844 Log][0m "Castle Round 453"
+[31m[Robot 3844 Log][0m "Castle Round 454"
+[31m[Robot 3844 Log][0m "Castle Round 455"
+[31m[Robot 3844 Log][0m "Castle Round 456"
+[31m[Robot 3844 Log][0m "Castle Round 457"
+[31m[Robot 3844 Log][0m "Castle Round 458"
+[31m[Robot 3844 Log][0m "Castle Round 459"
+[31m[Robot 3844 Log][0m "Castle Round 460"
+[31m[Robot 3844 Log][0m "Castle Round 461"
+[31m[Robot 3844 Log][0m "Castle Round 462"
+[31m[Robot 3844 Log][0m "Castle Round 463"
+[31m[Robot 3844 Log][0m "Castle Round 464"
+[31m[Robot 3844 Log][0m "Castle Round 465"
+[31m[Robot 3844 Log][0m "Castle Round 466"
+[31m[Robot 3844 Log][0m "Castle Round 467"
+[31m[Robot 3844 Log][0m "Castle Round 468"
+[31m[Robot 3844 Log][0m "Castle Round 469"
+[31m[Robot 3844 Log][0m "Castle Round 470"
+[31m[Robot 3844 Log][0m "Castle Round 471"
+[31m[Robot 3844 Log][0m "Castle Round 472"
+[31m[Robot 3844 Log][0m "Castle Round 473"
+[34m[Robot 40 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 40 Error][0m Robot is frozen due to clock overdrawn by 198ms.
+[31m[Robot 1888 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[31m[Robot 1888 Error][0m Robot is frozen due to clock overdrawn by 285ms.
+[31m[Robot 1411 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 385ms.
+[34m[Robot 330 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 460ms.
+[34m[Robot 2775 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 436ms.
+[31m[Robot 3844 Log][0m "Castle Round 474"
+[34m[Robot 40 Error][0m Robot is frozen due to clock overdrawn by 178ms.
+[31m[Robot 1888 Error][0m Robot is frozen due to clock overdrawn by 265ms.
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 365ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 440ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 416ms.
+[31m[Robot 3844 Log][0m "Castle Round 475"
+[34m[Robot 40 Error][0m Robot is frozen due to clock overdrawn by 158ms.
+[31m[Robot 1888 Error][0m Robot is frozen due to clock overdrawn by 245ms.
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 345ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 420ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 396ms.
+[31m[Robot 3844 Log][0m "Castle Round 476"
+[34m[Robot 40 Error][0m Robot is frozen due to clock overdrawn by 138ms.
+[31m[Robot 1888 Error][0m Robot is frozen due to clock overdrawn by 225ms.
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 325ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 401ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 376ms.
+[31m[Robot 3844 Log][0m "Castle Round 477"
+[34m[Robot 1560 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 1456 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[31m[Robot 933 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 40 Error][0m Robot is frozen due to clock overdrawn by 118ms.
+[31m[Robot 1888 Error][0m Robot is frozen due to clock overdrawn by 205ms.
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 305ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 381ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 356ms.
+[31m[Robot 3844 Log][0m "Castle Round 478"
+[34m[Robot 40 Error][0m Robot is frozen due to clock overdrawn by 98ms.
+[31m[Robot 1888 Error][0m Robot is frozen due to clock overdrawn by 185ms.
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 285ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 361ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 336ms.
+[31m[Robot 3844 Log][0m "Castle Round 479"
+[31m[Robot 3865 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 1941 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 996 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[31m[Robot 2563 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 40 Error][0m Robot is frozen due to clock overdrawn by 78ms.
+[31m[Robot 1888 Error][0m Robot is frozen due to clock overdrawn by 165ms.
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 265ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 341ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 316ms.
+[31m[Robot 3844 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 715 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[31m[Robot 764 Error][0m Error: Script execution timed out.
+    at Script.runInContext (vm.js:107:20)
+    at VM.run (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\node_modules\vm2\lib\main.js:208:72)
+    at CrossVM.turn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\vm.js:15:26)
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 40 Error][0m Robot is frozen due to clock overdrawn by 58ms.
+[31m[Robot 1888 Error][0m Robot is frozen due to clock overdrawn by 145ms.
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 245ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 321ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 296ms.
+[31m[Robot 3844 Log][0m "Castle Round 481"
+[34m[Robot 2136 Error][0m Took too long to initialize.
+[34m[Robot 40 Error][0m Robot is frozen due to clock overdrawn by 38ms.
+[31m[Robot 1888 Error][0m Robot is frozen due to clock overdrawn by 125ms.
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 225ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 301ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 276ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by 18ms.
+[31m[Robot 3844 Log][0m "Castle Round 482"
+[34m[Robot 40 Error][0m Robot is frozen due to clock overdrawn by 18ms.
+[31m[Robot 1888 Error][0m Robot is frozen due to clock overdrawn by 105ms.
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 205ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 281ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 256ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2ms.
+[31m[Robot 3844 Log][0m "Castle Round 483"
+[31m[Robot 1888 Error][0m Robot is frozen due to clock overdrawn by 85ms.
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 185ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 261ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 236ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -22ms.
+[31m[Robot 3844 Log][0m "Castle Round 484"
+[31m[Robot 1888 Error][0m Robot is frozen due to clock overdrawn by 65ms.
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 165ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 241ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 216ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -41ms.
+[31m[Robot 3844 Log][0m "Castle Round 485"
+[31m[Robot 1888 Error][0m Robot is frozen due to clock overdrawn by 45ms.
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 145ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 221ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 196ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -59ms.
+[31m[Robot 3844 Log][0m "Castle Round 486"
+[31m[Robot 1888 Error][0m Robot is frozen due to clock overdrawn by 25ms.
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 125ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 201ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 176ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -78ms.
+[31m[Robot 3844 Log][0m "Castle Round 487"
+[31m[Robot 1888 Error][0m Robot is frozen due to clock overdrawn by 5ms.
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 105ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 181ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 156ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -97ms.
+[31m[Robot 3844 Log][0m "Castle Round 488"
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 85ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 161ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 136ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -117ms.
+[31m[Robot 3844 Log][0m "Castle Round 489"
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 65ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 141ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 116ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -136ms.
+[31m[Robot 3844 Log][0m "Castle Round 490"
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 45ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 121ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 96ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -156ms.
+[31m[Robot 3844 Log][0m "Castle Round 491"
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 25ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 101ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 76ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -175ms.
+[31m[Robot 3844 Log][0m "Castle Round 492"
+[31m[Robot 1411 Error][0m Robot is frozen due to clock overdrawn by 5ms.
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 81ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 56ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -195ms.
+[31m[Robot 3844 Log][0m "Castle Round 493"
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 61ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 36ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -215ms.
+[31m[Robot 3844 Log][0m "Castle Round 494"
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 41ms.
+[34m[Robot 2775 Error][0m Robot is frozen due to clock overdrawn by 16ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -235ms.
+[31m[Robot 3844 Log][0m "Castle Round 495"
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 21ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -255ms.
+[31m[Robot 3844 Log][0m "Castle Round 496"
+[34m[Robot 330 Error][0m Robot is frozen due to clock overdrawn by 1ms.
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -274ms.
+[31m[Robot 3844 Log][0m "Castle Round 497"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -294ms.
+[31m[Robot 3844 Log][0m "Castle Round 498"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -313ms.
+[31m[Robot 3844 Log][0m "Castle Round 499"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -333ms.
+[31m[Robot 3844 Log][0m "Castle Round 500"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -352ms.
+[31m[Robot 3844 Log][0m "Castle Round 501"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -371ms.
+[31m[Robot 3844 Log][0m "Castle Round 502"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -390ms.
+[31m[Robot 3844 Log][0m "Castle Round 503"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -410ms.
+[31m[Robot 3844 Log][0m "Castle Round 504"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -430ms.
+[31m[Robot 3844 Log][0m "Castle Round 505"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -449ms.
+[31m[Robot 3844 Log][0m "Castle Round 506"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -469ms.
+[31m[Robot 3844 Log][0m "Castle Round 507"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -488ms.
+[31m[Robot 3844 Log][0m "Castle Round 508"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -508ms.
+[31m[Robot 3844 Log][0m "Castle Round 509"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -527ms.
+[31m[Robot 3844 Log][0m "Castle Round 510"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -547ms.
+[31m[Robot 3844 Log][0m "Castle Round 511"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -565ms.
+[31m[Robot 3844 Log][0m "Castle Round 512"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -584ms.
+[31m[Robot 3844 Log][0m "Castle Round 513"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -603ms.
+[31m[Robot 3844 Log][0m "Castle Round 514"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -622ms.
+[31m[Robot 3844 Log][0m "Castle Round 515"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -641ms.
+[31m[Robot 3844 Log][0m "Castle Round 516"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -661ms.
+[31m[Robot 3844 Log][0m "Castle Round 517"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -681ms.
+[31m[Robot 3844 Log][0m "Castle Round 518"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -701ms.
+[31m[Robot 3844 Log][0m "Castle Round 519"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -721ms.
+[31m[Robot 3844 Log][0m "Castle Round 520"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -739ms.
+[31m[Robot 3844 Log][0m "Castle Round 521"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -756ms.
+[31m[Robot 3844 Log][0m "Castle Round 522"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -775ms.
+[31m[Robot 3844 Log][0m "Castle Round 523"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -795ms.
+[31m[Robot 3844 Log][0m "Castle Round 524"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -815ms.
+[31m[Robot 3844 Log][0m "Castle Round 525"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -835ms.
+[31m[Robot 3844 Log][0m "Castle Round 526"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -855ms.
+[31m[Robot 3844 Log][0m "Castle Round 527"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -875ms.
+[31m[Robot 3844 Log][0m "Castle Round 528"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -894ms.
+[31m[Robot 3844 Log][0m "Castle Round 529"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -914ms.
+[31m[Robot 3844 Log][0m "Castle Round 530"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -934ms.
+[31m[Robot 3844 Log][0m "Castle Round 531"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -954ms.
+[31m[Robot 3844 Log][0m "Castle Round 532"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -973ms.
+[31m[Robot 3844 Log][0m "Castle Round 533"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -993ms.
+[31m[Robot 3844 Log][0m "Castle Round 534"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1012ms.
+[31m[Robot 3844 Log][0m "Castle Round 535"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1032ms.
+[31m[Robot 3844 Log][0m "Castle Round 536"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1051ms.
+[31m[Robot 3844 Log][0m "Castle Round 537"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1071ms.
+[31m[Robot 3844 Log][0m "Castle Round 538"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1090ms.
+[31m[Robot 3844 Log][0m "Castle Round 539"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1110ms.
+[31m[Robot 3844 Log][0m "Castle Round 540"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1129ms.
+[31m[Robot 3844 Log][0m "Castle Round 541"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1148ms.
+[31m[Robot 3844 Log][0m "Castle Round 542"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1167ms.
+[31m[Robot 3844 Log][0m "Castle Round 543"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1186ms.
+[31m[Robot 3844 Log][0m "Castle Round 544"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1206ms.
+[31m[Robot 3844 Log][0m "Castle Round 545"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1226ms.
+[31m[Robot 3844 Log][0m "Castle Round 546"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1246ms.
+[31m[Robot 3844 Log][0m "Castle Round 547"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1265ms.
+[31m[Robot 3844 Log][0m "Castle Round 548"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1285ms.
+[31m[Robot 3844 Log][0m "Castle Round 549"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1305ms.
+[31m[Robot 3844 Log][0m "Castle Round 550"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1324ms.
+[31m[Robot 3844 Log][0m "Castle Round 551"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1344ms.
+[31m[Robot 3844 Log][0m "Castle Round 552"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1364ms.
+[31m[Robot 3844 Log][0m "Castle Round 553"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1384ms.
+[31m[Robot 3844 Log][0m "Castle Round 554"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1403ms.
+[31m[Robot 3844 Log][0m "Castle Round 555"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1423ms.
+[31m[Robot 3844 Log][0m "Castle Round 556"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1443ms.
+[31m[Robot 3844 Log][0m "Castle Round 557"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1462ms.
+[31m[Robot 3844 Log][0m "Castle Round 558"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1481ms.
+[31m[Robot 3844 Log][0m "Castle Round 559"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1500ms.
+[31m[Robot 3844 Log][0m "Castle Round 560"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1520ms.
+[31m[Robot 3844 Log][0m "Castle Round 561"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1539ms.
+[31m[Robot 3844 Log][0m "Castle Round 562"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1558ms.
+[31m[Robot 3844 Log][0m "Castle Round 563"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1577ms.
+[31m[Robot 3844 Log][0m "Castle Round 564"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1597ms.
+[31m[Robot 3844 Log][0m "Castle Round 565"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1617ms.
+[31m[Robot 3844 Log][0m "Castle Round 566"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1636ms.
+[31m[Robot 3844 Log][0m "Castle Round 567"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1655ms.
+[31m[Robot 3844 Log][0m "Castle Round 568"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1672ms.
+[31m[Robot 3844 Log][0m "Castle Round 569"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1691ms.
+[31m[Robot 3844 Log][0m "Castle Round 570"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1710ms.
+[31m[Robot 3844 Log][0m "Castle Round 571"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1730ms.
+[31m[Robot 3844 Log][0m "Castle Round 572"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1750ms.
+[31m[Robot 3844 Log][0m "Castle Round 573"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1770ms.
+[31m[Robot 3844 Log][0m "Castle Round 574"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1789ms.
+[31m[Robot 3844 Log][0m "Castle Round 575"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1809ms.
+[31m[Robot 3844 Log][0m "Castle Round 576"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1829ms.
+[31m[Robot 3844 Log][0m "Castle Round 577"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1848ms.
+[31m[Robot 3844 Log][0m "Castle Round 578"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1867ms.
+[31m[Robot 3844 Log][0m "Castle Round 579"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1887ms.
+[31m[Robot 3844 Log][0m "Castle Round 580"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1906ms.
+[31m[Robot 3844 Log][0m "Castle Round 581"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1925ms.
+[31m[Robot 3844 Log][0m "Castle Round 582"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1944ms.
+[31m[Robot 3844 Log][0m "Castle Round 583"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1963ms.
+[31m[Robot 3844 Log][0m "Castle Round 584"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -1981ms.
+[31m[Robot 3844 Log][0m "Castle Round 585"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2001ms.
+[31m[Robot 3844 Log][0m "Castle Round 586"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2020ms.
+[31m[Robot 3844 Log][0m "Castle Round 587"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2039ms.
+[31m[Robot 3844 Log][0m "Castle Round 588"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2059ms.
+[31m[Robot 3844 Log][0m "Castle Round 589"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2077ms.
+[31m[Robot 3844 Log][0m "Castle Round 590"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2095ms.
+[31m[Robot 3844 Log][0m "Castle Round 591"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2114ms.
+[31m[Robot 3844 Log][0m "Castle Round 592"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2133ms.
+[31m[Robot 3844 Log][0m "Castle Round 593"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2153ms.
+[31m[Robot 3844 Log][0m "Castle Round 594"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2173ms.
+[31m[Robot 3844 Log][0m "Castle Round 595"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2192ms.
+[31m[Robot 3844 Log][0m "Castle Round 596"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2211ms.
+[31m[Robot 3844 Log][0m "Castle Round 597"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2230ms.
+[31m[Robot 3844 Log][0m "Castle Round 598"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2249ms.
+[31m[Robot 3844 Log][0m "Castle Round 599"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2263ms.
+[31m[Robot 3844 Log][0m "Castle Round 600"
+[31m[Robot 3844 Log][0m "DEUS VULT 27,8"
+[34m[Robot 715 Log][0m "DEUS VULT 4,29"
+[34m[Robot 3141 Log][0m "DEUS VULT 4,29"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2282ms.
+[31m[Robot 3844 Log][0m "Castle Round 601"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2300ms.
+[31m[Robot 3844 Log][0m "Castle Round 602"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2320ms.
+[31m[Robot 3844 Log][0m "Castle Round 603"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2340ms.
+[31m[Robot 3844 Log][0m "Castle Round 604"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2360ms.
+[31m[Robot 3844 Log][0m "Castle Round 605"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2379ms.
+[31m[Robot 3844 Log][0m "Castle Round 606"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2398ms.
+[31m[Robot 3844 Log][0m "Castle Round 607"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2416ms.
+[31m[Robot 3844 Log][0m "Castle Round 608"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2435ms.
+[31m[Robot 3844 Log][0m "Castle Round 609"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2453ms.
+[31m[Robot 3844 Log][0m "Castle Round 610"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2473ms.
+[31m[Robot 3844 Log][0m "Castle Round 611"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2493ms.
+[31m[Robot 3844 Log][0m "Castle Round 612"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2512ms.
+[31m[Robot 3844 Log][0m "Castle Round 613"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2531ms.
+[31m[Robot 3844 Log][0m "Castle Round 614"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2551ms.
+[31m[Robot 3844 Log][0m "Castle Round 615"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2570ms.
+[31m[Robot 3844 Log][0m "Castle Round 616"
+[31m[Robot 3844 Log][0m "defend"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2589ms.
+[31m[Robot 3844 Log][0m "Castle Round 617"
+[31m[Robot 3844 Log][0m "defend"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2609ms.
+[31m[Robot 3844 Log][0m "Castle Round 618"
+[31m[Robot 3844 Log][0m "defend"
+[31m[Robot 3844 Log][0m "Attacking 10 24"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2627ms.
+[31m[Robot 3844 Log][0m "Castle Round 619"
+[31m[Robot 3844 Log][0m "defend"
+[31m[Robot 3844 Log][0m "Attacking 9 24"
+[34m[Robot 2136 Error][0m TypeError: robot.hook is not a function
+    at Game.enactTurn (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\game.js:739:34)
+    at Coldbrew.gameLoop (C:\Users\sxu\AppData\Roaming\npm\node_modules\bc19\runtime.js:64:19)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+[34m[Robot 2136 Error][0m Robot is frozen due to clock overdrawn by -2646ms.
+[31m[Robot 3844 Log][0m "Castle Round 620"
+[31m[Robot 3844 Log][0m "Attacking 8 24"
+Game over, blue won by castle annihilation.

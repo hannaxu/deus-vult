@@ -177,7 +177,7 @@ export default function castleTurn() {
       if (message >= 64) {
         for (var i = 0; i < enemyCastles.length; i++) {
           if (enemyCastles[i]==deusVulters[vars.commRobots[x].id]) {
-            this.log("deleted "+enemyCastles[i]);
+            this.log("Killed enemy castle at "+enemyCastles[i]);
             enemyCastles.splice(i, 1);
             if(curAttack > i) {
               curAttack--;
@@ -249,25 +249,9 @@ export default function castleTurn() {
         closePilgrim += 1;
   }
 
-  if (this.fuel >= vars.attackCost) {
-    var bestDir = null;
-    for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
-      if( vars.visibleEnemyRobots[i].unit == 2 || (this.karb >= 25 && this.fuel >= 50) )
-        continue;
-      var x = vars.visibleEnemyRobots[i].x;
-      var y = vars.visibleEnemyRobots[i].y;
-      var dx = x-this.me.x;
-      var dy = y-this.me.y;
-      if (vars.attackRadius[0]<=dx**2+dy**2&&dx**2+dy**2<=vars.attackRadius[1]) {
-        if (bestDir==null||dx**2+dy**2 < bestDir[0]**2+bestDir[1]**2) {
-          bestDir = [dx, dy];
-        }
-      }
-    }
-    if (bestDir!=null) {
-      this.log("Attacking "+(this.me.x+bestDir[0])+" "+(this.me.y+bestDir[1]));
-      return this.attack(bestDir[0], bestDir[1]);
-    }
+  var attackLocation = attackPhase.call(this);
+  if (attackLocation!=null) {
+    return this.attack(attackLocation[0], attackLocation[1]);
   }
 
   //if (!defend && (headcount[2]<1 || (headcount[2]<3 && this.me.turn > 10 && closePilgrim < deposits && castleOrder != 0)) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
@@ -336,5 +320,19 @@ export default function castleTurn() {
     lastDeusVult = this.me.turn;
     curAttack = (curAttack+1)%enemyCastles.length;
     return;
+  }
+}
+
+export function attackPhase() {
+  if (this.fuel < 10) {
+    return null;
+  }
+  if (this.karbonite >= vars.SPECS.UNITS[4]) {
+    return null;
+  }
+  var attackableEnemies = utils.findAttackableEnemies.call(this);
+  for( var i = 0; i < attackableEnemies.length; i++) {
+    if( !( defend && attackableEnemies[i][2] == vars.SPECS.PILGRIM) )
+      return attackableEnemies[0];
   }
 }

@@ -509,3 +509,18 @@ export function onLattice (x, y) {
   var dy = y-vars.creatorPos[1];
   return dx != 0 && dy != 0;// && Math.abs(dx) != Math.abs(dy);
 }
+
+export function findAttackableEnemies (pos=[this.me.x, this.me.y], range=vars.attackRadius) {
+  var ret = [];
+  for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
+    var dx = vars.visibleEnemyRobots[i].x-this.me.x;
+    var dy = vars.visibleEnemyRobots[i].y-this.me.y;
+    if (range[0]<=dx**2+dy**2&&dx**2+dy**2<=range[1]) {
+      ret.push([dx, dy]);
+    }
+  }
+  ret.sort(function(x, y) {
+    return x[0]**2+x[1]**2-y[0]**2-y[1]**2;
+  });``
+  return ret;
+}
