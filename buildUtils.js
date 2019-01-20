@@ -33,8 +33,8 @@ export function buildOpt(attackPos, deposits, unit, cx, cy) {
   //this.log(d);
   if( unit == vars.SPECS.PILGRIM ) {
     if( attackPos ) { //null for early game
-      attackPos[0] = cy-attackPos[0];
-      attackPos[1] = cx-attackPos[1];
+      attackPos[0] = 2*cy-attackPos[0];
+      attackPos[1] = 2*cx-attackPos[1];
       var temp = closestPos(pos, attackPos);
       return [temp[0]-cy, temp[1]-cx];
     }
@@ -73,7 +73,8 @@ export function buildOpt(attackPos, deposits, unit, cx, cy) {
 //possible locations, target position
 function closestPos(pos, targetPos) {
   var dist = [];
-  for(var s in pos) {
+  for(var i = 0; i < pos.length; i++) {
+    var s = pos[i];
     dist.push({
       loc: s,
       value: (s[0]-targetPos[0])**2+(s[1]-targetPos[1])**2

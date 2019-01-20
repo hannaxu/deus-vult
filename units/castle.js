@@ -224,6 +224,7 @@ export default function castleTurn() {
       //sendMessage.call(this, castleOrder, buildOptPil[i][1]**2+buildOptPil[i][0]**2);
       //this.log("Building pilgrim at "+x+" "+y);
       if( buildLoc != null ) {
+        //this.log(buildLoc);
         buildCount[2]++;
         vars.buildRobot = 2;
         return this.buildUnit(vars.SPECS.PILGRIM, buildLoc[1], buildLoc[0]);
@@ -253,6 +254,7 @@ export default function castleTurn() {
       //sendMessage.call(this, castleOrder, buildOptPil[i][1]**2+buildOptPil[i][0]**2);
       //this.log("Building pilgrim at "+x+" "+y);
       if( buildLoc != null ) {
+        //this.log(buildLoc);
         buildCount[4]++;
         vars.buildRobot = 4;
         return this.buildUnit(vars.SPECS.PROPHET, buildLoc[1], buildLoc[0]);
