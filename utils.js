@@ -185,8 +185,11 @@ export function djikstra (ends) {
   return costs;
 }
 
-// not actually astar its just bfs that navigates around robots
-export function astar(start, ends, maxDepth=vars.POS_INF, radius=vars.moveRadius) {
+// not actually astar its just djikstra that navigates around robots
+export function navigate(start, ends, maxDepth=vars.POS_INF, radius=vars.moveRadius) {
+  if (ends.length==0) {
+    return null;
+  }
   var time = new Date().getTime();
   var ret = {};
   for (var i = 0; i < ends.length; i++) {
@@ -195,25 +198,17 @@ export function astar(start, ends, maxDepth=vars.POS_INF, radius=vars.moveRadius
   var parents = {};
   var costs = {}
   var queue = [];
-  var index = 0;
-  var retLength = 0;
-  queue.push([0, 0, start]);
+  heappush(queue, [0, 0, start]);
   costs[hashCoordinates(start)] = [0, 0];
   parents[hashCoordinates(start)] = null;
   // this.log(ends);
-  outer: while (index<queue.length&&retLength<ends.length) {
-    // this.log(queue[index]);
-    if (new Date().getTime()-time>15) {
+  outer: while (queue.length>0) {
+    if (new Date().getTime()-time>vars.NAVIGATION_TIME_LIMIT) {
+      this.log("Out of time for navigation");
       return null;
-      this.log("BFS OUT OF TIME");
-      for (var e in ends) {
-        if (ret[hashCoordinates(e)]==0)
-        ret[hashCoordinates(e)] = null;
-      }
-      return ret;
     }
-
-    var pos = queue[index][2];
+    var state = heappop(queue);
+    var pos = state[2];
     var curHash = hashCoordinates(pos);
     var curCost = costs[curHash];
 
@@ -229,26 +224,6 @@ export function astar(start, ends, maxDepth=vars.POS_INF, radius=vars.moveRadius
       return path.reverse();
     }
 
-    // all rets
-    // if (ret[curHash]!=null) {
-    //   if (ret[curHash]==0) {
-    //     var path = [];
-    //     var p = curHash;
-    //     while (p!=hashCoordinates(start)) {
-    //       var cPos = unhashCoordinates(p); // final
-    //       var pPos = unhashCoordinates(parents[p]); // second to last
-    //       path.push([cPos[0]-pPos[0], cPos[1]-pPos[1]]);
-    //       p = parents[p];
-    //     }
-    //     ret[curHash] = path.reverse();
-    //     retLength++;
-    //   }
-    //   else {
-    //     index++;
-    //     continue outer;
-    //   }
-    // }
-
     if (curCost[0]<maxDepth) {
       for (var i = 0; i < vars.moveable.length; i++) {
         var x = pos[0]+vars.moveable[i][0];
@@ -258,19 +233,13 @@ export function astar(start, ends, maxDepth=vars.POS_INF, radius=vars.moveRadius
         var prevCost = costs[newHash];
         var empty = checkBounds(x, y)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]<=0;
         if (empty&&(prevCost==null||heapCompare(newCost, prevCost)<0)) {
-          queue.push([newCost[0], newCost[1], [x, y]]);
+          heappush(queue, [newCost[0], newCost[1], [x, y]]);
           costs[newHash] = newCost;
           parents[newHash] = curHash;
         }
       }
     }
-    index++;
   }
-  // for (var e in ends) {
-  //   if (ret[hashCoordinates(e)]==0)
-  //   ret[hashCoordinates(e)] = null;
-  // }
-  // return ret;
   return null;
 }
 
@@ -284,48 +253,6 @@ export function equalArrays(arr1, arr2) {
     }
   }
   return true;
-}
-
-export function bi_astar(start, end, maxDepth=vars.POS_INF, radius=vars.moveRadius) {
-  throw "BI_ASTAR NOT IMPLEMENTED YET";
-  var parents = {};
-  var costs = {}
-  var queue = [];
-  heappush(queue, [0, 0, start]);
-  costs[hashCoordinates(start)] = [0, 0];
-  parents[hashCoordinates(start)] = null;
-  var time = new Date().getTime();
-  while (queue.length>0) {
-    var state = heappop(queue);
-    this.log(state);
-    if (state==end) {
-      var path = [];
-      var p = hashCoordinates(state[2]);
-      while (p!=hashCoordinates(start)) {
-        var cPos = unhashCoordinates(p); // final
-        var pPos = unhashCoordinates(parents[p]); // second to last
-        path.push([cPos[0]-pPos[0], cPos[1]-pPos[1]]);
-        p = parents[p];
-      }
-      return path.reverse();
-    }
-    var curCost = [costs[hashCoordinates(state[2])][0], costs[hashCoordinates(state[2])][0]];
-    if (curCost[0]<maxDepth) {
-      for (var i = 0; i < vars.moveable.length; i++) {
-        var x = state[2][0]+vars.moveable[i][0];
-        var y = state[2][1]+vars.moveable[i][1];
-        var newCost = [curCost[0]+1, curCost[1]+vars.moveCost*(vars.moveable[i][0]**2+vars.moveable[i][1]**2)];
-        var prevCost = costs[hashCoordinates([x, y])];
-        var empty = checkBounds(x, y)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]<=0;
-        if (empty&&(prevCost==null||heapCompare(newCost, prevCost)<0)) {
-          heappush(queue, [newCost[0], newCost[1], [x, y]]);
-          costs[hashCoordinates([x, y])] = newCost;
-          parents[hashCoordinates([x, y])] = hashCoordinates([this.me.x, this.me.y]);
-        }
-      }
-    }
-  }
-  return null;
 }
 
 export function multiDest (ends) {
@@ -451,9 +378,6 @@ export function heapCompare(v1, v2) {
   }
   return v1[0]-v2[0];
 }
-  var func = function (a, b) {
-
-  };
 
 export function heappush(array, val, compare=heapCompare) {
   array.push(val);

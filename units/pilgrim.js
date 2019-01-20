@@ -49,9 +49,9 @@ export default function pilgrimTurn () {
                 }
             }
         }
-        this.log(bx+" "+by+" is the best new base");
+        //this.log(bx+" "+by+" is the best new base");
     }
-    
+
     for (var i=0; i<vars.rLocs.length; i++) {
         var p=vars.rLocs[i];
         if (vars.visibleRobotMap[p.y][p.x]>0 && (p.x!=me.x || p.y!=me.y)) {
