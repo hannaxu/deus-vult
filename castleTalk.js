@@ -73,6 +73,7 @@ export default class {
           else {
             // reached performed action
             message = padding + ret.comb + 1;
+            //this.log("CASTLETALK: Sent - unit:" + this.me.unit + " action:" + ret.name + " comb:" + ret.comb);
             break;
           } 
         }
@@ -88,6 +89,9 @@ export default class {
 
     // Call at the start of the turn as a castle.
     receive(message, unit) {
+      if(typeof(message) != 'number'){
+        this.log("CASTLETALK: Message must be a number");
+      }
       if(message == 0)
         return {};
 
@@ -118,6 +122,7 @@ export default class {
         this.log("CASTLETALK: Could not receive message " + message + " for unit " + unit);
       
       // return action
+      this.log("CASTLETALK: Recv - unit:" + unit + " actions:" + JSON.stringify(ret2));
       return ret2;
     }
 
@@ -152,7 +157,12 @@ export default class {
 
       var comb = 0;
       var combs = 1;
-      for(var n in values){ 
+      for(var n in values){
+        if(!(n in value)) {
+          this.log("CASTLETALK: Action " + name + " did not receive parameter " + n + " for unit " + this.me.unit);
+          return false;
+        }
+
         var idx;
         if(Array.isArray(value[n])) {
           idx = values[n].findIndex(function(x) {
@@ -169,6 +179,7 @@ export default class {
         combs *= values[n].length;
       }
 
+      this.log("CASTLETALK: Perf - unit:" + this.me.unit + " action:" + name + " value:" + JSON.stringify(value));
       ret = {name: name, comb: comb};
       return true;
     }

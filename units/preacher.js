@@ -120,6 +120,7 @@ export default function preacherTurn() {
       var move = utils.findMoveD.call(this, [this.me.x, this.me.y], deusVult);
       if (move != null) {
         //this.log("Moving towards "+x+" "+y);
+        vars.CastleTalk.performAction('move', {'dxdy': move});
         return this.move(move[0], move[1]);
       }
     }
@@ -164,6 +165,7 @@ export default function preacherTurn() {
         if (path!=null&&path.length>0) {
           // this.log(this.me.x+" "+this.me.y+" to "+betterPos[i][0]+" "+betterPos[i][1]);
           // this.log(path);
+          vars.CastleTalk.performAction('move', {'dxdy': path[0]});
           return this.move(path[0][0], path[0][1]);
         }
       }
@@ -173,6 +175,7 @@ export default function preacherTurn() {
       // if ((this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2 > vars.CAMPDIST) {
       //   var move = utils.findMoveD.call(this, [this.me.x, this.me.y], vars.creatorPos);
       //   if (move != null) {
+      //     vars.CastleTalk.performAction('move', {'dxdy': move});
       //     return this.move(move[0], move[1]);
       //   }
       // }
@@ -186,6 +189,7 @@ export default function preacherTurn() {
       // var move = utils.findMoveD.call(this, [this.me.x, this.me.y], enemyCastles[0]);
       // if (move != null&&curDist < newDist && newDist <= vars.CAMPDIST) {
       //   //this.log("Moving towards "+x+" "+y);
+      //   vars.CastleTalk.performAction('move', {'dxdy': move});
       //   return this.move(move[0], move[1]);
       // }
     }

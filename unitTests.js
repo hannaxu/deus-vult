@@ -1,7 +1,6 @@
 import vars from './variables';
 
 import {coord8Encrypt, coord8Decrypt, coord8Encrypt2, coord8Decrypt2} from './conversion';
-import CastleTalk from './castleTalk';
 import { equalArrays } from './utils';
 
 export function testAll(verbose=true){

@@ -102,6 +102,7 @@ export default function prophetTurn() {
       var move = utils.findMoveD.call(this, [this.me.x, this.me.y], deusVult);
       if (move != null) {
         //this.log("Moving towards "+x+" "+y);
+        vars.CastleTalk.performAction('move', {'dxdy': move});
         return this.move(move[0], move[1]);
       }
     }
@@ -141,6 +142,7 @@ export default function prophetTurn() {
       var path = utils.astar.call(this, [this.me.x, this.me.y], betterPos, 15);
       if (path!=null) {
         //this.log(path);
+        vars.CastleTalk.performAction('move', {'dxdy': path[0]});
         return this.move(path[0][0], path[0][1]);
       }
 
@@ -149,6 +151,7 @@ export default function prophetTurn() {
       for (var i = 0; i < betterPos.length; i++) {
         var path = paths[utils.hashCoordinates(betterPos[i])];
         if (path!=null&&path.length>0) {
+          vars.CastleTalk.performAction('move', {'dxdy': move[0]});
           return this.move(path[0][0], path[0][1]);
         }
       }
@@ -158,6 +161,7 @@ export default function prophetTurn() {
       // if ((this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2 > vars.CAMPDIST) {
       //   var move = utils.findMoveD.call(this, [this.me.x, this.me.y], vars.creatorPos);
       //   if (move != null) {
+      //     vars.CastleTalk.performAction('move', {'dxdy': move});
       //     return this.move(move[0], move[1]);
       //   }
       // }
@@ -171,6 +175,7 @@ export default function prophetTurn() {
       // var move = utils.findMoveD.call(this, [this.me.x, this.me.y], enemyCastles[0]);
       // if (move != null&&curDist < newDist && newDist <= vars.CAMPDIST) {
       //   //this.log("Moving towards "+x+" "+y);
+      //   vars.CastleTalk.performAction('move', {'dxdy': move});
       //   return this.move(move[0], move[1]);
       // }
     }

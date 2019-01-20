@@ -41,6 +41,7 @@ export default function pilgrimTurn () {
                 var r=this.getRobot(vars.visibleRobotMap[y][x]);
                 if (r!=null && (r.unit==vars.SPECS.CASTLE || r.unit==vars.SPECS.CASTLE)) {
                     //this.log("giving stuff");
+                    vars.CastleTalk.performAction('give', {'dxdy': [vars.buildable[i][0],vars.buildable[i][1]]});
                     return this.give(vars.buildable[i][0],vars.buildable[i][1],me.karbonite,me.fuel);
                 }
             }
@@ -77,6 +78,7 @@ export default function pilgrimTurn () {
     }
     if (vars.teamFuel>=1 && (vars.karbMap[me.y][me.x] || vars.fuelMap[me.y][me.x])) {
         //this.log("Mined stuff");
+        vars.CastleTalk.performAction('mine', {});
         return this.mine();
     }
     //this.log(vars.teamFuel);
@@ -123,6 +125,7 @@ function pickAdjMove(costs, pri) {
     } else {
         //thas.log(bestd);
         //thas.log(vars.passableMap[y][x]);
+        vars.CastleTalk.performAction('move', {'dxdy': vars.moveable[bestd]});
         return this.move(vars.moveable[bestd][0],vars.moveable[bestd][1]);
     }
 }

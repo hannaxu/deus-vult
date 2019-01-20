@@ -50,6 +50,7 @@ export default function castleTurn() {
           sendMessage.call(this, i, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
           //this.log("Building pilgrim at "+x+" "+y);
           buildCount[2]++;
+          vars.CastleTalk.performAction('build', {'dxdy': [vars.buildable[i][0], vars.buildable[i][1]], 'unit':vars.SPECS.PILGRIM});
           return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
         }
       }

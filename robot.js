@@ -74,7 +74,8 @@ class MyRobot extends BCAbstractRobot {
           }
           //this.log("Created by "+vars.creatorPos);
         }
-        testAll.call(this, false);
+        //testAll.call(this, false);
+
         // end of init
         //this.log("done init");
       }
@@ -144,6 +145,7 @@ class MyRobot extends BCAbstractRobot {
         }
       }
       vars.firstTurn = false;
+      vars.CastleTalk.send();
       return ret;
     }
     catch (err) {

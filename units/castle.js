@@ -83,79 +83,83 @@ export default function castleTurn() {
     //this.log("Test: " +vars.firstTurn);
   }
 
-  // determines myCastles
-  if (this.me.turn == 1) {
-    for (var i = 0; i < castleOrder; i++) {
-      myCastles[i][1][0] = this.getRobot(myCastles[i][0]).castle_talk-128-(i%2)*64;
-    }
-    this.castleTalk(this.me.x+128+64*(castleOrder%2));
-    myCastles.push([this.me.id, [this.me.x, this.me.y]]);
+  for(var i in vars.castleTalkRobots){
+    var other_r = vars.castleTalkRobots[i];
+    vars.CastleTalk.receive(other_r.castle_talk, 2);
   }
-  if (this.me.turn == 2) {
-    outer: for( var x = 0; x < vars.commRobots.length; x++ ) {
-      if(vars.commRobots[x].team == team && vars.commRobots[x].castle_talk>=128) {
-        for (var i = 0; i < myCastles.length; i++) {
-          if (myCastles[i][0]==vars.commRobots[x].id) {
-            continue outer;
-          }
-        }
-        myCastles.push([vars.commRobots[x].id, [null, null]]);
-      }
-    }
-    if (castleOrder==0&&myCastles.length==3) {
-      if (this.getRobot(myCastles[2][0]).castle_talk >= 128+64) {
-        var temp = myCastles[1];
-        myCastles[1] = myCastles[2];
-        myCastles[2] = temp;
-      }
-    }
-    for (var i = 0; i < castleOrder; i++) {
-      myCastles[i][1][1] = this.getRobot(myCastles[i][0]).castle_talk-128-64*(i%2);
-    }
-    for (var i = castleOrder+1; i < myCastles.length; i++) {
-      myCastles[i][1][0] = this.getRobot(myCastles[i][0]).castle_talk-128-64*(i%2);
-    }
-    this.castleTalk(this.me.y+128+64*(castleOrder%2));
-  }
-  if (this.me.turn == 3) {
-    for (var i = castleOrder+1; i < myCastles.length; i++) {
-      myCastles[i][1][1] = this.getRobot(myCastles[i][0]).castle_talk-128-64*(i%2);
-    }
-    if (symmetry[0]) {
-      for (var i = 0; i < myCastles.length; i++) {
-        enemyCastles.push([vars.xmax-1-myCastles[i][1][0], myCastles[i][1][1]]);
-      }
-    }
-    if (symmetry[1]) {
-      for (var i = 0; i < myCastles.length; i++) {
-        enemyCastles.push([myCastles[i][1][0], vars.ymax-1-myCastles[i][1][1]]);
-      }
-    }
-    this.log(myCastles);
-    //this.log(vars.castleLocs);
-  }
+  // // determines myCastles
+  // if (this.me.turn == 1) {
+  //   for (var i = 0; i < castleOrder; i++) {
+  //     myCastles[i][1][0] = this.getRobot(myCastles[i][0]).castle_talk-128-(i%2)*64;
+  //   }
+  //   this.castleTalk(this.me.x+128+64*(castleOrder%2));
+  //   myCastles.push([this.me.id, [this.me.x, this.me.y]]);
+  // }
+  // if (this.me.turn == 2) {
+  //   outer: for( var x = 0; x < vars.commRobots.length; x++ ) {
+  //     if(vars.commRobots[x].team == team && vars.commRobots[x].castle_talk>=128) {
+  //       for (var i = 0; i < myCastles.length; i++) {
+  //         if (myCastles[i][0]==vars.commRobots[x].id) {
+  //           continue outer;
+  //         }
+  //       }
+  //       myCastles.push([vars.commRobots[x].id, [null, null]]);
+  //     }
+  //   }
+  //   if (castleOrder==0&&myCastles.length==3) {
+  //     if (this.getRobot(myCastles[2][0]).castle_talk >= 128+64) {
+  //       var temp = myCastles[1];
+  //       myCastles[1] = myCastles[2];
+  //       myCastles[2] = temp;
+  //     }
+  //   }
+  //   for (var i = 0; i < castleOrder; i++) {
+  //     myCastles[i][1][1] = this.getRobot(myCastles[i][0]).castle_talk-128-64*(i%2);
+  //   }
+  //   for (var i = castleOrder+1; i < myCastles.length; i++) {
+  //     myCastles[i][1][0] = this.getRobot(myCastles[i][0]).castle_talk-128-64*(i%2);
+  //   }
+  //   this.castleTalk(this.me.y+128+64*(castleOrder%2));
+  // }
+  // if (this.me.turn == 3) {
+  //   for (var i = castleOrder+1; i < myCastles.length; i++) {
+  //     myCastles[i][1][1] = this.getRobot(myCastles[i][0]).castle_talk-128-64*(i%2);
+  //   }
+  //   if (symmetry[0]) {
+  //     for (var i = 0; i < myCastles.length; i++) {
+  //       enemyCastles.push([vars.xmax-1-myCastles[i][1][0], myCastles[i][1][1]]);
+  //     }
+  //   }
+  //   if (symmetry[1]) {
+  //     for (var i = 0; i < myCastles.length; i++) {
+  //       enemyCastles.push([myCastles[i][1][0], vars.ymax-1-myCastles[i][1][1]]);
+  //     }
+  //   }
+  //   this.log(myCastles);
+  //   //this.log(vars.castleLocs);
+  // }
 
-  // deletes dead enemyCastles
-  for( var x = 0; x < vars.commRobots.length; x++ ) {
-    if(deusVulters[vars.commRobots[x].id]!=null) {
-      var message = vars.commRobots[x].castle_talk;
-      if (message >= 64) {
-        for (var i = 0; i < enemyCastles.length; i++) {
-          if (enemyCastles[i]==deusVulters[vars.commRobots[x].id]) {
-            this.log("deleted "+enemyCastles[i]);
-            enemyCastles.splice(i, 1);
-            if(curAttack > i) {
-              curAttack--;
-            }
-            if (enemyCastles.length>0) {
-              curAttack%=enemyCastles.length;
-            }
-          }
-        }
-        delete deusVulters[vars.commRobots[x].id];
-      }
-    }
-  }
+  // // deletes dead enemyCastles
+  // for( var x = 0; x < vars.commRobots.length; x++ ) {
+  //   if(deusVulters[vars.commRobots[x].id]!=null) {
+  //     var message = vars.commRobots[x].castle_talk;
+  //     if (message >= 64) {
+  //       for (var i = 0; i < enemyCastles.length; i++) {
+  //         if (enemyCastles[i]==deusVulters[vars.commRobots[x].id]) {
+  //           this.log("deleted "+enemyCastles[i]);
+  //           enemyCastles.splice(i, 1);
+  //           if(curAttack > i) {
+  //             curAttack--;
+  //           }
+  //           if (enemyCastles.length>0) {
+  //             curAttack%=enemyCastles.length;
+  //           }
+  //         }
+  //       }
+  //       delete deusVulters[vars.commRobots[x].id];
+  //     }
+  //   }
+  // }
 
   attackerCount = 0;
   farthestAttacker = 0;
@@ -225,6 +229,7 @@ export default function castleTurn() {
           sendMessage.call(this, i, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
           //this.log("Building pilgrim at "+x+" "+y);
           buildCount[2]++;
+          vars.CastleTalk.performAction('build', {'dxdy': [vars.buildable[i][0], vars.buildable[i][1]], 'unit':vars.SPECS.PILGRIM});
           return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
         }
       }
@@ -247,6 +252,7 @@ export default function castleTurn() {
         sendMessage.call(this, message, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
         //this.log("Building pilgrim at "+x+" "+y);
         buildCount[5]++;
+        vars.CastleTalk.performAction('build', {'dxdy': [vars.buildable[i][0], vars.buildable[i][1]], 'unit':vars.SPECS.PREACHER});
         return this.buildUnit(vars.SPECS.PREACHER, vars.buildable[i][0], vars.buildable[i][1]);
       }
     }
@@ -268,6 +274,7 @@ export default function castleTurn() {
         sendMessage.call(this, message, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
         //this.log("Building pilgrim at "+x+" "+y);
         buildCount[4]++;
+        vars.CastleTalk.performAction('build', {'dxdy': [vars.buildable[i][0], vars.buildable[i][1]], 'unit':vars.SPECS.PROPHET});
         return this.buildUnit(vars.SPECS.PROPHET, vars.buildable[i][0], vars.buildable[i][1]);
       }
     }

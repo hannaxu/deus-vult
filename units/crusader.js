@@ -7,5 +7,6 @@ export default function crusaderTurn() {
     vars.firstTurn = false;
   }
   var choice = vars.moveable[Math.floor(Math.random()*vars.moveable.length)];
+  vars.CastleTalk.performAction('move', {'dxdy': choice});
   return this.move(choice);
 }
