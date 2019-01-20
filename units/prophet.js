@@ -5,7 +5,6 @@ import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from '..
 var enemyCastles = [];
 var symmetry = [false, false];
 var deusVult = null;
-var deusVultFrom = null;
 var curPath = [];
 
 export default function prophetTurn() {
@@ -16,18 +15,15 @@ export default function prophetTurn() {
 
   // check for DEUS VULT signal
   if (deusVult==null) {
-    outer: for (var i = 0; i < vars.visibleRobots.length; i++) {
-      if (!this.isRadioing(vars.visibleRobots[i])||this.me.team!=vars.visibleRobots[i].team) {
-        continue;
-      }
-      var pos = [vars.visibleRobots.x, vars.visibleRobots.y];
-      if (vars.visibleRobots[i].unit==0) {
-        var message = cypherMessage(vars.visibleRobots[i].signal, this.me.team);
-        if ((message & 2**15)>0) {
-          //this.log("DEUS VULT 0 RECEIVED");
-          deusVultFrom = vars.visibleRobots[i].id;
-          deusVult = utils.unhashCoordinates(message-2**15);
-          break outer;
+    var creator = this.getRobot(vars.creatorID);
+    if (creator!=null&&this.isRadioing(creator)) {
+      var message = cypherMessage(creator.signal, this.me.team);
+      if ((message & 2**15)>0) {
+        //this.log("Deus Vult received");
+        var stayDistance = (message%(1<<15))>>12;
+        var dist = (this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2;
+        if (dist>stayDistance) {
+          deusVult = utils.unhashCoordinates(message%(1<<12));
         }
       }
     }
@@ -96,7 +92,6 @@ export default function prophetTurn() {
       // check if already dead
       if (id==0||(id>0&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
         deusVult = null;
-        deusVultFrom = null;
         this.castleTalk(64);
         return;
       }

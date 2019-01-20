@@ -1,17 +1,25 @@
 export default {
   // CONSTANTS
-  CAMPDIST: 5,
   POS_INF: 2147483647,
   NEG_INF: -2147483648,
-  MIN_ATK_ROBOTS: 30,
-  MIN_ATK_FUEL: 7500,
+
+  MIN_ATK_ROBOTS: 20, // minimum number of visible ally attackers before deusVulting
+  MIN_ATK_FUEL: 1000, // minimum amount of fuel before deusVulting
+  ATTACK_DEPTH: 20,
+
   MIN_LAT_DIST: 2, // must be strictly greater than this
-  DEFENSE_DEPTH: 10,
-  NAVIGATION_TIME_LIMIT: 100,
+  DEFENSE_DEPTH: 10, // maximum search depth of navigate() when forming the defensive lattice
+  NAVIGATION_TIME_LIMIT: 100, // maximum number of time used in navigate()
+
   ENEMY_PRIORITY: [5, 4, 3, 0, 1, 2],
+
+  CASTLE_MIN_DEF: 8, // minimum number of visible ally attackers on defense per castle
   CHURCH_MIN_DEF: 4,
   CHURCH_MAX_DEF: 12,
+
   SPECS: null,
+
+  creatorID: 0,
   creatorPos: null,
   myPos: null,
 

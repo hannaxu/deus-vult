@@ -71,6 +71,7 @@ class MyRobot extends BCAbstractRobot {
             var id = this.getRobot(vars.visibleRobotMap[y][x]);
             if (id==null||(id.unit!=vars.SPECS.CASTLE&&id.unit!=vars.SPECS.CHURCH)) continue;
             vars.creatorPos = [x, y];
+            vars.creatorID = vars.visibleRobotMap[y][x];
             //this.log(vars.creatorPos);
           }
           //this.log("Created by "+vars.creatorPos);

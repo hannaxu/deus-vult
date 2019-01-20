@@ -279,12 +279,29 @@ export default function castleTurn() {
 
   // DEUS VULTING
   if (this.fuel >= vars.MIN_ATK_FUEL && enemyCastles.length > 0 && this.me.turn%50==0) {
-    if (this.me.turn-lastDeusVult >= 20 && attackerCount >= vars.MIN_ATK_ROBOTS) {
+    if (attackerCount >= vars.MIN_ATK_ROBOTS) {
       curAttack = (this.me.turn/50)%enemyCastles.length;
       this.log("DEUS VULT "+enemyCastles[curAttack]);
       deusVult = enemyCastles[curAttack];
       //this.log(deusVult);
-      sendMessage.call(this, 2**15+utils.hashCoordinates(deusVult), 100);
+      var stayDistance = 0; // robots within this radius will remain on defense
+      var curDefenders = 0;
+      for (var i = 0; i < vars.visible.length; i++) {
+        var x = this.me.x+vars.visible[i][0];
+        var y = this.me.y+vars.visible[i][1];
+        if (!utils.checkBounds(x, y)) continue;
+        var robot = this.getRobot(vars.visibleRobotMap[y][x]);
+        if (robot!=null && robot.team==this.me.team && robot.unit >= 3) {
+          curDefenders++;
+        }
+        if (curDefenders > vars.CASTLE_MIN_DEF) {
+          stayDistance = Math.min(7, vars.visible[i][0]**2+vars.visible[i][1]**2-1);
+          this.log("Stay distance "+stayDistance);
+          break;
+        }
+      }
+
+      sendMessage.call(this, 2**15+(stayDistance<<12)+utils.hashCoordinates(deusVult), vars.visionRadius);
       for (var i = 0; i < vars.visibleRobots.length; i++) {
         var dx = this.me.x-vars.visibleRobots[i].x;
         var dy = this.me.y-vars.visibleRobots[i].y;
