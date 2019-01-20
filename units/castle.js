@@ -21,9 +21,11 @@ var deusVult = null; // where to attack
 var deusVulters = {}; // robots currently deusVulting and their target deusVult
 var attackerCount = 0; // how many of our damaging troops in vision
 var farthestAttacker = 0; // r^2 distance of our farthest attacker
+var visionPilgrims = 0;
 
 var trackMap = []; // [id, unit]
 var trackRobots = {}; // trackRobots[id] = [pos, unit]
+
 
 export default function castleTurn() {
   vars.buildRobot = 0;
@@ -281,16 +283,15 @@ export default function castleTurn() {
   }
 }
 
-export function attackPhase() {
+export function attackPhase () {
   if (this.fuel < 10) {
     return null;
   }
-  if (this.karbonite >= vars.SPECS.UNITS[4] && head) {
+  if (this.karbonite >= vars.SPECS.UNITS[4]) {
     return null;
   }
   var attackableEnemies = utils.findAttackableEnemies.call(this);
-  for (var i = 0; i < attackableEnemies.length; i++) {
-    if (attackableEnemies[i][2] != vars.SPECS.PILGRIM)
-      return attackableEnemies[i];
-  }
+  if (attackableEnemies.length>0) {
+      return [attackableEnemies[i].x-this.me.x, attackableEnemies[i].y-this.me.y];
+    }
 }

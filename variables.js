@@ -7,6 +7,7 @@ export default {
   MIN_ATK_FUEL: 5000,
   MIN_LAT_DIST: 2, // must be strictly greater than this
   DEFENSE_DEPTH: 15,
+  ENEMY_PRIORITY: [5, 4, 3, 0, 1, 2],
   SPECS: null,
   creatorPos: null,
   myPos: null,

@@ -37,7 +37,8 @@ export default function prophetTurn() {
   if (this.fuel >= vars.attackCost) {
     var attackableEnemies = utils.findAttackableEnemies.call(this);
     if (attackableEnemies.length>0) {
-      return this.attack(attackableEnemies[0][0], attackableEnemies[0][1])
+      var dir = [attackableEnemies[0].x-this.me.x, attackableEnemies[0].y-this.me.y];
+      return this.attack(dir[0], dir[1])
     }
   }
 

@@ -516,11 +516,30 @@ export function findAttackableEnemies (pos=[this.me.x, this.me.y], range=vars.at
     var dx = vars.visibleEnemyRobots[i].x-this.me.x;
     var dy = vars.visibleEnemyRobots[i].y-this.me.y;
     if (range[0]<=dx**2+dy**2&&dx**2+dy**2<=range[1]) {
-      ret.push([dx, dy, vars.visibleEnemyRobots[i].unit]);
+      ret.push(vars.visibleEnemyRobots[i]);
     }
   }
-  ret.sort(function(x, y) {
-    return x[0]**2+x[1]**2-y[0]**2-y[1]**2;
-  });``
+  orderEnemies.call(this, ret);
   return ret;
+}
+
+export function canHitMe (enemy) {
+  var range = vars.SPECS.UNITS[enemy.unit].ATTACK_RADIUS;
+  var dist = (vars.xpos-enemy.x)**2+(vars.ypos-enemy.y)**2;
+  return range!=null && range[0] <= dist && dist <= range[1];
+}
+
+export function orderEnemies (list) {
+  list.sort(function(r1, r2) {
+    if (canHitMe(r1)!=canHitMe(r2)) {
+      if (canHitMe(r1)) {
+        return -1;
+      }
+      return 1;
+    }
+    if (r1.unit!=r2.unit) {
+      return vars.ENEMY_PRIORITY.indexOf(r1.unit)-vars.ENEMY_PRIORITY.indexOf(r2.unit);
+    }
+    return (r1.x-vars.xpos)**2+(r1.y-vars.ypos)**2+(r2.x-vars.xpos)**2+(r2.y-vars.ypos)**2;
+  });
 }
