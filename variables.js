@@ -3,13 +3,13 @@ export default {
   POS_INF: 2147483647,
   NEG_INF: -2147483648,
 
-  MIN_ATK_ROBOTS: 20, // minimum number of visible ally attackers before deusVulting
-  MIN_ATK_FUEL: 1000, // minimum amount of fuel before deusVulting
-  ATTACK_DEPTH: 20,
+  MIN_ATK_ROBOTS: 30, // minimum number of visible ally attackers before deusVulting
+  MIN_ATK_FUEL: 7500, // minimum amount of fuel before deusVulting
+  ATTACK_DEPTH: 50, // maximum search depth of navigate when finding path to deusVult
 
   MIN_LAT_DIST: 2, // must be strictly greater than this
   DEFENSE_DEPTH: 10, // maximum search depth of navigate() when forming the defensive lattice
-  NAVIGATION_TIME_LIMIT: 100, // maximum number of time used in navigate()
+  NAVIGATION_TIME_LIMIT: 100, // maximum amount of time used in navigate()
 
   ENEMY_PRIORITY: [5, 4, 3, 0, 1, 2],
 
@@ -46,6 +46,7 @@ export default {
   moveable: [],
   buildable: [],
   attackable: [],
+  allAttackable: [],
   visible: [],
   connections: {},
   firstTurnPoss: {},
@@ -53,10 +54,14 @@ export default {
   // UPDATED EVERY TURN
 
   buildRobot: null,
+  me: null,
   xpos: null,
   ypos: null,
   teamFuel: null,
   teamKarb: null,
+
+  // tiles
+  dangerTiles: null,
 
   // Robots visible to me
   visibleRobotMap: null,
@@ -69,6 +74,6 @@ export default {
   // Created information
   castleLocs: {}, // (castles only, for now) {id: [x, y]} of all friendly castles
   baseLocs: {}, // stores Castle and Church locations
-    baseChange: true, //set to true when the base list is updated (set to false by some pilgrim methods)
+  baseChange: true, //set to true when the base list is updated (set to false by some pilgrim methods)
   fuzzyCost: []
 };

@@ -5,6 +5,7 @@ import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from '..
 var enemyCastles = [];
 var symmetry = [false, false];
 var deusVult = null;
+var deusVultTiles = null;
 var curPath = [];
 
 export default function prophetTurn() {
@@ -19,13 +20,30 @@ export default function prophetTurn() {
     if (creator!=null&&this.isRadioing(creator)) {
       var message = cypherMessage(creator.signal, this.me.team);
       if ((message & 2**15)>0) {
-        //this.log("Deus Vult received");
         var stayDistance = (message%(1<<15))>>12;
         var dist = (this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2;
         if (dist>stayDistance) {
+          //this.log("Deus Vult received");
           deusVult = utils.unhashCoordinates(message%(1<<12));
+          deusVultTiles = [];
+          for (var i = 0; i < vars.attackable.length; i++) {
+            var x = deusVult[0]+vars.attackable[i][0];
+            var y = deusVult[1]+vars.attackable[i][1];
+            if (utils.checkBounds(x, y)&&vars.passableMap[y][x]) {
+              deusVultTiles.push([x, y]);
+            }
+          }
         }
       }
+    }
+  }
+
+  // checks if enemy castle is already dead
+  if (deusVult!=null) {
+    var id = vars.visibleRobotMap[deusVult[1]][deusVult[0]];
+    if (id==0||(id>0&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
+      deusVult = null;
+      this.castleTalk(64);
     }
   }
 
@@ -44,38 +62,22 @@ export default function prophetTurn() {
   // moving
   if (this.fuel >= vars.moveCost*vars.moveRadius) {
 
-    // IMPLEMENT LATER get in range of enemies
-    // var damageLoc = {};
-    // for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
-    //   var robot = vars.visibleEnemyRobots[i];
-    //   var u = robot.unit;
-    //   if (vars.SPECS.UNITS[u].ATTACK_RADIUS==null) continue;
-    //   var pos = [robot.x, robot.y];
-    //   var dx = pos[0]-this.me.x;
-    //   var dy = pos[1]-this.me.y;
-    //   var rAttackLoc = utils.findConnections(vars);
-    //   for (var i = 0; i < rAttackLoc.length; i++) {
-    //     var x = pos[0]+rAttackLoc[i][0];
-    //     var y = pos[1]+rAttackLoc[i][1];
-    //     damageLoc[utils.hashCoordinates([x, y])] = 0;
-    //   }
-    // }
-    //
-    // //checks for danger
-    // if (damageLoc[utils.hashCoordinates[this.me.x, this.me.y]]!=null) {
-    //   this.log("In danger");
-    //   var saferPos = [];
-    //   for (var i = 0; i < vars.moveable.length; i++) {
-    //     var x = this.me.x+vars.moveable[i][0];
-    //     var y = this.me.y+vars.moveable[i][1];
-    //     var empty = utils.checkBounds(x, y)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]<=0;
-    //     if (empty && damageLoc[utils.hashCoordinates([x, y])]==null) {
-    //       curPath = [];
-    //       return this.move(vars.moveable[i][0], vars.moveable[i][1]);
-    //     }
-    //   }
-    // }
+    // basic kiting
+    if (vars.dangerTiles[utils.hashCoordinates[this.me.x, this.me.y]]!=null) {
+      this.log("In danger");
+      var saferPos = [];
+      for (var i = 0; i < vars.moveable.length; i++) {
+        var x = this.me.x+vars.moveable[i][0];
+        var y = this.me.y+vars.moveable[i][1];
+        var empty = utils.checkBounds(x, y)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]<=0;
+        if (empty && vars.dangerTiles[utils.hashCoordinates([x, y])]==null) {
+          curPath = [];
+          return this.move(vars.moveable[i][0], vars.moveable[i][1]);
+        }
+      }
+    }
 
+    // continues moving along the current path
     if (curPath.length>0) {
       var move = curPath.splice(0, 1)[0];
       if (vars.visibleRobotMap[this.me.y+move[1]][this.me.x+move[0]] == 0) {
@@ -84,17 +86,22 @@ export default function prophetTurn() {
       curPath = [];
     }
 
-    // DEUS VULT, attack deusVult
     if (deusVult!=null) {
+      if (this.me.time>vars.NAVIGATION_TIME_LIMIT) {
+        var curDist = (this.me.x-deusVult[0])**2+(this.me.y-deusVult[1])**2;
+        if (vars.attackRadius[0] > curDist || curDist > vars.attackRadius[1]) {
+          var path = utils.navigate.call(this, [this.me.x, this.me.y], deusVultTiles, vars.ATTACK_DEPTH);
+          if (path!=null) {
+            var move = path.splice(0, 1)[0];
+            curPath = path;
+            return this.move(move[0], move[1]);
+          }
+        }
+      }
       var x = deusVult[0];
       var y = deusVult[1];
       var id = vars.visibleRobotMap[y][x];
       // check if already dead
-      if (id==0||(id>0&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
-        deusVult = null;
-        this.castleTalk(64);
-        return;
-      }
       var move = utils.findMoveD.call(this, [this.me.x, this.me.y], deusVult);
       if (move != null) {
         //this.log("Moving towards "+x+" "+y);
@@ -135,13 +142,15 @@ export default function prophetTurn() {
       // this.log("betterPos");
       // this.log(betterPos);
 
-      var path = utils.navigate.call(this, [this.me.x, this.me.y], betterPos, vars.DEFENSE_DEPTH);
-      if (path!=null) {
-        //this.log(path);
-        var move = path.splice(0, 1)[0];
-        curPath = path;
-        //this.castleTalk(utils.connIndexOf(vars.moveable, move));
-        return this.move(move[0], move[1]);
+      if (this.me.time>vars.NAVIGATION_TIME_LIMIT) {
+        var path = utils.navigate.call(this, [this.me.x, this.me.y], betterPos, vars.DEFENSE_DEPTH);
+        if (path!=null) {
+          //this.log(path);
+          var move = path.splice(0, 1)[0];
+          curPath = path;
+          //this.castleTalk(utils.connIndexOf(vars.moveable, move));
+          return this.move(move[0], move[1]);
+        }
       }
     }
   }

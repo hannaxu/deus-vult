@@ -21,6 +21,7 @@ class MyRobot extends BCAbstractRobot {
   turn () {
     try {
       vars.visibleRobotMap = this.getVisibleRobotMap();
+      vars.me = this.me;
       vars.xpos = this.me.x;
       vars.ypos = this.me.y;
       vars.myPos = [this.me.x, this.me.y];
@@ -44,14 +45,8 @@ class MyRobot extends BCAbstractRobot {
         utils.initRecList();
 
         vars.visible = utils.findConnections.call(this, vars.visionRadius);
-        if (vars.attackRadius!=null) {
-          var temp = utils.findConnections.call(this, vars.attackRadius[1]);
-          for (var i = 0; i < temp.length; i++) {
-            if (temp[i][0]**2+temp[i][1]**2 >= vars.attackRadius[0]) {
-              vars.attackable.push(temp[i]);
-            }
-          }
-        }
+        utils.findAllAttackable(); // initializes vars.allAttackable
+        vars.attackable = vars.allAttackable[this.me.unit];
         vars.moveable = utils.findConnections.call(this, vars.moveRadius);
         vars.buildable = utils.findConnections.call(this, vars.buildRadius);
 
@@ -110,6 +105,18 @@ class MyRobot extends BCAbstractRobot {
         }
       }
       utils.updateLocs.call(this);
+      // finds tiles that can be hit by enemies
+      vars.dangerTiles = {};
+      for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
+        var robot = vars.visibleEnemyRobots[i];
+        var u = robot.unit;
+        for (var i = 0; i < vars.allAttackable[u].length; i++) {
+          var x = robot.x+vars.allAttackable[u][i][0];
+          var y = robot.y+vars.allAttackable[u][i][1];
+          vars.dangerTiles[utils.hashCoordinates([x, y])] = 0;
+        }
+      }
+
       readMessages.call(this);
 
       var ret = null;

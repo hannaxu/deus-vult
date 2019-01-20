@@ -186,6 +186,7 @@ export function djikstra (ends) {
 }
 
 // not actually astar its just djikstra that navigates around robots
+// TODO incremental changes to path
 export function navigate(start, ends, maxDepth=vars.POS_INF, radius=vars.moveRadius) {
   if (ends.length==0) {
     return null;
@@ -258,6 +259,28 @@ export function equalArrays(arr1, arr2) {
 export function multiDest (ends) {
   throw "DEPRECATED";
   return bfs.call(this, ends);
+}
+
+export function findAllAttackable() {
+  for (var u = 0; u < 6; u++) {
+    var range = vars.SPECS.UNITS[u].ATTACK_RADIUS;
+    vars.allAttackable.push([]);
+    if (range!=null) {
+      for (var x = 1; x*x <= range[1]; x++) {
+        for (var y = 0; y*y <= range[1]; y++) {
+          if (range[0] <= x*x+y*y && x*x+y*y <= range[1]) {
+            vars.allAttackable[u].push([x, y]);
+            vars.allAttackable[u].push([-x, -y]);
+            vars.allAttackable[u].push([-y, x]);
+            vars.allAttackable[u].push([y, -x]);
+          }
+        }
+      }
+      vars.allAttackable[u].sort(function(x, y) {
+        return x[0]**2+x[1]**2-y[0]**2-y[1]**2;
+      });
+    }
+  }
 }
 
 export function findConnections (r2) {
