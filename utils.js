@@ -381,10 +381,12 @@ export function updateLocs () {
       }
       else {
         vars.baseLocs[hashVal] = vars.visibleRobots[i].id;
+          vars.baseChange=true;
       }
     }
   }
   for (var h in shouldSee) {
+      vars.baseChange=true;
     delete vars.baseLocs[h];
   }
   // castleLocs
