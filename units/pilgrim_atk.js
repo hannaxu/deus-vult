@@ -2,14 +2,12 @@ import vars from '../variables';
 import * as utils from '../utils';
 import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from '../communication';
 
-var enemyCastles = [];
-var symmetry = [false, false];
 var deusVult = null;
 var deusVultFrom = null;
 var curPath = [];
 
-export default function prophetTurn() {
-  // this.log("I am a Prophet at "+vars.xpos+" "+vars.ypos);
+export function pilgrimAtkTurn() {
+  // this.log("I am an Attacker Pilgrim at "+vars.xpos+" "+vars.ypos);
   if (this.me.turn==1) {
 
   }
@@ -33,53 +31,23 @@ export default function prophetTurn() {
     }
   }
 
-  // attacking
-  if (this.fuel >= vars.attackCost) {
-    var attackableEnemies = utils.findAttackableEnemies.call(this);
-    if (attackableEnemies.length>0) {
-      var dir = [attackableEnemies[0].x-this.me.x, attackableEnemies[0].y-this.me.y];
-      return this.attack(dir[0], dir[1])
-    }
-  }
-
-  if (vars.creatorPos==null)
-    return;
-
   // moving
   if (this.fuel >= vars.moveCost*vars.moveRadius) {
 
     // IMPLEMENT LATER get in range of enemies
-    // var damageLoc = {};
-    // for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
-    //   var robot = vars.visibleEnemyRobots[i];
-    //   var u = robot.unit;
-    //   if (vars.SPECS.UNITS[u].ATTACK_RADIUS==null) continue;
-    //   var pos = [robot.x, robot.y];
-    //   var dx = pos[0]-this.me.x;
-    //   var dy = pos[1]-this.me.y;
-    //   var rAttackLoc = utils.findConnections(vars);
-    //   for (var i = 0; i < rAttackLoc.length; i++) {
-    //     var x = pos[0]+rAttackLoc[i][0];
-    //     var y = pos[1]+rAttackLoc[i][1];
-    //     damageLoc[utils.hashCoordinates([x, y])] = 0;
-    //   }
-    // }
-    //
-    // //checks for danger
-    // if (damageLoc[utils.hashCoordinates[this.me.x, this.me.y]]!=null) {
-    //   this.log("In danger");
-    //   var saferPos = [];
-    //   for (var i = 0; i < vars.moveable.length; i++) {
-    //     var x = this.me.x+vars.moveable[i][0];
-    //     var y = this.me.y+vars.moveable[i][1];
-    //     var empty = utils.checkBounds(x, y)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]<=0;
-    //     if (empty && damageLoc[utils.hashCoordinates([x, y])]==null) {
-    //       curPath = [];
-    //       return this.move(vars.moveable[i][0], vars.moveable[i][1]);
-    //     }
-    //   }
-    // }
-
+    /*
+    var damageLoc = {};
+    for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
+        var u = vars.visibleRobots[i].unit;
+        if (3 <= u && u <= 5) {
+          var dx = vars.visibleRobots[i].x-this.me.x;
+          var dy = vars.visibleRobots[i].y-this.me.y;
+          if (dx**2+dy**2 < vars.attackRadius[0]) {
+            this.log(1);
+          }
+        }
+    }
+    */
     if (curPath.length>0) {
       var move = curPath.splice(0, 1)[0];
       if (vars.visibleRobotMap[this.me.y+move[1]][this.me.x+move[0]] == 0) {

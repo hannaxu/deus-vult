@@ -7,6 +7,9 @@ export default {
   MIN_ATK_FUEL: 5000,
   MIN_LAT_DIST: 2, // must be strictly greater than this
   DEFENSE_DEPTH: 15,
+  ENEMY_PRIORITY: [5, 4, 3, 0, 1, 2],
+  CHURCH_MIN_DEF: 4,
+  CHURCH_MAX_DEF: 12,
   SPECS: null,
   creatorPos: null,
   myPos: null,
@@ -57,5 +60,6 @@ export default {
   // Created information
   castleLocs: {}, // (castles only, for now) {id: [x, y]} of all friendly castles
   baseLocs: {}, // stores Castle and Church locations
+    baseChange: true, //set to true when the base list is updated (set to false by some pilgrim methods)
   fuzzyCost: []
 };
