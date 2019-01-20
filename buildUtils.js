@@ -83,7 +83,7 @@ function closestPos(pos, targetPos) {
   dist.sort(function(a, b){return a.value - b.value});
   return dist[0].loc;
 }
-export function resources(cx=this.me.x, cy=this.me.y) {
+export function resources(cx, cy) {
     //resource consideration
     var deposits = [0,[],[]];
 
