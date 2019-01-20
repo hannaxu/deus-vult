@@ -13,6 +13,7 @@ var deposits = [0,[],[]]; //total, karb locs, fuel locs
 var buildCount = [0,0,0,0,0,0];
 var buildOptPil = []; //pilgrims,
 var buildOptUnit = []; //units
+var attackPos = null;
 
 var enemyCastles = []; // enemyCastle locations based on our castleLocations
 var curAttack = 0; // next enemyCastle to deusVult
@@ -54,11 +55,9 @@ export default function castleTurn() {
 
     //this.log(enemyCastles);
     //this.log("test");
-
-    var locs = buildUtils.optBuild(this.me.x, this.me.y);
-    deposits = locs[0];
-    buildOptPil = locs[1];
-
+    //this.log("help1");
+    deposits = buildUtils.resources.call(this);
+    //this.log("help");
     // tracking robots
     for (var x = 0; x < vars.xmax; x++) {
       trackMap.push([]);
@@ -210,19 +209,22 @@ export default function castleTurn() {
     return this.attack(attackDir[0], attackDir[1]);
   }
 
+  var visibleEnemies = buildUtils.findVisibleEnemies.call(this);
+  for (var i = 0; i < visibleEnemies.length; i++) {
+    if (visibleEnemies[i][2] != vars.SPECS.PILGRIM)
+      attackPos = [this.me.y+visibleEnemies[i][1], this.me.x+visibleEnemies[i][0]];
+  }
+
   //if (!defend && (headcount[2]<1 || (headcount[2]<3 && this.me.turn > 10 && closePilgrim < deposits && castleOrder != 0)) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     if ( !defend && ( headcount[2]<1 || (headcount[4] > 3 && this.me.turn > 10 && closePilgrim < Math.min(deposits[1].length+1, deposits[0])) ) ) {
-      for (var i = 0; i < buildOptPil.length; i++) {
-        var x = this.me.x+buildOptPil[i][1];
-        var y = this.me.y+buildOptPil[i][0];
-        if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-          //sendMessage.call(this, castleOrder, buildOptPil[i][1]**2+buildOptPil[i][0]**2);
-          //this.log("Building pilgrim at "+x+" "+y);
-          buildCount[2]++;
-          vars.buildRobot = 2;
-          return this.buildUnit(vars.SPECS.PILGRIM, buildOptPil[i][1], buildOptPil[i][0]);
-        }
+      var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PILGRIM, this.me.x, this.me.y);
+      //sendMessage.call(this, castleOrder, buildOptPil[i][1]**2+buildOptPil[i][0]**2);
+      //this.log("Building pilgrim at "+x+" "+y);
+      if( buildLoc != null ) {
+        buildCount[2]++;
+        vars.buildRobot = 2;
+        return this.buildUnit(vars.SPECS.PILGRIM, buildLoc[1], buildLoc[0]);
       }
     }
   }
@@ -245,16 +247,13 @@ export default function castleTurn() {
   // prophet build
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
     if ( ((castleOrder == 0 || this.me.turn > 10) && headcount[4] < 20) || (this.karbonite >= 100 && this.fuel >= 300)) {
-      for (var i = 0; i < vars.buildable.length; i++) {
-        var x = this.me.x+vars.buildable[i][0];
-        var y = this.me.y+vars.buildable[i][1];
-        if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-          //sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
-          //this.log("Building pilgrim at "+x+" "+y);
-          buildCount[4]++;
-          vars.buildRobot = 4;
-          return this.buildUnit(vars.SPECS.PROPHET, vars.buildable[i][0], vars.buildable[i][1]);
-        }
+      var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
+      //sendMessage.call(this, castleOrder, buildOptPil[i][1]**2+buildOptPil[i][0]**2);
+      //this.log("Building pilgrim at "+x+" "+y);
+      if( buildLoc != null ) {
+        buildCount[4]++;
+        vars.buildRobot = 4;
+        return this.buildUnit(vars.SPECS.PROPHET, buildLoc[1], buildLoc[0]);
       }
     }
   }
