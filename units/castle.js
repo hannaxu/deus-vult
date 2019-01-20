@@ -101,32 +101,6 @@ export default function castleTurn() {
     }
   }
 
-  // tracks moving robots BROKEN
-  // for (var i = 0; i < vars.castleTalkRobots.length; i++) {
-  //   var robot = vars.castleTalkRobots[i];
-  //   var message = robot.castle_talk % (1<<6);
-  //   if (robot.unit < 2) continue;
-  //   if (trackRobots[robot.id] != null) {
-  //     var u = trackRobots[robot.id][1];
-  //     var move = utils.findConnections(vars.SPECS.UNITS[u].MOVERADIUS)[message];
-  //     if (trackMap[trackRobots[robot.id][0][0]][trackRobots[robot.id][0][1]]==robot.id) {
-  //       trackMap[trackRobots[robot.id][0][0]][trackRobots[robot.id][0][1]] = 0;
-  //     }
-  //     trackRobots[robot.id][0][0] = utils.add(trackRobots[robot.id][0], move);
-  //     trackMap[trackRobots[robot.id][0][0]][trackRobots[robot.id][0][1]] = robot.id;
-  //   }
-  // }
-  //
-  // for (var i = 0; i < vars.visibleRobots.length; i++) {
-  //   var robot = vars.visibleRobots[i];
-  //   if (robot.team==this.me.team) {
-  //     trackRobots[robot.id] = [[robot.x, robot.y], robot.unit];
-  //     trackMap[robot.y][robot.x] = robot.id;
-  //   }
-  // }
-  // this.log("track");
-  // this.log(trackRobots);
-
   // deletes dead enemyCastles
   for( var x = 0; x < vars.commRobots.length; x++ ) {
     if(deusVulters[vars.commRobots[x].id]!=null) {
@@ -219,7 +193,7 @@ export default function castleTurn() {
 
   //if (!defend && (headcount[2]<1 || (headcount[2]<3 && this.me.turn > 10 && closePilgrim < deposits && castleOrder != 0)) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
-    if ( !defend && ( headcount[2]<1 || (headcount[4] > 3 && this.me.turn > 10 && closePilgrim < Math.min(deposits[1].length+1, deposits[0])) ) ) {
+    if ( !defend && ( headcount[2]<deposits[0] || (headcount[4] > 3 && this.me.turn > 10 && closePilgrim < Math.min(deposits[1].length+1, deposits[0])) ) ) {
       var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PILGRIM, this.me.x, this.me.y);
       //sendMessage.call(this, castleOrder, buildOptPil[i][1]**2+buildOptPil[i][0]**2);
       //this.log("Building pilgrim at "+x+" "+y);
