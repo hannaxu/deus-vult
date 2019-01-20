@@ -10,6 +10,12 @@ import * as pilgrim_atk from './pilgrim_atk';
 var recD;
 var attacking = false;
 
+var possChurches = null;
+var churching = false; // whether or not is building a church
+var curPath = [];
+var churchLoc = null;
+var buildChurchTiles = null;
+
 export default function pilgrimTurn () {
     //this.log("I am a Pilgrim at "+this.me.x+" "+this.me.y);
     //this.log("entering");
@@ -28,10 +34,69 @@ export default function pilgrimTurn () {
         for (var i=0; i<vars.rLocs.length; i++) {
             vars.rLocs[i].closed=-2000;
         }
+
+        initPossChurches.call(this);
+    }
+
+    // going to build a church
+    if (churching) {
+      //this.log("churching "+churchLoc);
+
+      // updates hasChurch
+      hasCloseChurch.call();
+
+      // if the churchLoc already has a church built at it, then reset stuff
+      if (hasChurch[churchLoc[1]][churchLoc[0]]<=5) {
+        var churchLoc = findBestChurch.call();
+        if (churchLoc==null) {
+          churching = false;
+          return;
+        }
+
+        buildChurchTiles = utils.applyConnections.call(this, churchLoc, vars.buildable);
+        curPath = [];
+        if (this.me.time>1.2*vars.NAVIGATION_TIME_LIMIT) {
+          var path = utils.navigate.call(this, [this.me.x, this.me.y], buildChurchTiles, vars.CHURCH_DEPTH);
+          if (path!=null) {
+            var move = path.splice(0, 1)[0];
+            curPath = path;
+            return this.move(move[0], move[1]);
+          }
+        }
+      }
+
+      // if next to the target church location, try to build the church
+      if (curPath.length==0) {
+        if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.CHURCH].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.CHURCH].CONSTRUCTION_FUEL) {
+          if (vars.visibleRobotMap[churchLoc[1]][churchLoc[0]]<=0) {
+            this.log("building church at "+this.me.x+" "+this.me.y)
+            churching = false;
+            return this.buildUnit(vars.SPECS.CHURCH, churchLoc[0]-this.me.x, churchLoc[1]-this.me.y);
+          }
+        }
+        return;
+      }
+
+      // try to move along the current path towards building the church
+      var move = curPath.splice(0, 1)[0];
+      if (vars.visibleRobotMap[this.me.y+move[1]][this.me.x+move[0]] == 0) {
+        return this.move(move[0], move[1])
+      }
+
+      // if the current path is blocked, try to find a new one
+      curPath = [];
+      if (this.me.time>1.2*vars.NAVIGATION_TIME_LIMIT) {
+        var path = utils.navigate.call(this, [this.me.x, this.me.y], buildChurchTiles, vars.CHURCH_DEPTH);
+        if (path!=null) {
+          var move = path.splice(0, 1)[0];
+          curPath = path;
+          return this.move(move[0], move[1]);
+        }
+      }
     }
 
     if (attacking) {
-      return pilgrim_atk.pilgrimAtkTurn.call(this);
+        return pilgrim_atk.pilgrimAtkTurn.call(this);
     }
 
     //remove after testing
@@ -115,8 +180,11 @@ export default function pilgrimTurn () {
         //this.log("Mined stuff");
         return this.mine();
     }
-    //go build a church
+    //go build a church [sometimes returns]
     if (vars.teamKarb>50 && vars.teamFuel>200) {
+
+        // FEEL FREE TO USE THIS AFTER SEEDING
+        /*
         var goods=newFactVal.call(this);
         var best=-9999;
         var bx=-1;
@@ -131,6 +199,25 @@ export default function pilgrimTurn () {
             }
         }
         this.log(bx+" "+by+" is the best new base");
+        */
+
+        churchLoc = findBestChurch.call(this);
+        if (churchLoc!=null) {
+          churching = true;
+          this.log("churching to "+churchLoc);
+          // all the tiles adjacent to churchLoc which are passable
+          buildChurchTiles = utils.applyConnections.call(this, churchLoc, vars.buildable);
+          // finds a path to build the church
+          if (this.me.time>1.2*vars.NAVIGATION_TIME_LIMIT) {
+            var path = utils.navigate.call(this, [this.me.x, this.me.y], buildChurchTiles, vars.CHURCH_DEPTH);
+            if (path!=null) {
+              var move = path.splice(0, 1)[0];
+              curPath = path;
+              return this.move(move[0], move[1]);
+            }
+            return;
+          }
+        }
     }
 
     return null;
@@ -217,4 +304,87 @@ function pickAdjMove(costs, pri) {
         //this.castleTalk(bestd);
         return this.move(vars.moveable[bestd][0],vars.moveable[bestd][1]);
     }
+}
+
+var hasChurch = null;
+
+function hasCloseChurch () {
+  hasChurch = [];
+  for (var x = 0; x < vars.xmax; x++) {
+    hasChurch.push([]);
+    for (var y = 0; y < vars.ymax; y++) {
+      hasChurch[x].push(vars.POS_INF);
+    }
+  }
+
+  for (var h in vars.baseLocs) {
+    var pos = utils.unhashCoordinates(h);
+    for (var dx = -3; dx <= 3; dx++) {
+      for (var dy = -3; dy <= 3; dy++) {
+        var x = pos[0]+dx;
+        var y = pos[1]+dy;
+        hasChurch[y][x] = Math.min(hasChurch[y][x], dx**2+dy**2);
+      }
+    }
+  }
+}
+
+function findBestChurch () {
+  possChurches.sort(function(c1, c2) {
+    var dist1 = (c1[1][0]-vars.xpos)**2+(c1[1][1]-vars.ypos)**2;
+    var dist2 = (c2[1][0]-vars.xpos)**2+(c2[1][1]-vars.ypos)**2;
+    if (dist1!=dist2) {
+      return dist1-dist2;
+    }
+    return c1[0]-c2[0];
+  });
+
+  hasCloseChurch.call();
+
+  var betterPos = [];
+  for (var i = 0; i < possChurches.length; i++) {
+    var pos = possChurches[i][1];
+    if (!hasChurch[pos[1]][pos[0]]) {
+      betterPos.push(pos);
+    }
+  }
+
+  if (betterPos.length==0) {
+    return null;
+  }
+
+  betterPos.sort(function(c1, c2) {
+    var dist1 = (c1[0]-vars.xpos)**2+(c1[1]-vars.ypos)**2;
+    var dist2 = (c2[0]-vars.xpos)**2+(c2[1]-vars.ypos)**2;
+    return dist1-dist2;
+  });
+
+  return betterPos[0];
+}
+
+function initPossChurches () {
+  // [resource count, pos]
+  possChurches = [];
+  for (var x = 0; x < vars.xmax; x++) {
+    for (var y = 0; y < vars.ymax; y++) {
+      if (utils.checkBounds(x, y)&&vars.passableMap[y][x]) {
+        // doesn't build on resource tiles
+        if (vars.fuelMap[y][x]||vars.karbMap[y][x]) {
+          continue;
+        }
+        var count = 0; // how many adjacent resource tiles
+        for (var i = 0; i < vars.buildable.length; i++) {
+          var bx = x+vars.buildable[i][0];
+          var by = y+vars.buildable[i][1];
+          if (utils.checkBounds(bx, by)&&vars.passableMap[by][bx]) {
+            if (vars.fuelMap[by][bx]||vars.karbMap[by][bx]) {
+              count++;
+            }
+          }
+        }
+        possChurches.push([count, [x, y]]);
+      }
+    }
+  }
+  //this.log(possChurches);
 }
