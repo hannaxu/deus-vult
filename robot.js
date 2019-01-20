@@ -12,6 +12,7 @@ import preacherTurn from './units/preacher';
 import * as utils from './utils';
 import { sendMessage, sendMessageTrusted, readMessages, castleLocsComm, cypherMessage } from './communication';
 import CastleTalk from './castleTalk';
+import { testAll } from './unitTests';
 
 class MyRobot extends BCAbstractRobot {
   constructor () {
@@ -73,7 +74,8 @@ class MyRobot extends BCAbstractRobot {
           }
           //this.log("Created by "+vars.creatorPos);
         }
-      // end of init
+        testAll.call(this, false);
+        // end of init
         //this.log("done init");
       }
 

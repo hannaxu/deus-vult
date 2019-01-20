@@ -8,6 +8,7 @@ var ret = null;
 export default class {
     constructor(_this) {
       this.send = this.send.bind(_this);
+      this.receive = this.receive.bind(_this);
       this.registerAction = this.registerAction.bind(_this);
       this.performAction = this.performAction.bind(_this);
 
@@ -24,7 +25,8 @@ export default class {
       else
         units = [_this.me.unit];
 
-      for(var unit in units) {
+      for(var i in units) {
+        var unit = units[i];
         vars.moveRadius = vars.SPECS.UNITS[unit].SPEED;
         vars.moveable = findConnections.call(_this, 1, vars.moveRadius);
 
@@ -92,35 +94,34 @@ export default class {
       var ret2 = {}
       var padding = 0;
       for(var name in actions[unit]) {
-        var combs = [1];
-        var values = actions[this.me.unit][name];
+        var combs = 1;
+        var values = actions[unit][name];
         for(var n in values) {
-          combs.push(combs[combs.length-1] * values[n].length);
+          combs *= values[n].length;
         }
         
-        if(padding + combs[combs.length-1] >= message) {
+        if(padding + combs >= message) {
           // reached performed action
           var comb = message - padding - 1;
-          ret2.name = name;
-          
+          ret2[name] = {};
+
           for(var n in values) {
-            var pop = combs.pop();
-            ret2.value[n] = values[n][comb % pop];
-            comb = parseInt(comb / pop);
+            ret2[name][n] = values[n][comb % values[n].length];
+            comb = parseInt(comb / values[n].length);
           }
           break;
         }
         else
           padding += combs;
       }
-      if(ret2 == {})
+      if(Object.keys(ret2).length == 0)
         this.log("CASTLETALK: Could not receive message " + message + " for unit " + unit);
       
       // return action
       return ret2;
     }
 
-    // Call during first turn.
+    // Called upon initialization.
     registerAction(unit, name, values) {
       // update overall maximum
       var combs = 1;
@@ -134,24 +135,24 @@ export default class {
       return max_message[unit];
     }
 
-    // Call immediately before performing action.
-    // i.e. if you call this.move() and then processAction(),
-    // it won't work even if you return this.move()'s value.
+    // Call when performing an action.
     performAction(name, value) {
-      if(!(name in this.actions[this.me.unit])) {
+      if(!(name in actions[this.me.unit])) {
         this.log("CASTLETALK: Action " + name + " not registered for unit " + this.me.unit);
         return false;
       }
 
-      var comb = 0;
-      var combs = 1;
+      var values = actions[this.me.unit][name];
       for(var n in value) {
-        var values = actions[this.me.unit][name];
         if(!(n in values)) {
           this.log("CASTLETALK: Action " + name + " has no parameter " + n + " for unit " + this.me.unit);
           return false;
         }
-        
+      }
+
+      var comb = 0;
+      var combs = 1;
+      for(var n in values){ 
         var idx;
         if(Array.isArray(value[n])) {
           idx = values[n].findIndex(function(x) {
