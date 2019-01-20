@@ -261,6 +261,23 @@ export default function castleTurn() {
     }
   }
 
+  //attacker pilgrims
+  if (false && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+    if (headcount[4] >= vars.MIN_ATK_ROBOTS-2 && visionPilgrims < 3) {
+      for (var i = 0; i < vars.buildable.length; i++) {
+        var x = this.me.x+vars.buildable[i][0];
+        var y = this.me.y+vars.buildable[i][1];
+        if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
+          sendMessage.call(this, 1 << 14, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
+          //this.log("Building pilgrim at "+x+" "+y);
+          buildCount[2]++;
+          vars.buildRobot = 2;
+          return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
+        }
+      }
+    }
+  }
+
   // DEUS VULTING
   if (this.fuel >= vars.MIN_ATK_FUEL && enemyCastles.length > 0 && this.me.turn%50==0) {
     if (this.me.turn-lastDeusVult >= 20 && attackerCount >= vars.MIN_ATK_ROBOTS) {
@@ -292,6 +309,6 @@ export function attackPhase () {
   }
   var attackableEnemies = utils.findAttackableEnemies.call(this);
   if (attackableEnemies.length>0) {
-      return [attackableEnemies[i].x-this.me.x, attackableEnemies[i].y-this.me.y];
+      return [attackableEnemies[0].x-this.me.x, attackableEnemies[0].y-this.me.y];
     }
 }

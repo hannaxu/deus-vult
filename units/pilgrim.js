@@ -1,11 +1,14 @@
 import vars from '../variables';
 import * as utils from '../utils';
+import * as pilgrim_atk from './pilgrim_atk';
 
 //type 0 fuel
 //x
 //y
 //closed= last time with worker on it
 var recD;
+var attacking = false;
+
 export default function pilgrimTurn () {
     //this.log("I am a Pilgrim at "+this.me.x+" "+this.me.y);
     //this.log("entering");
@@ -13,10 +16,20 @@ export default function pilgrimTurn () {
     var minDR=-1;
     var minDRv=9999;
     if (this.me.turn==1) {
+        if (vars.creatorPos!=null) {
+            if ((vars.visibleRobotMap[vars.creatorPos[0]][vars.creatorPos[1]].signal & 1<<14) > 0) {
+                attacking = true;
+            }
+        }
         for (var i=0; i<vars.rLocs.length; i++) {
             vars.rLocs[i].closed=-2000;
         }
     }
+
+    if (attacking) {
+      return pilgrim_atk.pilgrimAtkTurn.call(this);
+    }
+
     for (var i=0; i<vars.rLocs.length; i++) {
         var p=vars.rLocs[i];
         if (vars.visibleRobotMap[p.y][p.x]>0 && (p.x!=me.x || p.y!=me.y)) {
