@@ -9,7 +9,7 @@ var deposits = [0,[],[]]; //total, karb locs, fuel locs
 var attackPos = null;
 
 export default function castleTurn() {
-  //this.log("I am a Church at "+this.me.x+" "+this.me.y);
+  this.log("I am a Church at "+this.me.x+" "+this.me.y);
   //this.log("Resources: "+this.karbonite+" "+this.fuel);
   if (vars.firstTurn) {
     team = this.me.team;

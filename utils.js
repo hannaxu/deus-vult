@@ -305,6 +305,18 @@ export function findConnections (r2) {
   return vars.connections[r2];
 }
 
+export function applyConnections (pos, connections) {
+  var ret = [];
+  for (var i = 0; i < connections.length; i++) {
+    var x = pos[0]+connections[i][0];
+    var y = pos[1]+connections[i][1];
+    if (checkBounds(x, y)&&vars.passableMap[y][x]) {
+      ret.push([x, y]);
+    }
+  }
+  return ret;
+}
+
 export function connIndexOf (conn, val) {
   for (var i = 0; i < conn.length; i++) {
     if (conn[i][0]==val[0]&&conn[i][1]==val[1]) {
@@ -454,9 +466,20 @@ export function add (v1, v2) {
 }
 
 export function onLattice (x, y) {
-  var dx = x-vars.creatorPos[0];
-  var dy = y-vars.creatorPos[1];
-  return dx != 0 && dy != 0;// && Math.abs(dx) != Math.abs(dy);
+  var dx = Math.abs(x-vars.creatorPos[0]);
+  var dy = Math.abs(y-vars.creatorPos[1]);
+  if (dx>dy) {
+    var temp = dx;
+    dx = dy;
+    dy = temp;
+  }
+  // dx <= dy
+  if (dx<=2) {
+    return dy%2==0;
+  }
+  else {
+    return (dx+dy)%2==0;
+  }
 }
 
 export function findAttackableEnemies (pos=[this.me.x, this.me.y], range=vars.attackRadius) {

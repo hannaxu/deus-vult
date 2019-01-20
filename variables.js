@@ -14,6 +14,8 @@ export default {
   ENEMY_PRIORITY: [5, 4, 3, 0, 1, 2],
 
   CASTLE_MIN_DEF: 8, // minimum number of visible ally attackers on defense per castle
+
+  CHURCH_DEPTH: 20, // how many moves a pilgrim is willing to make to build a church
   CHURCH_MIN_DEF: 4,
   CHURCH_MAX_DEF: 12,
 
