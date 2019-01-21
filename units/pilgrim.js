@@ -181,7 +181,7 @@ export default function pilgrimTurn () {
         return this.mine();
     }
     //go build a church [sometimes returns]
-    if (vars.teamKarb>50 && vars.teamFuel>200) {
+    if (false && vars.teamKarb>50 && vars.teamFuel>200) {
 
         // FEEL FREE TO USE THIS AFTER SEEDING
         /*
