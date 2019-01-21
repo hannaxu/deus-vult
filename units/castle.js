@@ -245,7 +245,9 @@ export default function castleTurn() {
 
   // prophet build
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
-    if ( ((castleOrder == 0 || this.me.turn > 10) && headcount[4] < 20) || (this.karbonite >= 100 && this.fuel >= 300)) {
+    if ( defend || 
+        ( (headcount[4] < 3 && this.me.turn < totC*25) || (headcount[4] < 20 && this.me.turn > totC*25) ) || 
+        (this.karbonite >= 60 && this.fuel >= 300) ) {
       var buildLoc;
       if( attackPos == null && this.me.turn < 15 ) 
         buildLoc = buildUtils.buildOpt.call(this, attackPosEarly, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
