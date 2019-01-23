@@ -3,10 +3,9 @@ import * as utils from '../utils';
 import { sendMessage } from '../communication';
 
 var team;
-var totC = 0;
 var myCastles = []; // in turn order, contains IDs and locations
-var castleID = {};
 var castleOrder = 0;
+var totalCastles;
 var teamID = {}; // hashmap stores info
 var symmetry;
 var deposits = 0;
@@ -35,26 +34,6 @@ export default function castleTurn() {
     //determine if enemy castles are visible and number
     //  try to determine if map is truly horizontal or vertical if symmetry returned both
     team = this.me.team;
-    for( var x = 0; x < vars.commRobots.length; x++ ) {
-      if(vars.commRobots[x].team == team) {
-        if (vars.commRobots[x].castle_talk==0) {
-          totC++;
-        }
-        else {
-          myCastles.push([vars.commRobots[x].id, [null, null]]);
-          castleID[vars.commRobots[x].id] = 0;
-          castleOrder++;
-        }
-      }
-    }
-
-    if (castleOrder == 2) {
-      if (this.getRobot(myCastles[0][0]).castle_talk >= 128+64) {
-        var temp = myCastles[0];
-        myCastles[0] = myCastles[1];
-        myCastles[1] = temp;
-      }
-    }
 
     //this.log(enemyCastles);
     //this.log("test");
@@ -83,61 +62,17 @@ export default function castleTurn() {
     //this.log("Test: " +vars.firstTurn);
   }
 
+  // communicate castleLocs
+  // only the first two turns
+  var val = castleLocComm.call(this);
+  if(typeof(val) != 'undefined')
+    return val;
+
+  // track units
   for(var i in vars.castleTalkRobots){
     var other_r = vars.castleTalkRobots[i];
     vars.CastleTalk.receive(other_r.castle_talk, 2);
   }
-  // // determines myCastles
-  // if (this.me.turn == 1) {
-  //   for (var i = 0; i < castleOrder; i++) {
-  //     myCastles[i][1][0] = this.getRobot(myCastles[i][0]).castle_talk-128-(i%2)*64;
-  //   }
-  //   this.castleTalk(this.me.x+128+64*(castleOrder%2));
-  //   myCastles.push([this.me.id, [this.me.x, this.me.y]]);
-  // }
-  // if (this.me.turn == 2) {
-  //   outer: for( var x = 0; x < vars.commRobots.length; x++ ) {
-  //     if(vars.commRobots[x].team == team && vars.commRobots[x].castle_talk>=128) {
-  //       for (var i = 0; i < myCastles.length; i++) {
-  //         if (myCastles[i][0]==vars.commRobots[x].id) {
-  //           continue outer;
-  //         }
-  //       }
-  //       myCastles.push([vars.commRobots[x].id, [null, null]]);
-  //     }
-  //   }
-  //   if (castleOrder==0&&myCastles.length==3) {
-  //     if (this.getRobot(myCastles[2][0]).castle_talk >= 128+64) {
-  //       var temp = myCastles[1];
-  //       myCastles[1] = myCastles[2];
-  //       myCastles[2] = temp;
-  //     }
-  //   }
-  //   for (var i = 0; i < castleOrder; i++) {
-  //     myCastles[i][1][1] = this.getRobot(myCastles[i][0]).castle_talk-128-64*(i%2);
-  //   }
-  //   for (var i = castleOrder+1; i < myCastles.length; i++) {
-  //     myCastles[i][1][0] = this.getRobot(myCastles[i][0]).castle_talk-128-64*(i%2);
-  //   }
-  //   this.castleTalk(this.me.y+128+64*(castleOrder%2));
-  // }
-  // if (this.me.turn == 3) {
-  //   for (var i = castleOrder+1; i < myCastles.length; i++) {
-  //     myCastles[i][1][1] = this.getRobot(myCastles[i][0]).castle_talk-128-64*(i%2);
-  //   }
-  //   if (symmetry[0]) {
-  //     for (var i = 0; i < myCastles.length; i++) {
-  //       enemyCastles.push([vars.xmax-1-myCastles[i][1][0], myCastles[i][1][1]]);
-  //     }
-  //   }
-  //   if (symmetry[1]) {
-  //     for (var i = 0; i < myCastles.length; i++) {
-  //       enemyCastles.push([myCastles[i][1][0], vars.ymax-1-myCastles[i][1][1]]);
-  //     }
-  //   }
-  //   this.log(myCastles);
-  //   //this.log(vars.castleLocs);
-  // }
 
   // // deletes dead enemyCastles
   // for( var x = 0; x < vars.commRobots.length; x++ ) {
@@ -297,5 +232,64 @@ export default function castleTurn() {
     lastDeusVult = this.me.turn;
     curAttack = (curAttack+1)%enemyCastles.length;
     return;
+  }
+
+
+  // Communicate castle locations
+  // use proposeTrade (for now) to avoid castleTalk collisions
+  // send only during first
+  // receive during first and second
+  function castleLocComm() {
+    if(this.me.turn == 1) {
+      totalCastles = vars.commRobots.length;
+      //this.log("There are " + totalCastles + " total castles");
+
+      for(var i = 0; i < vars.commRobots.length; i++) {
+        var other_r = vars.commRobots[i];
+        if(other_r.id != this.me.id && other_r.turn == this.me.turn) {
+          castleOrder++;
+          // read other information
+          readInfo.call(this, other_r);
+        }
+      }
+      myCastles[castleOrder] = [this.me.id, [this.me.x, this.me.y]];
+      //this.log("I am castle " + castleOrder);
+      if(totalCastles - castleOrder == 1)
+        this.log(myCastles);
+
+      if(castleOrder > 0 || totalCastles > 1){
+        // send my information
+        this.castleTalk(castleOrder << 6 | this.me.x);
+        var k = this.last_offer[this.me.team][0];
+        var f = this.last_offer[this.me.team][1];
+        if(castleOrder == 1)
+          f = this.me.y;
+        else
+          k = this.me.y;
+        if(this.me.team == vars.SPECS.RED)
+          return this.proposeTrade(-k, -f);
+        else
+          return this.proposeTrade(k, f);
+      }
+    }
+
+    else if(this.me.turn == 2){
+      for(var i = 0; i < vars.commRobots.length; i++) {
+        var other_r = vars.commRobots[i];
+        if(other_r.id != this.me.id && other_r.turn < this.me.turn) {
+          // read other information
+          readInfo.call(this, other_r);
+        }
+      }
+      if(totalCastles - castleOrder > 1)
+        this.log(myCastles);
+    }
+  }
+
+  function readInfo(other_r){
+    var order = other_r.castle_talk >> 6;
+    var x = other_r.castle_talk & 63;
+    var y = Math.abs(this.last_offer[this.me.team][order&1]);
+    myCastles[order] = [other_r.id, [x, y]]
   }
 }

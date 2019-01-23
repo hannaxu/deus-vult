@@ -10,7 +10,7 @@ import prophetTurn from './units/prophet';
 import preacherTurn from './units/preacher';
 
 import * as utils from './utils';
-import { sendMessage, sendMessageTrusted, readMessages, castleLocsComm, cypherMessage } from './communication';
+import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from './communication';
 import CastleTalk from './castleTalk';
 import { testAll } from './unitTests';
 
@@ -129,23 +129,14 @@ class MyRobot extends BCAbstractRobot {
           ret= this.churchTurn();
           break;
         case vars.SPECS.CASTLE:
-          castleLocsComm.call(this);
           ret= this.castleTurn();
           break;
       }
 
-      // temporary failsafe
-      if(vars.creatorPos != null){
-        var creatorId = vars.visibleRobotMap[vars.creatorPos[1]][vars.creatorPos[0]];
-        if(creatorId > 0){
-          var creator = this.getRobot(creatorId);
-          if(creator.unit == SPECS.CASTLE && creator.turn <= 2){
-            this.castleTalk(0);
-          }
-        }
-      }
+      if(this.me.unit != vars.SPECS.CASTLE || this.me.turn > 1)
+        vars.CastleTalk.send();
+      
       vars.firstTurn = false;
-      vars.CastleTalk.send();
       return ret;
     }
     catch (err) {
