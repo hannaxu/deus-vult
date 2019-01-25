@@ -328,31 +328,25 @@ export function connIndexOf (conn, val) {
 }
 
 export function updateLocs () {
-  var shouldSee = {};
   for (var h in vars.baseLocs) {
     var pos = unhashCoordinates(h);
-    if (vars.visibleRobotMap[pos[1]][pos[0]]>=0) {
-      shouldSee[h] = vars.visibleRobotMap[pos[1]][pos[0]];
+      var id=vars.visibleRobotMap[pos[1]][pos[0]];
+    if (id>=0 && (id==0 || this.getRobot(id).unit>=2)) {
+      delete vars.baseLocs[h];
+        vars.baseChange=true;
     }
   }
   for (var i = 0; i < vars.visibleRobots.length; i++) {
     if (vars.visibleRobots[i].unit==vars.SPECS.CASTLE||vars.visibleRobots[i].unit==vars.SPECS.CHURCH) {
       var hashVal = hashCoordinates([vars.visibleRobots[i].x, vars.visibleRobots[i].y]);
-      if (shouldSee[hashVal]==0) {
-        delete shouldSee[hashVal];
-      }
-      else {
-        vars.baseLocs[hashVal] = vars.visibleRobots[i].id;
+      if (! (hashVal in vars.baseLocs)) {
+           vars.baseLocs[hashVal] = vars.visibleRobots[i].id;
           vars.baseChange=true;
       }
     }
   }
-  for (var h in shouldSee) {
-      vars.baseChange=true;
-    delete vars.baseLocs[h];
-  }
   // castleLocs
-  shouldSee = {};
+  var shouldSee = {};
   for (var h in vars.castleLocs) {
     var pos = unhashCoordinates(h);
     if (vars.visibleRobotMap[pos[1]][pos[0]]>=0) {
