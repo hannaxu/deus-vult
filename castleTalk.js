@@ -79,10 +79,11 @@ export default class {
         }
         if(message == 0)
           this.log("CASTLETALK: Could not send action " + ret.name + " with combination " + ret.comb + " for unit " + this.me.unit);
+        else
+          // send action
+          this.castleTalk(message);
       }
       
-      // send action
-      this.castleTalk(message);
       ret = null;
       return message;
     }
@@ -118,11 +119,13 @@ export default class {
         else
           padding += combs;
       }
-      if(Object.keys(ret2).length == 0)
+      if(Object.keys(ret2).length == 0){
         this.log("CASTLETALK: Could not receive message " + message + " for unit " + unit);
+        return null;
+      }
       
       // return action
-      this.log("CASTLETALK: Recv - unit:" + unit + " actions:" + JSON.stringify(ret2));
+      //this.log("CASTLETALK: Recv - unit:" + unit + " actions:" + JSON.stringify(ret2));
       return ret2;
     }
 
@@ -179,7 +182,7 @@ export default class {
         combs *= values[n].length;
       }
 
-      this.log("CASTLETALK: Perf - unit:" + this.me.unit + " action:" + name + " value:" + JSON.stringify(value));
+      //this.log("CASTLETALK: Perf - unit:" + this.me.unit + " action:" + name + " value:" + JSON.stringify(value));
       ret = {name: name, comb: comb};
       return true;
     }

@@ -133,15 +133,21 @@ class MyRobot extends BCAbstractRobot {
           break;
       }
 
-      if(this.me.unit != vars.SPECS.CASTLE || this.me.turn > 1)
-        vars.CastleTalk.send();
+      vars.CastleTalk.send();
       
       vars.firstTurn = false;
       return ret;
     }
     catch (err) {
       this.log("Error in unit "+this.me.unit+" at ("+this.me.x+", "+this.me.y+")");
-      this.log(err.toString());
+      if(true){
+        var lines = err.stack.split('\n');
+        for(var i in lines){
+          this.log(lines[i]);
+        }
+      }
+      else
+        this.log(err.toString());
     }
   }
 }

@@ -11,6 +11,9 @@ var symmetry;
 var deposits = 0;
 var buildCount = [0,0,0,0,0,0];
 
+var unitTracking = {};
+var untracked = new Set();
+
 var enemyCastles = []; // enemyCastle locations based on our castleLocations
 var curAttack = 0; // next enemyCastle to deusVult
 var lastDeusVult = -10; // last turn since deusVult
@@ -19,8 +22,10 @@ var deusVulters = {}; // robots currently deusVulting and their target deusVult
 var attackerCount = 0; // how many of our damaging troops in vision
 var farthestAttacker = 0; // r^2 distance of our farthest attacker
 
+var temp = new Set();
+
 export default function castleTurn() {
-  if (this.me.team==0) {
+  if (this.me.team==0 && castleOrder == 0) {
     this.log("Round "+this.me.turn);
   }
   //this.log("I am a Castle at "+this.me.x+" "+this.me.y);
@@ -69,10 +74,7 @@ export default function castleTurn() {
     return val;
 
   // track units
-  for(var i in vars.castleTalkRobots){
-    var other_r = vars.castleTalkRobots[i];
-    vars.CastleTalk.receive(other_r.castle_talk, 2);
-  }
+  trackUnits.call(this);
 
   // // deletes dead enemyCastles
   // for( var x = 0; x < vars.commRobots.length; x++ ) {
@@ -246,18 +248,25 @@ export default function castleTurn() {
 
       for(var i = 0; i < vars.commRobots.length; i++) {
         var other_r = vars.commRobots[i];
-        if(other_r.id != this.me.id && other_r.turn == this.me.turn) {
-          castleOrder++;
-          // read other information
-          readInfo.call(this, other_r);
+        if(other_r.turn == this.me.turn) {
+            if(other_r.id != this.me.id ) {
+            castleOrder++;
+            // read other information
+            readInfo.call(this, other_r);
+          }
+        }
+        else{
+          // to later tell which ones are castles
+          temp.add(parseInt(other_r.id));
         }
       }
       myCastles[castleOrder] = [this.me.id, [this.me.x, this.me.y]];
+      startTracking(this.me, this.me.x, this.me.y, this.me.unit);
       //this.log("I am castle " + castleOrder);
       if(totalCastles - castleOrder == 1)
         this.log(myCastles);
 
-      if(castleOrder > 0 || totalCastles > 1){
+      if(totalCastles > 1){
         // send my information
         this.castleTalk(castleOrder << 6 | this.me.x);
         var k = this.last_offer[this.me.team][0];
@@ -276,7 +285,7 @@ export default function castleTurn() {
     else if(this.me.turn == 2){
       for(var i = 0; i < vars.commRobots.length; i++) {
         var other_r = vars.commRobots[i];
-        if(other_r.id != this.me.id && other_r.turn < this.me.turn) {
+        if(temp.has(other_r.id)) {
           // read other information
           readInfo.call(this, other_r);
         }
@@ -290,6 +299,132 @@ export default function castleTurn() {
     var order = other_r.castle_talk >> 6;
     var x = other_r.castle_talk & 63;
     var y = Math.abs(this.last_offer[this.me.team][order&1]);
-    myCastles[order] = [other_r.id, [x, y]]
+    myCastles[order] = [other_r.id, [x, y]];
+    startTracking(other_r, x, y, vars.SPECS.CASTLE);
+  }
+  function startTracking(other_r, x, y, unit){
+    unitTracking[other_r.id] = {type:"robot", id:other_r.id, turn:other_r.turn,
+      team:team, unit:unit, x:x, y:y, fuel:0, karbonite:0,
+      signal:other_r.signal, signal_radius:other_r.signal_radius, castle_talk:other_r.castle_talk}
+  }
+
+  function trackUnits(){
+    if(this.me.turn == 1)
+      return;
+    
+    var appeared = [];
+    var built = [];
+
+    for(var i in vars.commRobots){
+      var other_r = vars.commRobots[i];
+      
+      if(other_r.id in unitTracking){
+        // prevent castleLoc messages from messing with unit tracking
+        if(this.me.turn == 2 && totalCastles > 1 && (other_r.turn < 2 || other_r.id == this.me.id))
+          continue;
+
+        // unit currently tracked
+        unitTracking[other_r.id].turn = other_r.turn;
+        unitTracking[other_r.id].signal = other_r.signal;
+        unitTracking[other_r.id].signal_radius = other_r.signal_radius;
+        unitTracking[other_r.id].castle_talk = other_r.castle_talk;
+  
+        // receive updates
+        try{
+          var actions = vars.CastleTalk.receive(other_r.castle_talk, unitTracking[other_r.id].unit);
+          for(var name in actions){
+            switch(name){
+              case "move":
+                if(utils.checkBounds(unitTracking[other_r.id].x + actions[name].dxdy[0],
+                  unitTracking[other_r.id].y + actions[name].dxdy[1])){
+                  unitTracking[other_r.id].x += actions[name].dxdy[0];
+                  unitTracking[other_r.id].y += actions[name].dxdy[1];
+                }
+                else
+                  this.log("UTRACK: Attempted to move " + other_r.id + " off of the map.")
+                break;
+              case "build":
+                var info = [actions[name].unit,
+                  unitTracking[other_r.id].x + actions[name].dxdy[0],
+                  unitTracking[other_r.id].y + actions[name].dxdy[1]
+                ];
+                if(utils.checkBounds(info[1], info[2]))
+                  built.push(info);
+                else
+                  this.log("UTRACK: Attempted to build by " + other_r.id + " outside the map.")
+                break;
+              case "mine":
+                if(vars.karbMap[unitTracking[other_r.id].y][unitTracking[other_r.id].x])
+                  unitTracking[other_r.id].karbonite += 2;
+                else if(vars.fuelMap[unitTracking[other_r.id].y][unitTracking[other_r.id].x])
+                  unitTracking[other_r.id].fuel += 10;
+                else
+                  this.log("UTRACK: Location " + unitTracking[other_r.id].x + ", " + unitTracking[other_r.id].y + " is not mineable.");
+                break;
+              case "give":
+                //TODO: giving
+                break;
+            }
+          }
+        }
+        catch(err){
+          this.log("UTRACK: Failed when tracking "+other_r.id+" at ("+other_r.x+", "+other_r.y+")");
+          this.log(err.toString());
+        }
+      }
+  
+      else if(other_r.team == team){
+        if(!untracked.has(other_r.id)){
+          appeared.push(other_r);
+        }
+      }
+    }
+
+
+    // add any visible
+    var toRemove = new Set();
+    for(var i in appeared){
+      var other_r = appeared[i];
+      if(this.isVisible(other_r)){
+        var idx = built.findIndex(function(loc){
+          //TODO: fix imprecision
+          return (loc[1]-other_r.x)**2 + (loc[2]-other_r.y)**2 < 10;
+        });
+        if(idx == -1)
+          this.log("UTRACK: No matching build job found for visible unit " + other_r.id);
+        else{
+          // found build job
+          //this.log("UTRACK: Tracking unit " + other_r.id);
+          startTracking(other_r, other_r.x, other_r.y, built[idx][0]);
+        }
+        built.splice(idx, 1);
+        toRemove.add(parseInt(i));
+      }
+    }
+    appeared = appeared.filter(function(_, i){
+      return !toRemove.has(i);
+    })
+    // match built units with appeared
+    switch(built.length){
+      case 0:
+        break;
+      case 1:
+        if(appeared.length == 0)
+          this.log("UTRACK: No matching unit found for build at " + built[0][1] + ", " + built[0][2]);
+        else{
+          //this.log("UTRACK: Tracking unit " + appeared[0].id);
+          startTracking(appeared[0], built[0][1], built[0][2], built[0][0]);
+        }
+        break;
+      default:
+        this.log("UTRACK: Ambiguous builds detected. Units not matched.");
+        for(var i in appeared){
+          var other_r = appeared[i];
+          untracked.add(parseInt(other_r.id));
+        }
+    }
+
+    this.log(unitTracking);
+    //this.log([...untracked]);
   }
 }
