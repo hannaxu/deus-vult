@@ -8,14 +8,12 @@ var team;
 var deposits = [0,[],[]]; //total, karb locs, fuel locs
 var attackPos = null;
 
-export default function castleTurn() {
-  this.log("I am a Church at "+this.me.x+" "+this.me.y);
+export default function churchTurn() {
+  //this.log("I am a Church at "+this.me.x+" "+this.me.y);
   //this.log("Resources: "+this.karbonite+" "+this.fuel);
-  if (vars.firstTurn) {
+  if (this.me.turn == 1) {
     team = this.me.team;
-    deposits = buildUtils.resources.call(this);
-
-    vars.firstTurn = false;
+    deposits = buildUtils.resources.call(this, this.me.x, this.me.y);
   }
 
   var closePilgrim = 0;
@@ -23,6 +21,35 @@ export default function castleTurn() {
     if( vars.visibleRobots[i].team == team )
       if( vars.visibleRobots[i].unit == vars.SPECS.PILGRIM )
         closePilgrim += 1;
+  }
+
+  //headcount 0: castle, 1: church, 2: pilgrim, 3: crusader, 4: prophet, 5: preacher
+  var headcount = [0,1,0,0,0,0];
+  var enemyUnit = 0;
+  for( var i = 0; i < vars.commRobots.length; i++ ) {
+    if( vars.commRobots[i].team == team ) {
+      var u = vars.commRobots[i].unit;
+      if( u == vars.SPECS.CASTLE )
+        headcount[0] += 1;
+      else if( u == vars.SPECS.CHURCH )
+        headcount[1] += 1;
+      else if( u == vars.SPECS.PILGRIM )
+        headcount[2] += 1;
+      else if( u == vars.SPECS.CRUSADER )
+        headcount[3] += 1;
+      else if( u == vars.SPECS.PROPHET )
+        headcount[4] += 1;
+      else if( u == vars.SPECS.PREACHER )
+        headcount[5] += 1;
+    }
+    else {
+      if( u == vars.SPECS.CRUSADER )
+        enemyUnit += 1;
+      else if( u == vars.SPECS.PROPHET )
+        enemyUnit += 1;
+      else if( u == vars.SPECS.PREACHER )
+        enemyUnit += 1;
+    }
   }
 
   var visibleEnemies = buildUtils.findVisibleEnemies.call(this);
