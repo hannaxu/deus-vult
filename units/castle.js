@@ -341,7 +341,7 @@ export default function castleTurn() {
                   unitTracking[other_r.id].y += actions[name].dxdy[1];
                 }
                 else
-                  this.log("UTRACK: Attempted to move " + other_r.id + " off of the map.")
+                  this.log("UTRACK: Attempted to move " + other_r.id + " off of the map.");
                 break;
               case "build":
                 var info = [actions[name].unit,
@@ -351,19 +351,49 @@ export default function castleTurn() {
                 if(utils.checkBounds(info[1], info[2]))
                   built.push(info);
                 else
-                  this.log("UTRACK: Attempted to build by " + other_r.id + " outside the map.")
+                  this.log("UTRACK: Attempted to build by " + other_r.id + " outside the map.");
                 break;
               case "mine":
                 if(vars.karbMap[unitTracking[other_r.id].y][unitTracking[other_r.id].x])
                   unitTracking[other_r.id].karbonite += 2;
                 else if(vars.fuelMap[unitTracking[other_r.id].y][unitTracking[other_r.id].x])
                   unitTracking[other_r.id].fuel += 10;
-                else{this.log(unitTracking[other_r.id]);
+                else
                   this.log("UTRACK: Location " + unitTracking[other_r.id].x + ", " + unitTracking[other_r.id].y + " is not mineable.");
-                }break;
-              case "give":
-                //TODO: giving
                 break;
+              case "give":
+                var loc = [unitTracking[other_r.id].x+actions[name].dxdy[0], unitTracking[other_r.id].y+actions[name].dxdy[1]];
+                var recepient = null;
+                for(var id in unitTracking){
+                  if(unitTracking[id].x == loc[0] && unitTracking[id].y == loc[1]){
+                    recepient = unitTracking[id];
+                    break;
+                  }
+                }
+                if(recepient == null)
+                  this.log("UTRACK: Recepient at (" + loc[0] + ", " + loc[1] + ") not found.");
+                else{
+                  var karb = unitTracking[other_r.id].karbonite;
+                  var fuel = unitTracking[other_r.id].fuel;
+                  var karb_cap = vars.SPECS.UNITS[recepient.unit].KARBONITE_CAPACITY;
+                  var fuel_cap = vars.SPECS.UNITS[recepient.unit].FUEL_CAPACITY;
+                  
+                  if(karb_cap != null){
+                    karb = Math.min(karb_cap - recepient.karbonite, karb);
+                    recepient.karbonite += karb;
+                  }
+                  unitTracking[other_r.id].karbonite -= karb;
+                  
+                  if(fuel_cap != null){
+                    fuel = Math.min(fuel_cap - recepient.fuel, fuel);
+                    recepient.fuel += fuel;
+                  }
+                  unitTracking[other_r.id].fuel -= fuel;
+                }
+                break;
+              case "opt":
+                if(unitTracking[other_r.id].unit > 2 && actions[name] > 0)
+                  this.log("TODO: CASTLE KILLED");
             }
           }
         }
