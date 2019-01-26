@@ -54,7 +54,7 @@ export function testCastleTalk(){
     this.log("[FAILED] CastleTalk encoding - vars.CastleTalk is empty or nonexistent");
   }
 
-  if(vars.CastleTalk.max[unit] > 255){
+  if(vars.CastleTalk.max[unit] > 256){
     this.log("[FAILED] CastleTalk encoding - max of " + vars.CastleTalk.max[unit] + " for unit " + unit);
     return false;
   }
@@ -82,19 +82,26 @@ export function testCastleTalk(){
       var value = value_combs[value_i];
 
       // send and receive
-      vars.CastleTalk.performAction(name, value);
-      var received = vars.CastleTalk.receive(vars.CastleTalk.send(), unit)[name];
+      for(var optional = 0; optional < 7; optional++){
+        vars.CastleTalk.performOptional(optional);
+        vars.CastleTalk.performAction(name, value);
+        var received = vars.CastleTalk.receive(vars.CastleTalk.send(), unit);
 
-      for(var n in value){
-        var equal;
-        if(Array.isArray(value[n]))
-          equal = equalArrays(value[n], received[n]);
-        else
-          equal = value[n] == received[n];
-        
-        if(!equal){
-          this.log("[FAILED] CastleTalk encoding - unit:" + unit + " action:" + name + " value:" + value);
+        if(received.opt != optional){
+          this.log("[FAILED] CastleTalk encoding - unit:" + unit + " optional value:" + optional);
           return false;
+        }
+        for(var n in value){
+          var equal;
+          if(Array.isArray(value[n]))
+            equal = equalArrays(value[n], received[name][n]);
+          else
+            equal = value[n] == received[name][n];
+          
+          if(!equal){
+            this.log("[FAILED] CastleTalk encoding - unit:" + unit + " action:" + name + " value:" + value);
+            return false;
+          }
         }
       }
     }

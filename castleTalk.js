@@ -2,8 +2,8 @@ import { equalArrays, findConnections } from './utils';
 import vars from './variables';
 
 var actions = [{}, {}, {}, {}, {}, {}];
-var max_message = [0, 0, 0, 0, 0, 0];
-var ret = null;
+var max_message = [1, 1, 1, 1, 1, 1];
+var ret = {name: null, comb: null, opt: null};
 
 export default class {
     constructor(_this) {
@@ -11,6 +11,7 @@ export default class {
       this.receive = this.receive.bind(_this);
       this.registerAction = this.registerAction.bind(_this);
       this.performAction = this.performAction.bind(_this);
+      this.performOptional = this.performOptional.bind(_this);
 
       var units;
       if(_this.me.unit == vars.SPECS.CASTLE)
@@ -59,7 +60,7 @@ export default class {
     send() {
       var message = 0;
       var padding = 0;
-      if(ret != null) {
+      if(ret.name != null) {
         for(var name in actions[this.me.unit]) {
           if(name != ret.name) {
             // preceeding unperformed actions
@@ -81,10 +82,11 @@ export default class {
           this.log("CASTLETALK: Could not send action " + ret.name + " with combination " + ret.comb + " for unit " + this.me.unit);
         else
           // send action
+          message += ret.opt * max_message[this.me.unit]
           this.castleTalk(message);
       }
       
-      ret = null;
+      ret = {name: null, comb: null, opt: null};
       return message;
     }
 
@@ -96,7 +98,11 @@ export default class {
       if(message == 0)
         return {};
 
-      var ret2 = {}
+      var ret2 = {};
+
+      ret2.opt = parseInt(message / max_message[unit]);
+      message = message % max_message[unit];
+
       var padding = 0;
       for(var name in actions[unit]) {
         var combs = 1;
@@ -119,7 +125,7 @@ export default class {
         else
           padding += combs;
       }
-      if(Object.keys(ret2).length == 0){
+      if(Object.keys(ret2).length == 1){
         this.log("CASTLETALK: Could not receive message " + message + " for unit " + unit);
         return null;
       }
@@ -183,7 +189,16 @@ export default class {
       }
 
       //this.log("CASTLETALK: Perf - unit:" + this.me.unit + " action:" + name + " value:" + JSON.stringify(value));
-      ret = {name: name, comb: comb};
+      ret.name = name;
+      ret.comb = comb;
+      return true;
+    }
+    performOptional(val) {
+      if(val > 256 / max_message[this.me.unit]) {
+        this.log("CASTLETALK: Optional value " + val + " is is too large for unit with " + max_message[this.me.unit] + " dedicated values");
+        return false;
+      }
+      ret.opt = val;
       return true;
     }
   }
