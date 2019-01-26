@@ -1,9 +1,13 @@
 import vars from './variables';
+import * as utils from './utils';
 
 import { coord8Encrypt, coord8Decrypt, coord8Encrypt2, coord8Decrypt2 } from './conversion';
 
 var trusted = {};
+var temp = new Set();
 
+
+// MESSAGING FUNCTIONS
 
 /**
  * Radio a typical message.
@@ -114,6 +118,245 @@ export function cypherMessage(message, team) {
 
 
 
+// CASTLE FUNCTIONS
+
+/**
+ * Communicate castle locations.
+ * Use proposeTrade (for now) to avoid castleTalk collisions.
+ * Send only during first turn.
+ * Receive during first and second turns.
+ * @param {int[][]} myCastles     List of [id, [x, y]] to store the castles to.
+ * @param {Object}  unitTracking  {id: Robot} of all tracked robots.
+ * @param {int[]}   prims         [totalCastles, castleOrder].
+ */
+export function castleLocComm(myCastles, unitTracking, prims) {
+  if(this.me.turn == 1) {
+    prims[0] = vars.commRobots.length;
+    //this.log("There are " + prims[0] + " total castles");
+
+    for(var i = 0; i < vars.commRobots.length; i++) {
+      var other_r = vars.commRobots[i];
+      if(other_r.turn == this.me.turn) {
+          if(other_r.id != this.me.id ) {
+          prims[1]++;
+          // read other information
+          readInfo.call(this, myCastles, unitTracking, other_r);
+        }
+      }
+      else{
+        // to later tell which ones are castles
+        temp.add(parseInt(other_r.id));
+      }
+    }
+    myCastles[prims[1]] = [this.me.id, [this.me.x, this.me.y]];
+    startTracking(unitTracking, this.me, this.me.x, this.me.y, this.me.unit, this.me.team);
+    //this.log("I am castle " + prims[1]);
+    if(prims[0] - prims[1] == 1)
+      this.log(myCastles);
+
+    if(prims[0] > 1){
+      // send my information
+      this.castleTalk(prims[1] << 6 | this.me.x);
+      var k = Math.abs(this.last_offer[this.me.team][0]);
+      var f = Math.abs(this.last_offer[this.me.team][1]);
+      if(prims[1] == 1)
+        f = 2**4-1<<6 | this.me.y;
+      else
+        k = 2**4-1<<6 | this.me.y;
+      if(this.me.team == vars.SPECS.RED)
+        return this.proposeTrade(-k, -f);
+      else
+        return this.proposeTrade(k, f);
+    }
+  }
+
+  else if(this.me.turn == 2){
+    for(var i = 0; i < vars.commRobots.length; i++) {
+      var other_r = vars.commRobots[i];
+      if(temp.has(other_r.id)) {
+        // read other information
+        readInfo.call(this, myCastles, unitTracking, other_r);
+      }
+    }
+    if(prims[0] - prims[1] > 1)
+      this.log(myCastles);
+  }
+}
+
+/**
+ * Modifies the unitTracking structure based on received signals.
+ * Additionally tracks: unit, team, x, y, fuel, farbonite.
+ * @param {Object}  unitTracking  {id: Robot} of all tracked robots.
+ * @param {int[]}   untracked     Ids of all untracked robots.
+ * @param {int}     totalCastles  The number of total friendly castles.
+ */
+export function trackUnits(unitTracking, untracked, totalCastles){
+  if(this.me.turn == 1)
+    return;
+  
+  var appeared = [];
+  var built = [];
+
+  for(var i in vars.commRobots){
+    var other_r = vars.commRobots[i];
+    
+    if(other_r.id in unitTracking){
+      // prevent castleLoc messages from messing with unit tracking
+      if(this.me.turn == 2 && totalCastles > 1 && (other_r.turn < 2 || other_r.id == this.me.id))
+        continue;
+
+      // unit currently tracked
+      unitTracking[other_r.id].turn = other_r.turn;
+      unitTracking[other_r.id].signal = other_r.signal;
+      unitTracking[other_r.id].signal_radius = other_r.signal_radius;
+      unitTracking[other_r.id].castle_talk = other_r.castle_talk;
+
+      // receive updates
+      try{
+        var actions = vars.CastleTalk.receive(other_r.castle_talk, unitTracking[other_r.id].unit);
+        for(var name in actions){
+          switch(name){
+            case "move":
+              if(utils.checkBounds(unitTracking[other_r.id].x + actions[name].dxdy[0],
+                unitTracking[other_r.id].y + actions[name].dxdy[1])){
+                unitTracking[other_r.id].x += actions[name].dxdy[0];
+                unitTracking[other_r.id].y += actions[name].dxdy[1];
+              }
+              else
+                this.log("UTRACK: Attempted to move " + other_r.id + " off of the map.");
+              break;
+            case "build":
+              var info = [actions[name].unit,
+                unitTracking[other_r.id].x + actions[name].dxdy[0],
+                unitTracking[other_r.id].y + actions[name].dxdy[1]
+              ];
+              if(utils.checkBounds(info[1], info[2]))
+                built.push(info);
+              else
+                this.log("UTRACK: Attempted to build by " + other_r.id + " outside the map.");
+              break;
+            case "mine":
+              if(vars.karbMap[unitTracking[other_r.id].y][unitTracking[other_r.id].x])
+                unitTracking[other_r.id].karbonite += 2;
+              else if(vars.fuelMap[unitTracking[other_r.id].y][unitTracking[other_r.id].x])
+                unitTracking[other_r.id].fuel += 10;
+              else
+                this.log("UTRACK: Location " + unitTracking[other_r.id].x + ", " + unitTracking[other_r.id].y + " is not mineable.");
+              break;
+            case "give":
+              var loc = [unitTracking[other_r.id].x+actions[name].dxdy[0], unitTracking[other_r.id].y+actions[name].dxdy[1]];
+              var recepient = null;
+              for(var id in unitTracking){
+                if(unitTracking[id].x == loc[0] && unitTracking[id].y == loc[1]){
+                  recepient = unitTracking[id];
+                  break;
+                }
+              }
+              if(recepient == null)
+                this.log("UTRACK: Recepient at (" + loc[0] + ", " + loc[1] + ") not found.");
+              else{
+                var karb = unitTracking[other_r.id].karbonite;
+                var fuel = unitTracking[other_r.id].fuel;
+                var karb_cap = vars.SPECS.UNITS[recepient.unit].KARBONITE_CAPACITY;
+                var fuel_cap = vars.SPECS.UNITS[recepient.unit].FUEL_CAPACITY;
+                
+                if(karb_cap != null){
+                  karb = Math.min(karb_cap - recepient.karbonite, karb);
+                  recepient.karbonite += karb;
+                }
+                unitTracking[other_r.id].karbonite -= karb;
+                
+                if(fuel_cap != null){
+                  fuel = Math.min(fuel_cap - recepient.fuel, fuel);
+                  recepient.fuel += fuel;
+                }
+                unitTracking[other_r.id].fuel -= fuel;
+              }
+              break;
+            case "opt":
+              if(unitTracking[other_r.id].unit > 2 && actions[name] > 0)
+                this.log("TODO: CASTLE KILLED");
+          }
+        }
+      }
+      catch(err){
+        this.log("UTRACK: Failed when tracking " + other_r.id + " at (" + other_r.x + ", " + other_r.y + ")");
+        this.log(err.toString());
+      }
+    }
+
+    else if(other_r.team == this.me.team){
+      if(!untracked.has(other_r.id)){
+        appeared.push(other_r);
+      }
+    }
+  }
+
+
+  // add any visible
+  var toRemove = new Set();
+  for(var i in appeared){
+    var other_r = appeared[i];
+    if(this.isVisible(other_r)){
+      var dxdy = [0, 0];
+      if(other_r.turn > 0){
+        var actions = vars.CastleTalk.receive(other_r.castle_talk, other_r.unit);
+        if('move' in actions)
+          dxdy = actions.move.dxdy;
+      }
+      var idx = built.findIndex(function(loc){
+        return loc[1] == (other_r.x-dxdy[0]) &&
+          loc[2] == (other_r.y-dxdy[1]);
+      });
+      if(idx == -1)
+        this.log("UTRACK: No matching build job found for visible unit " + other_r.id);
+      else{
+        // found build job
+        //this.log("UTRACK: Tracking unit " + other_r.id + " at (" + other_r.x + ", " + other_r.y + ")");
+        startTracking(unitTracking, other_r, other_r.x, other_r.y, other_r.unit, other_r.team);
+      }
+      built.splice(idx, 1);
+      toRemove.add(parseInt(i));
+    }
+  }
+  appeared = appeared.filter(function(_, i){
+    return !toRemove.has(i);
+  })
+  // match built units with appeared
+  switch(built.length){
+    case 0:
+      break;
+    case 1:
+      if(appeared.length == 0)
+        this.log("UTRACK: No matching unit found for build at " + built[0][1] + ", " + built[0][2]);
+      else{
+        if(appeared[0].turn > 0){
+          var actions = vars.CastleTalk.receive(appeared[0].castle_talk, built[0][0]);
+          if('move' in actions){
+            built[0][1] += actions.move.dxdy[0];
+            built[0][2] += actions.move.dxdy[1];
+          }
+        }
+        //this.log("UTRACK: Tracking unit " + appeared[0].id + " at (" + built[0][1] + ", " + built[0][2] + ")");
+        startTracking(unitTracking, appeared[0], built[0][1], built[0][2], built[0][0], this.me.team);
+      }
+      break;
+    default:
+      this.log("UTRACK: Ambiguous builds detected. Units not matched.");
+      for(var i in appeared){
+        var other_r = appeared[i];
+        untracked.add(parseInt(other_r.id));
+      }
+  }
+
+  if(false && this.me.turn % 250 == 0){
+    this.log(unitTracking);
+    this.log([...untracked]);
+  }
+}
+
+
+
 // HELPER FUNCTIONS
 
 /**
@@ -141,4 +384,18 @@ function checkParams(message, sq_radius, isLong){
     return false;
   }
   return true;
+}
+
+function readInfo(myCastles, unitTracking, other_r){
+  var order = other_r.castle_talk >> 6;
+  var x = other_r.castle_talk & 63;
+  var y = Math.abs(this.last_offer[this.me.team][order&1]) & (2**6-1);
+  myCastles[order] = [other_r.id, [x, y]];
+  startTracking(unitTracking, other_r, x, y, vars.SPECS.CASTLE, this.me.team);
+}
+
+function startTracking(unitTracking, other_r, x, y, unit, team){
+  unitTracking[other_r.id] = {type:"robot", id:other_r.id, turn:other_r.turn,
+    team:team, unit:unit, x:x, y:y, fuel:0, karbonite:0,
+    signal:other_r.signal, signal_radius:other_r.signal_radius, castle_talk:other_r.castle_talk}
 }
