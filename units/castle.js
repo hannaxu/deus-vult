@@ -358,9 +358,9 @@ export default function castleTurn() {
                   unitTracking[other_r.id].karbonite += 2;
                 else if(vars.fuelMap[unitTracking[other_r.id].y][unitTracking[other_r.id].x])
                   unitTracking[other_r.id].fuel += 10;
-                else
+                else{this.log(unitTracking[other_r.id]);
                   this.log("UTRACK: Location " + unitTracking[other_r.id].x + ", " + unitTracking[other_r.id].y + " is not mineable.");
-                break;
+                }break;
               case "give":
                 //TODO: giving
                 break;
@@ -386,9 +386,15 @@ export default function castleTurn() {
     for(var i in appeared){
       var other_r = appeared[i];
       if(this.isVisible(other_r)){
+        var dxdy = [0, 0];
+        if(other_r.turn > 0){
+          var actions = vars.CastleTalk.receive(other_r.castle_talk, other_r.unit);
+          if('move' in actions)
+            dxdy = actions.move.dxdy;
+        }
         var idx = built.findIndex(function(loc){
-          //TODO: fix imprecision
-          return (loc[1]-other_r.x)**2 + (loc[2]-other_r.y)**2 < 10;
+          return loc[1] == (other_r.x-dxdy[0]) &&
+            loc[2] == (other_r.y-dxdy[1]);
         });
         if(idx == -1)
           this.log("UTRACK: No matching build job found for visible unit " + other_r.id);
@@ -412,6 +418,13 @@ export default function castleTurn() {
         if(appeared.length == 0)
           this.log("UTRACK: No matching unit found for build at " + built[0][1] + ", " + built[0][2]);
         else{
+          if(appeared[0].turn > 0){
+            var actions = vars.CastleTalk.receive(appeared[0].castle_talk, built[0][0]);
+            if('move' in actions){
+              built[0][1] += actions.move.dxdy[0];
+              built[0][2] += actions.move.dxdy[1];
+            }
+          }
           //this.log("UTRACK: Tracking unit " + appeared[0].id + " at (" + built[0][1] + ", " + built[0][2] + ")");
           startTracking(appeared[0], built[0][1], built[0][2], built[0][0]);
         }
