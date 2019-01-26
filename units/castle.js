@@ -269,12 +269,12 @@ export default function castleTurn() {
       if(totalCastles > 1){
         // send my information
         this.castleTalk(castleOrder << 6 | this.me.x);
-        var k = this.last_offer[this.me.team][0];
-        var f = this.last_offer[this.me.team][1];
+        var k = Math.abs(this.last_offer[this.me.team][0]);
+        var f = Math.abs(this.last_offer[this.me.team][1]);
         if(castleOrder == 1)
-          f = this.me.y;
+          f = 2**4-1<<6 | this.me.y;
         else
-          k = this.me.y;
+          k = 2**4-1<<6 | this.me.y;
         if(this.me.team == vars.SPECS.RED)
           return this.proposeTrade(-k, -f);
         else
@@ -298,7 +298,7 @@ export default function castleTurn() {
   function readInfo(other_r){
     var order = other_r.castle_talk >> 6;
     var x = other_r.castle_talk & 63;
-    var y = Math.abs(this.last_offer[this.me.team][order&1]);
+    var y = Math.abs(this.last_offer[this.me.team][order&1]) & (2**6-1);
     myCastles[order] = [other_r.id, [x, y]];
     startTracking(other_r, x, y, vars.SPECS.CASTLE);
   }
@@ -368,7 +368,7 @@ export default function castleTurn() {
           }
         }
         catch(err){
-          this.log("UTRACK: Failed when tracking "+other_r.id+" at ("+other_r.x+", "+other_r.y+")");
+          this.log("UTRACK: Failed when tracking " + other_r.id + " at (" + other_r.x + ", " + other_r.y + ")");
           this.log(err.toString());
         }
       }
@@ -394,8 +394,8 @@ export default function castleTurn() {
           this.log("UTRACK: No matching build job found for visible unit " + other_r.id);
         else{
           // found build job
-          //this.log("UTRACK: Tracking unit " + other_r.id);
-          startTracking(other_r, other_r.x, other_r.y, built[idx][0]);
+          //this.log("UTRACK: Tracking unit " + other_r.id + " at (" + other_r.x + ", " + other_r.y + ")");
+          startTracking(other_r, other_r.x, other_r.y, other_r.unit);
         }
         built.splice(idx, 1);
         toRemove.add(parseInt(i));
@@ -412,7 +412,7 @@ export default function castleTurn() {
         if(appeared.length == 0)
           this.log("UTRACK: No matching unit found for build at " + built[0][1] + ", " + built[0][2]);
         else{
-          //this.log("UTRACK: Tracking unit " + appeared[0].id);
+          //this.log("UTRACK: Tracking unit " + appeared[0].id + " at (" + built[0][1] + ", " + built[0][2] + ")");
           startTracking(appeared[0], built[0][1], built[0][2], built[0][0]);
         }
         break;
@@ -424,7 +424,9 @@ export default function castleTurn() {
         }
     }
 
-    this.log(unitTracking);
-    //this.log([...untracked]);
+    if(false && this.me.turn % 250 == 0){
+      this.log(unitTracking);
+      this.log([...untracked]);
+    }
   }
 }
