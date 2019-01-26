@@ -53,7 +53,14 @@ export default function pilgrimTurn () {
             minDRv=d2;
         }
     }
-    if (minDR!=-1) utils.soloBFS([vars.rLocs[minDR].x,vars.rLocs[minDR].y],6);
+    if (minDR!=-1) utils.soloBFS([vars.rLocs[minDR].x,vars.rLocs[minDR].y],4);
+    
+    for (var i=0; i<vars.visibleEnemyRobots.length; i++) {
+        if (vars.visibleEnemyRobots[i].unit!=vars.SPECS.PILGRIM) {
+            seenEnms[utils.hashCoordinates([vars.visibleEnemyRobots[i].x,vars.visibleEnemyRobots[i].y])]=me.turn;
+        }
+    }
+    
     //return rescources to the factory [always returns]
     if ( me.fuel==vars.maxFuel || me.karbonite== vars.maxKarb || (me.karbonite == vars.maxKarb/2 && vars.teamKarb <=15) ) {
         for (var i=0; i<8; i++) {
@@ -117,7 +124,7 @@ export default function pilgrimTurn () {
         return this.mine();
     }
     //go build a church [sometimes returns]
-    if (vars.teamKarb>50 && vars.teamFuel>200) {
+    if (true) {
         //this.log('facts');
         // FEEL FREE TO USE THIS AFTER SEEDING
         newFactVal.call(this);
@@ -126,7 +133,7 @@ export default function pilgrimTurn () {
         var by=factPos[1];
         
         //this.log(bx+" "+by+" is the best new base");
-        if ((bx-me.x)**2 + (by-me.y)**2<=2) {
+        if ((bx-me.x)**2 + (by-me.y)**2<=2 && vars.teamKarb>50 && vars.teamFuel>200) {
             if (vars.visibleRobotMap[by][bx]==0) {
                 this.log("Built church!");
                 return this.buildUnit(vars.SPECS.CHURCH,bx-me.x,by-me.y);
@@ -153,9 +160,24 @@ export default function pilgrimTurn () {
 
 var resDirs;
 var factPos;
+var seenEnms={}; //x,y->turn
+
+function notNearEnemy(x,y,turn) {
+    for (var h in seenEnms) {
+            if (turn-seenEnms[h]>100) {
+                delete seenEnms[h];
+            } else {
+                var pos=utils.unhashCoordinates(h);
+                if ((pos[0]-x)**2 + (pos[1]-y)**2 < 80) {
+                    return false;
+                }
+            }
+        }
+    return true;
+}
 
 function newFactVal() {
-    if (!vars.baseChange) {
+    if (!vars.baseChange && notNearEnemy(factPos[0],factPos[1],this.me.turn)) {
         return factPos;
     }
     
@@ -198,7 +220,7 @@ function newFactVal() {
             for (var y=0; y<vars.ymax; y++) {
                 if (distsC[x][y]==null) continue;
                 var pval=ret[x][y]-distsC[x][y][0]*2;
-                if (pval>best) {
+                if (pval>best && notNearEnemy(x,y,me.turn)) {
                     best=pval;
                     bx=x;
                     by=y;
@@ -214,6 +236,7 @@ function newFactVal() {
 function minC(costs, pri,x,y) {
     //this.log('inc');
     var ret=99999;
+    
     for (var i=0; i<costs.length; i++) {
         if (costs[i][x][y]!=null) {
             var c=(costs[i][x][y][0]+pri[i])*200+costs[i][x][y][1]*4;
@@ -221,6 +244,9 @@ function minC(costs, pri,x,y) {
                 ret=c;
             }
         }
+    }
+    if (utils.hashCoordinates([x,y]) in vars.dangerTiles) {
+        ret+=500;
     }
     //this.log('outc');
     return ret;

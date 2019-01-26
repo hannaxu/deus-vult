@@ -337,8 +337,9 @@ export function updateLocs () {
     }
   }
   for (var i = 0; i < vars.visibleRobots.length; i++) {
-    if (vars.visibleRobots[i].unit==vars.SPECS.CASTLE||vars.visibleRobots[i].unit==vars.SPECS.CHURCH) {
+    if (vars.visibleRobots[i].team==this.me.team && (vars.visibleRobots[i].unit==vars.SPECS.CASTLE||vars.visibleRobots[i].unit==vars.SPECS.CHURCH)) {
       var hashVal = hashCoordinates([vars.visibleRobots[i].x, vars.visibleRobots[i].y]);
+        
       if (! (hashVal in vars.baseLocs)) {
            vars.baseLocs[hashVal] = vars.visibleRobots[i].id;
           vars.baseChange=true;
