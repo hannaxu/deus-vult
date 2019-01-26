@@ -7,6 +7,7 @@ var buildCount = [0,0,0,0,0,0];
 var team;
 var deposits = [0,[],[]]; //total, karb locs, fuel locs
 var attackPos = null;
+var defend = false;
 
 export default function churchTurn() {
   //this.log("I am a Church at "+this.me.x+" "+this.me.y);
@@ -14,21 +15,22 @@ export default function churchTurn() {
   if (this.me.turn == 1) {
     team = this.me.team;
     deposits = buildUtils.resources.call(this, this.me.x, this.me.y);
+    //this.log(deposits[0]);
   }
 
-  var closePilgrim = 0;
+  /*var closePilgrim = 0;
   for( var i = 0; i < vars.visibleRobots.length; i++ ) {
     if( vars.visibleRobots[i].team == team )
       if( vars.visibleRobots[i].unit == vars.SPECS.PILGRIM )
         closePilgrim += 1;
-  }
+  }*/
 
   //headcount 0: castle, 1: church, 2: pilgrim, 3: crusader, 4: prophet, 5: preacher
   var headcount = [0,1,0,0,0,0];
   var enemyUnit = 0;
-  for( var i = 0; i < vars.commRobots.length; i++ ) {
-    if( vars.commRobots[i].team == team ) {
-      var u = vars.commRobots[i].unit;
+  for( var i = 0; i < vars.visibleRobots.length; i++ ) {
+    if( vars.visibleRobots[i].team == team ) {
+      var u = vars.visibleRobots[i].unit;
       if( u == vars.SPECS.CASTLE )
         headcount[0] += 1;
       else if( u == vars.SPECS.CHURCH )
@@ -43,23 +45,23 @@ export default function churchTurn() {
         headcount[5] += 1;
     }
     else {
-      if( u == vars.SPECS.CRUSADER )
-        enemyUnit += 1;
-      else if( u == vars.SPECS.PROPHET )
-        enemyUnit += 1;
-      else if( u == vars.SPECS.PREACHER )
-        enemyUnit += 1;
+      enemyUnit += 1;
     }
   }
 
+  if( enemyUnit > headcount[4] )
+    defend = true;
+
   var visibleEnemies = buildUtils.findVisibleEnemies.call(this);
   for (var i = 0; i < visibleEnemies.length; i++) {
-    if (visibleEnemies[i][2] != vars.SPECS.PILGRIM)
-      attackPos = [this.me.y+visibleEnemies[i][1], this.me.x+visibleEnemies[i][0]];
+    //if (visibleEnemies[i][2] != vars.SPECS.PILGRIM)
+    attackPos = [this.me.y+visibleEnemies[i][1], this.me.x+visibleEnemies[i][0]];
   }
 
-  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
-    if (closePilgrim < deposits[0] && headcount[4] >= vars.CHURCH_MIN_DEF) {
+  //this.log(headcount[2]);
+
+  if (!defend && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+    if ((headcount[2] < deposits[0] && headcount[4] >= vars.CHURCH_MIN_DEF) || headcount[2] < deposits[1].length) {
       var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PILGRIM, this.me.x, this.me.y);
       //sendMessage.call(this, castleOrder, buildOptPil[i][1]**2+buildOptPil[i][0]**2);
       //this.log("Building pilgrim at "+x+" "+y);
@@ -78,7 +80,7 @@ export default function churchTurn() {
       if( buildLoc != null ) {
         buildCount[2]++;
         vars.buildRobot = 4;
-        return this.buildUnit(vars.SPECS.PILGRIM, buildLoc[1], buildLoc[0]);
+        return this.buildUnit(vars.SPECS.PROPHET, buildLoc[1], buildLoc[0]);
       }
     }
   }
