@@ -26,7 +26,7 @@ export default function pilgrimTurn () {
             }
         }
 
-        resDirs=utils.findConnections.call(this, 30);
+        resDirs=utils.findConnections.call(this, 20);
 
         for (var i=0; i<vars.rLocs.length; i++) {
             vars.rLocs[i].closed=-2000;
@@ -42,7 +42,7 @@ export default function pilgrimTurn () {
 
     for (var i=0; i<vars.rLocs.length; i++) {
         var p=vars.rLocs[i];
-        if (vars.visibleRobotMap[p.y][p.x]>0 && (p.x!=me.x || p.y!=me.y)) {
+        if (vars.visibleRobotMap[p.y][p.x]>0 && (p.x!=me.x || p.y!=me.y) && this.getRobot(vars.visibleRobotMap[p.y][p.x]).unit==2) {
             vars.rLocs[i].closed=me.turn;
         }
     }
@@ -95,7 +95,7 @@ export default function pilgrimTurn () {
         var pris=[];
         for (var i=0; i<vars.rLocs.length; i++) {
             var p=vars.rLocs[i];
-            if ((p.x-me.x)**2 + (p.y-me.y)**2<200 && vars.fuzzyCost[p.x][p.y].length>0 && me.turn-p.closed>60) {
+            if ((p.x-me.x)**2 + (p.y-me.y)**2<200 && vars.fuzzyCost[p.x][p.y].length>0 && me.turn-p.closed>40) {
                 
                 var prival=999;
                 for (var h in vars.baseLocs) {
@@ -124,7 +124,7 @@ export default function pilgrimTurn () {
         return this.mine();
     }
     //go build a church [sometimes returns]
-    if (true) {
+    if (vars.teamFuel>=4) {
         //this.log('facts');
         vars.CastleTalk.performOptional(1);
         newFactVal.call(this);
@@ -177,7 +177,7 @@ function notNearEnemy(x,y,turn) {
 }
 
 function newFactVal() {
-    if (!vars.baseChange && notNearEnemy(factPos[0],factPos[1],this.me.turn)) {
+    if (!vars.baseChange && factPos!=undefined &&  notNearEnemy(factPos[0],factPos[1],this.me.turn)) {
         return factPos;
     }
     
@@ -212,18 +212,27 @@ function newFactVal() {
         }
     }
     
-    var best=-9999;
-        var bx=-1;
-        var by=-1;
+    var best=0.5;
+        var bx=5;
+        var by=5;
         var distsC=utils.soloBFS([me.x,me.y],20);
         for (var x=0; x<vars.xmax; x++) {
             for (var y=0; y<vars.ymax; y++) {
                 if (distsC[x][y]==null) continue;
-                var pval=ret[x][y]-distsC[x][y][0]*2;
+                var pval=ret[x][y]/distsC[x][y][0]*2;
                 if (pval>best && notNearEnemy(x,y,me.turn)) {
-                    best=pval;
-                    bx=x;
-                    by=y;
+                    var validp=true;
+                    for (var i=0; i<8; i++) {
+                        if (utils.checkBounds(x+vars.buildable[i][0],y+vars.buildable[i][1])>ret[x][y]) {
+                            validp=false;
+                            break;
+                        }
+                    }
+                    if (validp) {
+                        best=pval;
+                        bx=x;
+                        by=y;
+                    }
                 }
             }
         }
