@@ -94,6 +94,7 @@ export default class {
     receive(message, unit) {
       if(typeof(message) != 'number'){
         this.log("CASTLETALK: Message must be a number");
+        return null;
       }
       if(message == 0)
         return {};
