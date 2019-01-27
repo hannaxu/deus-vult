@@ -133,7 +133,7 @@ export default function pilgrimTurn () {
         var by=factPos[1];
         
         //this.log(bx+" "+by+" is the best new base");
-        if ((bx-me.x)**2 + (by-me.y)**2<=2 && vars.teamKarb>50 && vars.teamFuel>200) {
+        if ((bx-me.x)**2 + (by-me.y)**2<=2 && vars.teamKarb>=50 && vars.teamFuel>=200) {
             if (vars.visibleRobotMap[by][bx]==0) {
                 this.log("Built church!");
                 return this.buildUnit(vars.SPECS.CHURCH,bx-me.x,by-me.y);
@@ -223,7 +223,7 @@ function newFactVal() {
                 if (pval>best && notNearEnemy(x,y,me.turn)) {
                     var validp=true;
                     for (var i=0; i<8; i++) {
-                        if (utils.checkBounds(x+vars.buildable[i][0],y+vars.buildable[i][1])>ret[x][y]) {
+                        if (utils.checkBounds(x+vars.buildable[i][0],y+vars.buildable[i][1]) && ret[x+vars.buildable[i][0]][y+vars.buildable[i][1]]>ret[x][y]) {
                             validp=false;
                             break;
                         }
