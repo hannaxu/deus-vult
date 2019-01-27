@@ -171,18 +171,22 @@ export default function castleTurn() {
   }
 
   //var churching = castletalk with pilgrim
-  if( churching && !churched ) {
+  /*if( churching && !churched ) {
     churchLoc--;
     churched = true;
   }
   if( !churching )
-    churched = false;
+    churched = false;*/
+  //this.log(churchLoc);
 
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
-    if( buildUtils.buildPilgrim.call(this, defend, churchLoc, churching, visibleCount, deposits) ) {
+    var test = buildUtils.buildPilgrim.call(this, defend, churchLoc, churching, visibleCount, deposits);
+    if( test || test == null ) {
       var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PILGRIM, this.me.x, this.me.y);
       if( buildLoc != null ) {
         //this.log(buildLoc);
+        if(test == null)
+          churchLoc--;
         buildCount[2]++;
         vars.buildRobot = 2;
         return this.buildUnit(vars.SPECS.PILGRIM, buildLoc[1], buildLoc[0]);

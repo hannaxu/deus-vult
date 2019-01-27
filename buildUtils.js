@@ -169,10 +169,11 @@ export function churchLoc(castleOrderAll, castleOrder, enemyCastles, myCastles) 
   for( var i = 0; i < ret.length; i++ ) {
     var temp = nearestCastle(ret[i][0], ret[i][1], castleLoc, 5000);
     var temp1 = nearestCastle(ret[i][0], ret[i][1], enemyCastles, 5000);
-    if( temp[0] == castleOrder && temp[1] > 16 && temp1[1] > 25 ) 
+    //this.log(temp);
+    if( temp[0] == castleOrder && temp[1] > 16 && temp[1] < vars.ymax*vars.ymax/4 && temp1[1] > 25 ) 
       opt.push(ret[i]);
   }
-  //this.log(opt.length)
+  //this.log(opt)
   return opt.length; //{x, y}
 }
 
@@ -181,11 +182,11 @@ export function buildPilgrim (defend, churchLoc, churching, visibleCount, deposi
     return false;
   if( visibleCount[2] < Math.min(deposits[1].length+1, deposits[0]) )
     return true;
-  if( visibleCount[4] > 2 ) {
+  if( visibleCount[4] >= 2 ) {
     if( visibleCount[2] < deposits[0] )
       return true;
     if( churchLoc > 0 && !churching )
-      return true;
+      return null;
   }
   return false;
 }
