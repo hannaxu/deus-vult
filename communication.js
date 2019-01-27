@@ -149,7 +149,7 @@ export function castleLocComm(myCastles, castleOrderAll, unitTracking, prims) {
         temp.add(parseInt(other_r.id));
       }
     }
-    myCastles[this.me.id] = [[this.me.x, this.me.y]]
+    myCastles[this.me.id] = [this.me.x, this.me.y];
     castleOrderAll[prims[1]] = this.me.id;
     startTracking(unitTracking, this.me, this.me.x, this.me.y, this.me.unit, this.me.team);
     //this.log("I am castle " + prims[1]);
