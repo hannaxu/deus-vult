@@ -140,3 +140,104 @@ export function findVisibleEnemies (pos=[this.me.x, this.me.y]) {
   });
   return ret;
 }
+
+export function churchLoc(castleOrderAll, castleOrder, enemyCastles, myCastles) {
+  var numC = castleOrderAll.length;
+  var castleLoc = [];
+  for( var i = 0; i < numC; i++ ) {
+    castleLoc.push([myCastles[castleOrderAll[i]][0], myCastles[castleOrderAll[i]][1]]);
+  }
+  var ret = [];
+  var rlocs = vars.rLocs;
+  //this.log(rlocs.length);
+  for( var i = 0; i < rlocs.length; i++ ) {
+    if(rlocs[i]["type"]) {
+      var temp = true;
+      for( var x = 0; x < ret.length; x++ ) {
+        if( (rlocs[i]["x"]-ret[x][0])*(rlocs[i]["x"]-ret[x][0])+(rlocs[i]["y"]-ret[x][1])*(rlocs[i]["y"]-ret[x][1]) <= 25 ) {
+          temp = false;
+          break;
+        }
+      }
+      if(temp)
+          ret.push([rlocs[i]["x"], rlocs[i]["y"]]);
+    }
+  }
+  //this.log(ret);
+  var opt = [];
+  //this.log(castleOrder);
+  for( var i = 0; i < ret.length; i++ ) {
+    var temp = nearestCastle(ret[i][0], ret[i][1], castleLoc, 5000);
+    var temp1 = nearestCastle(ret[i][0], ret[i][1], enemyCastles, 5000);
+    if( temp[0] == castleOrder && temp[1] > 16 && temp1[1] > 25 ) 
+      opt.push(ret[i]);
+  }
+  //this.log(opt.length)
+  return opt.length; //{x, y}
+}
+
+export function buildPilgrim (defend, churchLoc, churching, visibleCount, deposits) {
+  if( defend )
+    return false;
+  if( visibleCount[2] < Math.min(deposits[1].length+1, deposits[0]) )
+    return true;
+  if( visibleCount[4] > 2 ) {
+    if( visibleCount[2] < deposits[0].length )
+      return true;
+    if( churchLoc.length > 0 && !churching )
+      return true;
+  }
+  return false;
+}
+
+export function buildProphet(defend, /*churching,*/  castleOrder, visibleCount, castleOrderAll, myCastles, unitTracking) {
+  var units = [];
+  var numC = castleOrderAll.length;
+  var castleLoc = [];
+  for( var i = 0; i < numC; i++ ) {
+    units.push(0);
+    castleLoc.push([myCastles[castleOrderAll[i]][0], myCastles[castleOrderAll[i]][1]]);
+  }
+  //this.log(castleLoc);
+  if ( defend )
+    return true;
+  for( var key in unitTracking ) {
+    if( unitTracking[key]["unit"] == vars.SPECS.PROPHET ) {
+      var temp = nearestCastle(unitTracking[key]["x"], unitTracking[key]["y"], castleLoc, 100);
+      //this.log(temp);
+      if( temp[0] > -1 )
+        units[temp[0]] += 1;
+    }
+  }
+  //this.log(units);
+  var min = 5000;
+  var minI = 0;
+  for( var i = 0; i < units.length; i++ ) {
+    if( units[i] <= min ) {
+      min = units[i];
+      minI = i;
+    }
+  }
+  //this.log(castleOrder);
+  if( castleOrder == minI ) {
+    if( visibleCount[4] < 2 )
+      return true;
+    if( visibleCount[4] < 24 /*&& this.karbonite >= 50 && this.fuel >= 300 replace with churching constraint*/)
+      return true;
+    if( visibleCount[4] >= 24 && this.karbonite >= 100 && this.fuel >= 300 )
+      return true;
+  }
+  return false;
+}
+
+function nearestCastle(ux, uy, castleLoc, min) {
+  var minI = -1;
+  for( var key = 0; key < castleLoc.length; key++ ) {
+    var d = (castleLoc[key][0]-ux)*(castleLoc[key][0]-ux)+(castleLoc[key][1]-uy)*(castleLoc[key][1]-uy);
+    if( d <= min ) {
+      min = d;
+      minI = key;
+    }
+  }
+  return [minI, min];
+}
