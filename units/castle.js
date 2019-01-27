@@ -1,12 +1,13 @@
 import vars from '../variables';
 import * as utils from '../utils';
-import { sendMessage } from '../communication';
+import { sendMessage, castleLocComm, trackUnits } from '../communication';
 import * as buildUtils from '../buildUtils';
 
 var team;
-var totC = 1;
 var myCastles = {}; // contains locations
+var castleOrderAll = [];  // ids in order
 var castleOrder = 0;
+var totalCastles;
 var teamID = {}; // hashmap stores info
 var symmetry;
 var deposits = [0,[],[]]; //total, karb locs, fuel locs
@@ -14,6 +15,9 @@ var buildCount = [0,0,0,0,0,0];
 var buildOptPil = []; //pilgrims,
 var buildOptUnit = []; //units
 var attackPos = null;
+
+var unitTracking = {};
+var untracked = new Set();
 
 var enemyCastles = []; // enemyCastle locations based on our castleLocations
 var curAttack = 0; // next enemyCastle to deusVult
@@ -34,7 +38,7 @@ var attackPosEarly;
 
 export default function castleTurn() {
   vars.buildRobot = 0;
-  if (this.me.team==0&&this.me.turn%25==0) {
+  if (this.me.team==0&&this.me.turn%25==0&&castleOrder==0) {
     this.log("Castle Round "+this.me.turn);
   }
   //this.log("I am a Castle at "+this.me.x+" "+this.me.y);
@@ -48,14 +52,6 @@ export default function castleTurn() {
     //determine if enemy castles are visible and number
     //  try to determine if map is truly horizontal or vertical if symmetry returned both
     team = this.me.team;
-    for(var i = 0; i < vars.castleTalkRobots.length; i++) {
-      totC++;
-      if (vars.castleTalkRobots[i].castle_talk == 0) continue;
-      if ((vars.castleTalkRobots[i].castle_talk & (1<<6)) > 0) {
-        totC--;
-      }
-      castleOrder++;
-    }
 
     if (symmetry[0]) {
       attackPosEarly = [this.me.y, vars.xmax-1-this.me.x];
@@ -77,71 +73,18 @@ export default function castleTurn() {
     trackMap[this.me.y][this.me.x] = [this.me.id, this.me.unit];
   }
 
-  // determines myCastles
-  if (this.me.turn<=3) {
-    for (var i = 0; i < vars.castleTalkRobots.length; i++) {
-      var robot = vars.castleTalkRobots[i];
-      if ((robot.id!=this.me.id && robot.castle_talk&(1<<7)) > 0) {
-        if (robot.turn==1) {
-          myCastles[robot.id] = [robot.castle_talk % (1<<6), null];
-        }
-        if (robot.turn==2) {
-          myCastles[robot.id][1] = robot.castle_talk % (1<<6);
-        }
-      }
-    }
-    myCastles[this.me.id] = [this.me.x, this.me.y];
-  }
+  // communicate castleLocs
+  // only the first two turns
+  var prims = [totalCastles, castleOrder];
+  var val = castleLocComm.call(this, myCastles, castleOrderAll, unitTracking, prims, addEnemyCastle);
+  totalCastles = prims[0];
+  castleOrder = prims[1];
+  if(typeof(val) != 'undefined')
+    return val;
 
-  if (this.me.turn==3) {
-    this.log("My castles:");
-    this.log(myCastles);
-    if (symmetry[0]) {
-      for (var c in myCastles) {
-        enemyCastles.push([vars.xmax-1-myCastles[c][0], myCastles[c][1]]);
-      }
-    }
-    if (symmetry[1]) {
-      for (var c in myCastles) {
-        enemyCastles.push([myCastles[c][0], vars.ymax-1-myCastles[c][1]]);
-      }
-    }
-    var min = deposits[0];
-    var minC = castleOrder;
-    var index = 0;
-    for( var c in myCastles ) {
-      var temp = buildUtils.resources.call(this, myCastles[c][0], myCastles[c][1])[0];
-      if( temp <= min ) {
-        minC = index;
-      }
-      ++index;
-    }
-    if( min == deposits[0] && minC == castleOrder) {
-      leastDepo = true;
-    }
-  }
+  // track units
+  trackUnits.call(this, unitTracking, untracked, totalCastles, deleteEnemyCastle);
 
-  // deletes dead enemyCastles
-  for( var x = 0; x < vars.commRobots.length; x++ ) {
-    if(deusVulters[vars.commRobots[x].id]!=null) {
-      var message = vars.commRobots[x].castle_talk;
-      if (message >= 64) {
-        for (var i = 0; i < enemyCastles.length; i++) {
-          if (enemyCastles[i]==deusVulters[vars.commRobots[x].id]) {
-            this.log("Killed enemy castle at "+enemyCastles[i]);
-            enemyCastles.splice(i, 1);
-            if(curAttack > i) {
-              curAttack--;
-            }
-            if (enemyCastles.length>0) {
-              curAttack%=enemyCastles.length;
-            }
-          }
-        }
-        delete deusVulters[vars.commRobots[x].id];
-      }
-    }
-  }
 
   attackerCount = 0;
   farthestAttacker = 0;
@@ -246,7 +189,7 @@ export default function castleTurn() {
   // prophet build
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
     if ( defend || 
-        ( (headcount[4] < 3 && this.me.turn < totC*25) || (headcount[4] < 20 && this.me.turn > totC*25) ) || 
+        ( (headcount[4] < 3 && this.me.turn < totalCastles*25) || (headcount[4] < 20 && this.me.turn > totalCastles*25) ) || 
         (this.karbonite >= 60 && this.fuel >= 300) ) {
       var buildLoc;
       if( attackPos == null && this.me.turn < 15 ) 
@@ -282,7 +225,7 @@ export default function castleTurn() {
   // DEUS VULTING
   if (this.fuel >= vars.MIN_ATK_FUEL && enemyCastles.length > 0 && this.me.turn%50==0) {
     if (attackerCount >= vars.MIN_ATK_ROBOTS) {
-      curAttack = (this.me.turn/50)%enemyCastles.length;
+      curAttack = parseInt(this.me.turn/50)%enemyCastles.length;
       this.log("DEUS VULT "+enemyCastles[curAttack]);
       deusVult = enemyCastles[curAttack];
       //this.log(deusVult);
@@ -318,7 +261,7 @@ export default function castleTurn() {
   }
 }
 
-export function attackPhase () {
+function attackPhase () {
   if (this.fuel < 10) {
     return null;
   }
@@ -329,4 +272,35 @@ export function attackPhase () {
   if (attackableEnemies.length>0) {
       return [attackableEnemies[0].x-this.me.x, attackableEnemies[0].y-this.me.y];
     }
+}
+
+function addEnemyCastle(myCastleLoc) {
+  if (symmetry[0]) {
+      enemyCastles.push([vars.xmax-1-myCastleLoc[0], myCastleLoc[1]]);
+  }
+  if (symmetry[1]) {
+      enemyCastles.push([myCastleLoc[0], vars.ymax-1-myCastleLoc[1]]);
+  }
+}
+
+function deleteEnemyCastle(id) {
+  if(deusVulters[id] != null) {
+    // deletes dead enemyCastles
+    for (var i = 0; i < enemyCastles.length; i++) {
+      if (enemyCastles[i]==deusVulters[id]) {
+        this.log("CASTLEKILL: Killed enemy castle at " + enemyCastles[i]);
+        enemyCastles.splice(i, 1);
+        if(curAttack > i) {
+          curAttack--;
+        }
+        if (enemyCastles.length>0) {
+          curAttack%=enemyCastles.length;
+        }
+      }
+    }
+    delete deusVulters[id];
+  }
+  else {
+    this.log("CASTLEKILL: Unit " + id + " is not DEUSVULTing");
+  }
 }

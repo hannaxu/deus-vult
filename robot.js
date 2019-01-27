@@ -10,7 +10,9 @@ import prophetTurn from './units/prophet';
 import preacherTurn from './units/preacher';
 
 import * as utils from './utils';
-import { sendMessage, sendMessageTrusted, readMessages, castleLocsComm, cypherMessage } from './communication';
+import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from './communication';
+import CastleTalk from './castleTalk';
+import { testAll } from './unitTests';
 
 class MyRobot extends BCAbstractRobot {
   constructor () {
@@ -34,7 +36,6 @@ class MyRobot extends BCAbstractRobot {
         vars.fuelMap = this.getFuelMap();
         vars.ymax = vars.passableMap.length;
         vars.xmax = vars.passableMap[0].length;
-        vars.moveRadius = vars.SPECS.UNITS[this.me.unit].SPEED;
         vars.attackRadius = vars.SPECS.UNITS[this.me.unit].ATTACK_RADIUS;
         vars.buildRadius = 2;
         vars.visionRadius = vars.SPECS.UNITS[this.me.unit].VISION_RADIUS;
@@ -47,9 +48,10 @@ class MyRobot extends BCAbstractRobot {
         vars.visible = utils.findConnections.call(this, vars.visionRadius);
         utils.findAllAttackable(); // initializes vars.allAttackable
         vars.attackable = vars.allAttackable[this.me.unit];
-        vars.moveable = utils.findConnections.call(this, vars.moveRadius);
         vars.buildable = utils.findConnections.call(this, vars.buildRadius);
 
+        vars.CastleTalk = new CastleTalk(this);
+        
         for (var x = 0; x < vars.xmax; x++) {
           vars.fuzzyCost.push([]);
           for (var y = 0; y < vars.ymax; y++) {
@@ -71,7 +73,9 @@ class MyRobot extends BCAbstractRobot {
           }
           //this.log("Created by "+vars.creatorPos);
         }
-      // end of init
+        //testAll.call(this, false);
+
+        // end of init
         //this.log("done init");
       }
 
@@ -100,7 +104,7 @@ class MyRobot extends BCAbstractRobot {
         }
         if(this.isRadioing(other_r))
           vars.radioRobots.push(other_r);
-        if(vars.castleTalkRobots != null && other_r.team==this.me.team) {
+        if(vars.castleTalkRobots != null && other_r.team == this.me.team && other_r.castle_talk != 0){
           vars.castleTalkRobots.push(other_r);
         }
       }
@@ -137,28 +141,43 @@ class MyRobot extends BCAbstractRobot {
           ret = this.churchTurn();
           break;
         case vars.SPECS.CASTLE:
-          castleLocsComm.call(this);
-          ret = this.castleTurn();
-          if (this.me.turn == 1) this.castleTalk(this.me.x+128+64*(Math.ceil(vars.buildRobot/10)));
-          if (this.me.turn == 2) this.castleTalk(this.me.y+128+64*(Math.ceil(vars.buildRobot/10)));
+          ret= this.castleTurn();
           break;
       }
 
-      // temporary failsafe
-      // if(vars.creatorPos != null){
-      //   var creatorId = vars.visibleRobotMap[vars.creatorPos[1]][vars.creatorPos[0]];
-      //   if(creatorId > 0){
-      //     var creator = this.getRobot(creatorId);
-      //     if(creator.unit == SPECS.CASTLE && creator.turn <= 2){
-      //       this.castleTalk(0);
-      //     }
-      //   }
-      // }
+      if(ret != null){
+        switch(ret.action){
+          case 'build':
+            var val = {'dxdy': [ret.dx, ret.dy]};
+            if(this.me.unit != vars.SPECS.PILGRIM)
+              val.unit = ret.build_unit;
+            vars.CastleTalk.performAction('build', val);
+            break;
+          case 'move':
+            vars.CastleTalk.performAction('move', {'dxdy': [ret.dx, ret.dy]});
+            break;
+          case 'mine':
+            vars.CastleTalk.performAction('mine', {});
+            break;
+          case 'give':
+            vars.CastleTalk.performAction('give', {'dxdy': [ret.dx, ret.dy]});
+        }
+      }
+      vars.CastleTalk.send();
+      
+      vars.firstTurn = false;
       return ret;
     }
     catch (err) {
       this.log("Error in unit "+this.me.unit+" at ("+this.me.x+", "+this.me.y+")");
-      this.log(err.toString());
+      if(true){
+        var lines = err.stack.split('\n');
+        for(var i in lines){
+          this.log(lines[i]);
+        }
+      }
+      else
+        this.log(err.toString());
     }
   }
 }

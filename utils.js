@@ -289,13 +289,11 @@ export function findConnections (r2) {
   }
   vars.connections[r2] = [];
   for (var x = 1; x*x <= r2; x++) {
-    for (var y = 0; y*y <= r2; y++) {
-      if (x*x+y*y <= r2) {
-        vars.connections[r2].push([x, y]);
-        vars.connections[r2].push([-x, -y]);
-        vars.connections[r2].push([-y, x]);
-        vars.connections[r2].push([y, -x]);
-      }
+    for (var y = 0; x*x+y*y <= r2; y++) {
+      vars.connections[r2].push([x, y]);
+      vars.connections[r2].push([-x, -y]);
+      vars.connections[r2].push([-y, x]);
+      vars.connections[r2].push([y, -x]);
     }
   }
   vars.connections[r2].sort(function(x, y) {

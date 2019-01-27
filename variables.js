@@ -62,6 +62,9 @@ export default {
   teamFuel: null,
   teamKarb: null,
 
+  // Managers
+  CastleTalk: null,
+  
   // tiles
   dangerTiles: null,
 
