@@ -171,7 +171,6 @@ export default function castleTurn() {
   }
 
   //var churching = castletalk with pilgrim
-  var churching = false;
   if( churching && !churched ) {
     churchLoc--;
     churched = true;
@@ -179,7 +178,7 @@ export default function castleTurn() {
   if( !churching )
     churched = false;
 
-  if (churching == 0 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     if( buildUtils.buildPilgrim.call(this, defend, churchLoc, churching, visibleCount, deposits) ) {
       var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PILGRIM, this.me.x, this.me.y);
       if( buildLoc != null ) {
@@ -208,7 +207,7 @@ export default function castleTurn() {
 
   // prophet build
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
-    if ( buildUtils.buildProphet.call(this, defend, castleOrder, visibleCount, castleOrderAll, myCastles, unitTracking) ) {
+    if ( buildUtils.buildProphet.call(this, defend, churching, castleOrder, visibleCount, castleOrderAll, myCastles, unitTracking) ) {
       var buildLoc;
       if( attackPos == null && this.me.turn < 15 ) 
         buildLoc = buildUtils.buildOpt.call(this, attackPosEarly, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
