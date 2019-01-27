@@ -147,6 +147,8 @@ export function churchLoc(castleOrderAll, castleOrder, enemyCastles, myCastles) 
   for( var i = 0; i < numC; i++ ) {
     castleLoc.push([myCastles[castleOrderAll[i]][0], myCastles[castleOrderAll[i]][1]]);
   }
+  //this.log("helo");
+  //this.log(castleLoc);
   var ret = [];
   var rlocs = vars.rLocs;
   //this.log(rlocs.length);

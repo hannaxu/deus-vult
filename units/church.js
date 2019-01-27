@@ -7,7 +7,7 @@ var buildCount = [0,0,0,0,0,0];
 var team;
 var deposits = [0,[],[]]; //total, karb locs, fuel locs
 var attackPos = null;
-var defend = false;
+var churchLoc = 0;
 
 export default function churchTurn() {
   //this.log("I am a Church at "+this.me.x+" "+this.me.y);
@@ -16,14 +16,8 @@ export default function churchTurn() {
     team = this.me.team;
     deposits = buildUtils.resources.call(this, this.me.x, this.me.y);
     //this.log(deposits[0]);
+    churchLoc = buildUtils.churchLoc.call(this, ["1"], 0, [500,500], {"1": [this.me.x, this.me.y]});
   }
-
-  /*var closePilgrim = 0;
-  for( var i = 0; i < vars.visibleRobots.length; i++ ) {
-    if( vars.visibleRobots[i].team == team )
-      if( vars.visibleRobots[i].unit == vars.SPECS.PILGRIM )
-        closePilgrim += 1;
-  }*/
 
   //headcount 0: castle, 1: church, 2: pilgrim, 3: crusader, 4: prophet, 5: preacher
   var headcount = [0,1,0,0,0,0];
@@ -48,8 +42,8 @@ export default function churchTurn() {
       enemyUnit += 1;
     }
   }
-
-  if( enemyUnit > headcount[4] )
+  var defend = false;
+  if( enemyUnit > 0 )
     defend = true;
 
   var visibleEnemies = buildUtils.findVisibleEnemies.call(this);
@@ -61,11 +55,11 @@ export default function churchTurn() {
   //this.log(headcount[2]);
 
   if (!defend && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
-    if ((headcount[2] < deposits[0] && headcount[4] >= vars.CHURCH_MIN_DEF) || headcount[2] < deposits[1].length) {
+    if ((headcount[2] < deposits[0] && headcount[4] >= vars.CHURCH_MIN_DEF) || headcount[2] < deposits[1].length || churchLoc > 0) {
       var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PILGRIM, this.me.x, this.me.y);
-      //sendMessage.call(this, castleOrder, buildOptPil[i][1]**2+buildOptPil[i][0]**2);
-      //this.log("Building pilgrim at "+x+" "+y);
       if( buildLoc != null ) {
+        if( churchLoc > 0 && headcount[2] >= deposits[0] )
+          churchLoc--;
         buildCount[2]++;
         vars.buildRobot = 2;
         return this.buildUnit(vars.SPECS.PILGRIM, buildLoc[1], buildLoc[0]);
