@@ -212,7 +212,7 @@ export default function castleTurn() {
   // prophet build
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
     if ( defend || 
-        ( (headcount[4] < 3 && this.me.turn < totalCastles*25) || (headcount[4] < 20 && this.me.turn > totC*25) ) || 
+        ( (headcount[4] < 3 && this.me.turn < totalCastles*25) || (headcount[4] < 20 && this.me.turn > totalCastles*25) ) || 
         (this.karbonite >= 60 && this.fuel >= 300) ) {
       var buildLoc;
       if( attackPos == null && this.me.turn < 15 ) 
@@ -240,6 +240,7 @@ export default function castleTurn() {
           //this.log("Building pilgrim at "+x+" "+y);
           buildCount[2]++;
           vars.buildRobot = 2;
+          vars.CastleTalk.performAction('build', {'dxdy': [vars.buildable[i][0], vars.buildable[i][1]], 'unit':vars.SPECS.PILGRIM});
           return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
         }
       }

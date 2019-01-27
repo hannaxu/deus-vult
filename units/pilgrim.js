@@ -138,12 +138,14 @@ export default function pilgrimTurn () {
         if ((bx-me.x)**2 + (by-me.y)**2<=2 && vars.teamKarb>50 && vars.teamFuel>200) {
             if (vars.visibleRobotMap[by][bx]==0) {
                 this.log("Built church!");
+                vars.CastleTalk.performAction('build', {'dxdy': [bx-me.x, by-me.y]});
                 return this.buildUnit(vars.SPECS.CHURCH,bx-me.x,by-me.y);
             } else if (bx==me.x && by==me.y) {
                 for (var i=0; i<8; i++) {
                     var xp=me.x+vars.buildable[i][0];
                     var yp=me.y+vars.buildable[i][1];
                     if (utils.checkBounds(xp,yp) && vars.passableMap[yp][xp] && vars.visibleRobotMap[yp][xp]==0) {
+                        vars.CastleTalk.performAction('move', {'dxdy': vars.buildable[i]});
                         return this.move(vars.buildable[i][0],vars.buildable[i][1]);
                     }
                 }
