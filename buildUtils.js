@@ -173,7 +173,7 @@ export function churchLoc(castleOrderAll, castleOrder, enemyCastles, myCastles) 
     if( temp[0] == castleOrder && temp[1] > 16 && temp[1] < vars.ymax*vars.ymax/4 && temp1[1] > 25 ) 
       opt.push(ret[i]);
   }
-  //this.log(opt)
+  this.log(opt)
   return opt.length; //{x, y}
 }
 
@@ -221,15 +221,17 @@ export function buildProphet(defend, churching,  castleOrder, visibleCount, cast
   }
   //this.log(units[castleOrder]);
   //this.log(min);
-  if( units[castleOrder] == min ) {
+  if( Math.abs(units[castleOrder] - min) <= 1 ) {
     //this.log("build");
     if( visibleCount[4] < 2 )
       return true;
     if( visibleCount[4] < 12 && this.karbonite >= 50 && this.fuel >= 300 /*replace with churching constraint*/)
       return true;
   }
-  if( visibleCount[4] >= 12 && this.karbonite >= 100 && this.fuel >= 300 )
+  if( this.karbonite >= 100 && this.fuel >= 300 )
       return true;
+  if( this.me.turn > 980 )
+    return true;
   return false;
 }
 

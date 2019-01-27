@@ -75,7 +75,7 @@ export default function churchTurn() {
 
   // prophet build
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
-    if (defend || headcount[4] < vars.CHURCH_MIN_DEF || (headcount[4] < vars.CHURCH_MAX_DEF && this.karbonite > 150)) {
+    if ((defend && this.karbonite > 50) || headcount[4] < vars.CHURCH_MIN_DEF || (headcount[4] < vars.CHURCH_MAX_DEF && this.karbonite > 150)) {
       var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
       if( buildLoc != null ) {
         buildCount[2]++;
