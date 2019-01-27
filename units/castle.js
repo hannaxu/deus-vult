@@ -233,6 +233,28 @@ export default function castleTurn() {
     }
   }
 
+  // Send signal to let other castles know I'm protected
+  if (attackerCount >= vars.MIN_ATK_ROBOTS) {
+    vars.CastleTalk.performOptional(1);
+  }
+
+  var allProtected = true;
+  for(var id in myCastles){
+    if(id in unitTracking){
+      var actions = vars.CastleTalk.receive(unitTracking[id].castle_talk, vars.SPECS.CASTLE);
+      if(actions.opt == 0){
+        allProtected = false;
+        break;
+      }
+    }
+  }
+  if(allProtected){
+    if(castleOrder == 0){
+      this.log("All Castles Protected");
+    }
+    //TODO: Deus Vult
+  }
+
   // DEUS VULTING
   if (this.fuel >= vars.MIN_ATK_FUEL && enemyCastles.length > 0 && this.me.turn%50==0) {
     if (attackerCount >= vars.MIN_ATK_ROBOTS) {
