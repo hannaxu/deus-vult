@@ -107,23 +107,29 @@ export function findMoveD (start, end) {
   return bestMove[2];
 }
 
-export function soloBFS(end,maxdist) {
+export function soloBFS(end,maxDepth) {
+  //this.log("E "+end);
     if (vars.fuzzyCost[end[0]][end[1]].length==0) {
-    vars.fuzzyCost[end[0]][end[1]] = bfs.call(this, [end],maxdist);
+    vars.fuzzyCost[end[0]][end[1]] = bfs.call(this, [end],maxDepth);
     //this.log("Conducted bfs "+start+" "+end);
   }
     return vars.fuzzyCost[end[0]][end[1]]
 }
 
 //list of [x,y]
-export function bfs (ends,maxdist) {
-  var costs = []
+export function bfs (ends, maxDepth) {
+var ret = {};
+for (var i = 0; i < ends.length; i++) {
+  ret[hashCoordinates(ends[i])] = 0;
+}
+  var costs = [];
   for (var x = 0; x < vars.xmax; x++) {
     costs.push([]);
     for (var y = 0; y < vars.ymax; y++) {
       costs[x].push(null);
     }
   }
+  var foundDepth = vars.POS_INF;
   var index = 0;
   var queue = [];
   for (var i = 0; i < ends.length; i++) {
@@ -133,16 +139,18 @@ export function bfs (ends,maxdist) {
   while (index<queue.length) {
     //this.log("q "+queue[index]);
     var curCost = costs[queue[index][0]][queue[index][1]];
-    if (curCost[0]<maxdist) {
-      for (var i = 0; i < vars.moveable.length; i++) {
-        var x = queue[index][0]+vars.moveable[i][0];
-        var y = queue[index][1]+vars.moveable[i][1];
-        if (checkBounds(x, y)&&vars.passableMap[y][x]&&(costs[x][y]==null || costs[x][y][0]>curCost[0] && costs[x][y][1]>curCost[1]+vars.moveCost*(vars.moveable[i][0]**2+vars.moveable[i][1]**2))) {
-            if (costs[x][y]==null) {
-                queue.push([x, y]);
-            }
-          costs[x][y] = [curCost[0]+1, curCost[1]+vars.moveCost*(vars.moveable[i][0]**2+vars.moveable[i][1]**2)];
-        }
+    if (curCost[0]>Math.min(maxDepth, foundDepth)) {
+      break;
+    }
+    if (ret[hashCoordinates(queue[index])]) {
+      foundDepth = curCost[0];
+    }
+    for (var i = 0; i < vars.moveable.length; i++) {
+      var x = queue[index][0]+vars.moveable[i][0];
+      var y = queue[index][1]+vars.moveable[i][1];
+      if (checkBounds(x, y)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]<=0&&costs[x][y]==null) {
+        queue.push([x, y]);
+        costs[x][y] = [curCost[0]+1, curCost[1]+vars.moveCost*(vars.moveable[i][0]**2+vars.moveable[i][1]**2)];
       }
     }
     index++;
@@ -181,7 +189,7 @@ export function djikstra (ends) {
       }
     }
   }
-  //this.log("BFS Time: "+(new Date().getTime()-time));
+  //this.log("BFS Time: "+(timeLeft()));
   return costs;
 }
 
@@ -204,7 +212,7 @@ export function navigate(start, ends, maxDepth=vars.POS_INF, radius=vars.moveRad
   parents[hashCoordinates(start)] = null;
   // this.log(ends);
   outer: while (queue.length>0) {
-    if (new Date().getTime()-time>vars.NAVIGATION_TIME_LIMIT) {
+    if (timeLeft()>vars.NAVIGATION_TIME_LIMIT) {
       this.log("Out of time for navigation");
       return null;
     }
@@ -337,7 +345,7 @@ export function updateLocs () {
   for (var i = 0; i < vars.visibleRobots.length; i++) {
     if (vars.visibleRobots[i].team==this.me.team && (vars.visibleRobots[i].unit==vars.SPECS.CASTLE||vars.visibleRobots[i].unit==vars.SPECS.CHURCH)) {
       var hashVal = hashCoordinates([vars.visibleRobots[i].x, vars.visibleRobots[i].y]);
-        
+
       if (! (hashVal in vars.baseLocs)) {
            vars.baseLocs[hashVal] = vars.visibleRobots[i].id;
           vars.baseChange=true;
@@ -507,4 +515,14 @@ export function orderEnemies (list) {
     }
     return (r1.x-vars.xpos)**2+(r1.y-vars.ypos)**2+(r2.x-vars.xpos)**2+(r2.y-vars.ypos)**2;
   });
+}
+
+export function timeLeft () {
+  return new Date().getTime()-vars.turnStartTime;
+}
+
+export function random() {
+  var seed = 1;
+  var x = Math.sin(seed++) * 10000;
+  return x - Math.floor(x);
 }
