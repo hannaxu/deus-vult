@@ -89,8 +89,10 @@ export default function castleTurn() {
 
   // track units
   var ret = trackUnits.call(this, unitTracking, untracked, totalCastles, deleteEnemyCastle);
-  unitTracking = ret[0];
-  var churching = ret[1];
+  if(ret != null){
+    unitTracking = ret[0];
+    var churching = ret[1];
+  }
 
   if(false && this.me.turn % 250 == 0 && castleOrder == 0){
     this.log(unitTracking);

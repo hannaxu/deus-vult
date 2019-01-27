@@ -202,7 +202,7 @@ export function castleLocComm(myCastles, castleOrderAll, unitTracking, prims, ad
  */
 export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction){
   if(this.me.turn == 1)
-    return;
+    return null;
   
   var unitTrackingNew = {}
   var appeared = [];
