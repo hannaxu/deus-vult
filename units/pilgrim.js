@@ -20,11 +20,11 @@ export default function pilgrimTurn () {
     var minDR=-1;
     var minDRv=9999;
     if (this.me.turn==1) {
-        
+
         //ALEXEY LOOK HERE
         //do this for all enemy castles
         //seenEnms[castlexpos][castleypos]=500;
-        
+
         if (vars.creatorPos!=null) {
             if ((vars.visibleRobotMap[vars.creatorPos[0]][vars.creatorPos[1]].signal & 1<<14) > 0) {
                 attacking = true;
@@ -58,14 +58,15 @@ export default function pilgrimTurn () {
             minDRv=d2;
         }
     }
-    if (minDR!=-1) utils.soloBFS([vars.rLocs[minDR].x,vars.rLocs[minDR].y],4);
-    
+    if (minDR!=-1) utils.soloBFS.call(this, [vars.rLocs[minDR].x,vars.rLocs[minDR].y],4);
+
     for (var i=0; i<vars.visibleEnemyRobots.length; i++) {
         if (vars.visibleEnemyRobots[i].unit!=vars.SPECS.PILGRIM) {
             seenEnms[utils.hashCoordinates([vars.visibleEnemyRobots[i].x,vars.visibleEnemyRobots[i].y])]=me.turn;
         }
     }
     for (var i=0; i<vars.radioRobots.length; i++) {
+        //this.log('Pilgrim intercepted signal');
         seenEnms[utils.hashCoordinates([vars.radioRobots[i].x,vars.radioRobots[i].y])]=me.turn;
     }
     //return rescources to the factory [always returns]
@@ -86,7 +87,7 @@ export default function pilgrimTurn () {
             var facts=[];
             var pris=[];
             for (var h in vars.baseLocs) {
-                facts.push(utils.soloBFS(utils.unhashCoordinates(h),10));
+                facts.push(utils.soloBFS.call(this, utils.unhashCoordinates(h),10));
                 pris.push(0);
             }
             //this.log(facts.length);
@@ -103,7 +104,7 @@ export default function pilgrimTurn () {
         for (var i=0; i<vars.rLocs.length; i++) {
             var p=vars.rLocs[i];
             if ((p.x-me.x)**2 + (p.y-me.y)**2<200 && vars.fuzzyCost[p.x][p.y].length>0 && me.turn-p.closed>40) {
-                
+
                 var prival=999;
                 for (var h in vars.baseLocs) {
                     var bpos=utils.unhashCoordinates(h);
@@ -132,14 +133,18 @@ export default function pilgrimTurn () {
     }
     //go build a church [sometimes returns]
     if (vars.teamFuel>=4) {
-        //this.log('facts');
+        //this.log('churching');
         vars.CastleTalk.performOptional(1);
         newFactVal.call(this);
         //this.log('xddd');
         var bx=factPos[0];
         var by=factPos[1];
-        
+
         //this.log(bx+" "+by+" is the best new base");
+        if (bx==-1) {
+            return null;
+        }
+        
         if ((bx-me.x)**2 + (by-me.y)**2<=2 && vars.teamKarb>=50 && vars.teamFuel>=200) {
             if (vars.visibleRobotMap[by][bx]==0) {
                 this.log("Built church!");
@@ -156,7 +161,7 @@ export default function pilgrimTurn () {
                 return null;
             }
         }
-        var fdists=utils.soloBFS([bx,by],20);
+        var fdists=utils.soloBFS.call(this, [bx,by],20);
         //this.log('to facct');
         return pickAdjMove.call(this,[fdists],[0]);
     }
@@ -170,12 +175,13 @@ var factPos;
 var seenEnms={}; //x,y->turn
 
 function notNearEnemy(x,y,turn) {
+    //return true;
     for (var h in seenEnms) {
             if (turn-seenEnms[h]>100) {
                 delete seenEnms[h];
             } else {
                 var pos=utils.unhashCoordinates(h);
-                if ((pos[0]-x)**2 + (pos[1]-y)**2 < 80) {
+                if ((pos[0]-x)**2 + (pos[1]-y)**2 < 64) {
                     return false;
                 }
             }
@@ -184,10 +190,10 @@ function notNearEnemy(x,y,turn) {
 }
 
 function newFactVal() {
-    if (!vars.baseChange && factPos!=undefined &&  notNearEnemy(factPos[0],factPos[1],this.me.turn)) {
+    if (!vars.baseChange && factPos!=undefined && notNearEnemy(factPos[0],factPos[1],this.me.turn)) {
         return factPos;
     }
-    
+
     var me=this.me;
     vars.baseChange=false;
     var ret=[];
@@ -198,7 +204,7 @@ function newFactVal() {
         }
     }
     var bases=[];
-    
+
     for (var h in vars.baseLocs) {
         bases.push(utils.unhashCoordinates(h));
     }
@@ -218,11 +224,11 @@ function newFactVal() {
             }
         }
     }
-    
+
     var best=0.5;
-        var bx=5;
-        var by=5;
-        var distsC=utils.soloBFS([me.x,me.y],20);
+        var bx=-1;
+        var by=-1;
+        var distsC=utils.soloBFS.call(this,[me.x,me.y],20);
         for (var x=0; x<vars.xmax; x++) {
             for (var y=0; y<vars.ymax; y++) {
                 if (distsC[x][y]==null) continue;
@@ -236,7 +242,7 @@ function newFactVal() {
                         }
                     }
                     if (validp) {
-                        
+
                         best=pval*(Math.random()*0.3+0.7);
                         bx=x;
                         by=y;
@@ -244,6 +250,12 @@ function newFactVal() {
                 }
             }
         }
+    if (bx==-1) {
+        for (var h in seenEnms) {
+            seenEnms[h]-=50;
+        }
+        return newFactVal.call(this);
+    }
     //this.log('kek');
     factPos=[bx,by];
     return factPos;
@@ -253,7 +265,7 @@ function newFactVal() {
 function minC(costs, pri,x,y) {
     //this.log('inc');
     var ret=99999;
-    
+
     for (var i=0; i<costs.length; i++) {
         if (costs[i][x][y]!=null) {
             var c=(costs[i][x][y][0]+pri[i])*200+costs[i][x][y][1]*4;
