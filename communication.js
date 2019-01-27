@@ -245,6 +245,8 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
                 tracked_r.x + actions[name].dxdy[0],
                 tracked_r.y + actions[name].dxdy[1]
               ];
+              if(tracked_r.unit == vars.SPECS.PILGRIM)
+                info[0] = vars.SPECS.CHURCH;
               if(utils.checkBounds(info[1], info[2]))
                 built.push(info);
               else
@@ -301,7 +303,14 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
       }
       catch(err){
         this.log("UTRACK: Failed when tracking " + other_r.id + " at (" + other_r.x + ", " + other_r.y + ")");
-        this.log(err.toString());
+        if(true){
+          var lines = err.stack.split('\n');
+          for(var i in lines){
+            this.log(lines[i]);
+          }
+        }
+        else
+          this.log(err.toString());
       }
     }
 
