@@ -5,6 +5,7 @@ import * as buildUtils from '../buildUtils';
 
 var team;
 var myCastles = {}; // contains locations
+var myCastlesAlive = [];  // list of booleans in turn order
 var castleOrderAll = [];  // ids in order
 var castleOrder = 0;
 var totalCastles;
@@ -17,7 +18,8 @@ var attackPos = null;
 var unitTracking = {};
 var untracked = new Set();
 
-var enemyCastles = []; // enemyCastle locations based on our castleLocations
+var enemyCastles = []; // enemyCastle locations based on our castleLocations in turn order
+var enemyCastlesAlive = []; // list of booleans in turn order (not matched to enemyCastles!)
 var curAttack = 0; // next enemyCastle to deusVult
 var lastDeusVult = -10; // last turn since deusVult
 var deusVult = null; // where to attack
@@ -78,6 +80,10 @@ export default function castleTurn() {
   var val = castleLocComm.call(this, myCastles, castleOrderAll, unitTracking, prims, addEnemyCastle);
   totalCastles = prims[0];
   castleOrder = prims[1];
+  if(this.me.turn == 1){
+    myCastlesAlive = Array(totalCastles).fill(true);
+    enemyCastlesAlive = Array(totalCastles).fill(true);
+  }
   if(typeof(val) != 'undefined')
     return val;
 
@@ -86,7 +92,7 @@ export default function castleTurn() {
   unitTracking = ret[0];
   var churching = ret[1];
 
-  if(true && this.me.turn % 250 == 0 && castleOrder == 0){
+  if(false && this.me.turn % 250 == 0 && castleOrder == 0){
     this.log(unitTracking);
     this.log([...untracked]);
   }
@@ -249,13 +255,18 @@ export default function castleTurn() {
   }
 
   var allProtected = true;
-  for(var id in myCastles){
+  for(var i in castleOrderAll){
+    var id = castleOrderAll[i];
     if(id in unitTracking){
+      myCastlesAlive[i] = true;
       var actions = vars.CastleTalk.receive(unitTracking[id].castle_talk, vars.SPECS.CASTLE);
       if(actions.opt == 0){
         allProtected = false;
         break;
       }
+    }
+    else{
+      myCastlesAlive[i] = false;
     }
   }
   if(allProtected){
@@ -329,10 +340,14 @@ function addEnemyCastle(myCastleLoc) {
 function deleteEnemyCastle(id) {
   if(deusVulters[id] != null) {
     // deletes dead enemyCastles
+    var j = 0;
     for (var i = 0; i < enemyCastles.length; i++) {
+      if (!enemyCastlesAlive[j])
+        j++;
       if (enemyCastles[i]==deusVulters[id]) {
         this.log("CASTLEKILL: Killed enemy castle at " + enemyCastles[i]);
         enemyCastles.splice(i, 1);
+        enemyCastlesAlive[j] = false;
         if(curAttack > i) {
           curAttack--;
         }
@@ -340,6 +355,7 @@ function deleteEnemyCastle(id) {
           curAttack%=enemyCastles.length;
         }
       }
+      j++;
     }
     delete deusVulters[id];
   }

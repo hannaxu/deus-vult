@@ -302,8 +302,8 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
         }
       }
       catch(err){
-        this.log("UTRACK: Failed when tracking " + other_r.id + " at (" + other_r.x + ", " + other_r.y + ")");
-        if(true){
+        this.log("UTRACK: Failed when tracking " + tracked_r.id + " at (" + tracked_r.x + ", " + tracked_r.y + ")");
+        if(false){
           var lines = err.stack.split('\n');
           for(var i in lines){
             this.log(lines[i]);
@@ -314,7 +314,7 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
       }
     }
 
-    else if(other_r.team == this.me.team){
+    else if(!this.isVisible(other_r) || other_r.team == this.me.team){
       if(!untracked.has(other_r.id)){
         appeared.push(other_r);
       }
@@ -350,7 +350,7 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
   }
   appeared = appeared.filter(function(_, i){
     return !toRemove.has(i);
-  })
+  });
   // match built units with appeared
   switch(built.length){
     case 0:
@@ -378,6 +378,19 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
       }
   }
   return [unitTrackingNew, churching];
+}
+
+
+
+// OTHER UNIT FUNCTIONS
+
+export function castleLocSend(myCastles, castleOrderAll, ){
+  var message;
+  return message;
+}
+
+export function castleLocReceive(message){
+
 }
 
 
