@@ -12,8 +12,6 @@ var teamID = {}; // hashmap stores info
 var symmetry;
 var deposits = [0,[],[]]; //total, karb locs, fuel locs
 var buildCount = [0,0,0,0,0,0];
-var buildOptPil = []; //pilgrims,
-var buildOptUnit = []; //units
 var attackPos = null;
 
 var unitTracking = {};
@@ -31,8 +29,8 @@ var visionPilgrims = 0;
 var trackMap = []; // [id, unit]
 var trackRobots = {}; // trackRobots[id] = [pos, unit]
 
-var builtChurch = false;
-var leastDepo = false;
+var churchLoc = 0;
+var churched = false;
 var attackPosEarly;
 
 
@@ -47,10 +45,7 @@ export default function castleTurn() {
   if (this.me.turn==1) {
     symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
     this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
-    //Castle information, first turn only
-    //determine total number of castles
-    //determine if enemy castles are visible and number
-    //  try to determine if map is truly horizontal or vertical if symmetry returned both
+
     team = this.me.team;
 
     if (symmetry[0]) {
@@ -73,6 +68,10 @@ export default function castleTurn() {
     trackMap[this.me.y][this.me.x] = [this.me.id, this.me.unit];
   }
 
+  if( this.me.turn == 3 ) {
+    churchLoc = buildUtils.churchLoc.call(this, castleOrderAll, castleOrder, enemyCastles, myCastles);
+  }
+
   // communicate castleLocs
   // only the first two turns
   var prims = [totalCastles, castleOrder];
@@ -91,7 +90,6 @@ export default function castleTurn() {
     this.log(unitTracking);
     this.log([...untracked]);
   }
-
 
   attackerCount = 0;
   farthestAttacker = 0;
@@ -127,6 +125,25 @@ export default function castleTurn() {
       else if( u == vars.SPECS.PREACHER )
         headcount[5] += 1;
     }
+  }
+
+  var visibleCount = [1,0,0,0,0,0];
+  for( var i = 0; i < vars.visibleRobots.length; i++ ) {
+    if( vars.visibleRobots[i].team == team ) {
+      var u = vars.visibleRobots[i].unit;
+      if( u == vars.SPECS.CASTLE )
+        visibleCount[0] += 1;
+      else if( u == vars.SPECS.CHURCH )
+        visibleCount[1] += 1;
+      else if( u == vars.SPECS.PILGRIM )
+        visibleCount[2] += 1;
+      else if( u == vars.SPECS.CRUSADER )
+        visibleCount[3] += 1;
+      else if( u == vars.SPECS.PROPHET )
+        visibleCount[4] += 1;
+      else if( u == vars.SPECS.PREACHER )
+        visibleCount[5] += 1;
+    }
     else {
       if( u == vars.SPECS.CRUSADER )
         enemyUnit += 1;
@@ -136,18 +153,10 @@ export default function castleTurn() {
         enemyUnit += 1;
     }
   }
-  //this.log(this.me.turn);
   var defend = false;
   if( enemyUnit > 0 ) {
     defend = true;
     this.log("defend");
-  }
-
-  var closePilgrim = 0;
-  for( var i = 0; i < vars.visibleRobots.length; i++ ) {
-    if( vars.visibleRobots[i].team == team )
-      if( vars.visibleRobots[i].unit == vars.SPECS.PILGRIM )
-        closePilgrim += 1;
   }
 
   var attackDir = attackPhase.call(this);
@@ -161,15 +170,19 @@ export default function castleTurn() {
       attackPos = [this.me.y+visibleEnemies[i][1], this.me.x+visibleEnemies[i][0]];
   }
 
-  //if (!defend && (headcount[2]<1 || (headcount[2]<3 && this.me.turn > 10 && closePilgrim < deposits && castleOrder != 0)) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
-  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
-    if (!defend && churching == 0 && (( headcount[2]<1 || ((castleOrder != 0 || headcount[4] > 2) && closePilgrim < Math.min(deposits[1].length+1, deposits[0])) ) || (leastDepo && (closePilgrim < deposits[0] || builtChurch == false))) ) {
+  //var churching = castletalk with pilgrim
+  var churching = false;
+  if( churching && !churched ) {
+    churchLoc--;
+    churched = true;
+  }
+  if( !churching )
+    churched = false;
+
+  if (churching == 0 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+    if( buildUtils.buildPilgrim.call(this, defend, churchLoc, churching, visibleCount, deposits) ) {
       var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PILGRIM, this.me.x, this.me.y);
-      //sendMessage.call(this, castleOrder, buildOptPil[i][1]**2+buildOptPil[i][0]**2);
-      //this.log("Building pilgrim at "+x+" "+y);
       if( buildLoc != null ) {
-        if( leastDepo && !builtChurch && closePilgrim == deposits[0])
-          builtChurch = true;
         //this.log(buildLoc);
         buildCount[2]++;
         vars.buildRobot = 2;
@@ -195,9 +208,7 @@ export default function castleTurn() {
 
   // prophet build
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
-    if ( defend || 
-        ( (headcount[4] < 3 && this.me.turn < totalCastles*25) || (headcount[4] < 20 && this.me.turn > totalCastles*25) ) || 
-        (this.karbonite >= 60 && this.fuel >= 300) ) {
+    if ( buildUtils.buildProphet.call(this, defend, castleOrder, visibleCount, castleOrderAll, myCastles, unitTracking) ) {
       var buildLoc;
       if( attackPos == null && this.me.turn < 15 ) 
         buildLoc = buildUtils.buildOpt.call(this, attackPosEarly, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
