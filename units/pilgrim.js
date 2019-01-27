@@ -20,6 +20,11 @@ export default function pilgrimTurn () {
     var minDR=-1;
     var minDRv=9999;
     if (this.me.turn==1) {
+        
+        //ALEXEY LOOK HERE
+        //do this for all enemy castles
+        //seenEnms[castlexpos][castleypos]=500;
+        
         if (vars.creatorPos!=null) {
             if ((vars.visibleRobotMap[vars.creatorPos[0]][vars.creatorPos[1]].signal & 1<<14) > 0) {
                 attacking = true;
@@ -60,7 +65,9 @@ export default function pilgrimTurn () {
             seenEnms[utils.hashCoordinates([vars.visibleEnemyRobots[i].x,vars.visibleEnemyRobots[i].y])]=me.turn;
         }
     }
-    
+    for (var i=0; i<vars.radioRobots.length; i++) {
+        seenEnms[utils.hashCoordinates([vars.radioRobots[i].x,vars.radioRobots[i].y])]=me.turn;
+    }
     //return rescources to the factory [always returns]
     if ( me.fuel==vars.maxFuel || me.karbonite== vars.maxKarb || (me.karbonite == vars.maxKarb/2 && vars.teamKarb <=15) ) {
         for (var i=0; i<8; i++) {
