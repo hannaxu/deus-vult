@@ -141,7 +141,7 @@ export function findVisibleEnemies (pos=[this.me.x, this.me.y]) {
   return ret;
 }
 
-export function churchLoc(castleOrderAll, castleOrder, enemyCastles, myCastles) {
+export function churchLoc(castleOrderAll, castleOrder, enemyCastles, myCastles, dConst) {
   var numC = castleOrderAll.length;
   var castleLoc = [];
   for( var i = 0; i < numC; i++ ) {
@@ -169,10 +169,10 @@ export function churchLoc(castleOrderAll, castleOrder, enemyCastles, myCastles) 
   var opt = [];
   //this.log(castleOrder);
   for( var i = 0; i < ret.length; i++ ) {
-    var temp = nearestCastle(ret[i][0], ret[i][1], castleLoc, 5000);
+    var temp = nearestCastle(ret[i][0], ret[i][1], castleLoc, dConst);
     var temp1 = nearestCastle(ret[i][0], ret[i][1], enemyCastles, 5000);
     //this.log(temp);
-    if( temp[0] == castleOrder && temp[1] > 16 && temp[1] < vars.ymax*vars.ymax/4 && temp1[1] > 25 ) 
+    if( temp[0] == castleOrder && temp[1] > 16 && temp[1] < dConst && temp1[1] > 25 ) 
       opt.push(ret[i]);
   }
   this.log(opt)

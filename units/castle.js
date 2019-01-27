@@ -71,7 +71,7 @@ export default function castleTurn() {
   }
 
   if( this.me.turn == 3 ) {
-    churchLoc = buildUtils.churchLoc.call(this, castleOrderAll, castleOrder, enemyCastles, myCastles);
+    churchLoc = buildUtils.churchLoc.call(this, castleOrderAll, castleOrder, enemyCastles, myCastles, vars.ymax*vars.ymax);
   }
 
   // communicate castleLocs

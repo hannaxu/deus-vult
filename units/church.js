@@ -16,7 +16,7 @@ export default function churchTurn() {
     team = this.me.team;
     deposits = buildUtils.resources.call(this, this.me.x, this.me.y);
     //this.log(deposits[0]);
-    churchLoc = buildUtils.churchLoc.call(this, ["1"], 0, [500,500], {"1": [this.me.x, this.me.y]});
+    churchLoc = buildUtils.churchLoc.call(this, ["1"], 0, [500,500], {"1": [this.me.x, this.me.y]}, vars.ymax*vars.ymax/4);
   }
 
   //headcount 0: castle, 1: church, 2: pilgrim, 3: crusader, 4: prophet, 5: preacher
