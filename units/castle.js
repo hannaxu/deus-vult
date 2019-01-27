@@ -76,36 +76,15 @@ export default function castleTurn() {
   // communicate castleLocs
   // only the first two turns
   var prims = [totalCastles, castleOrder];
-  var val = castleLocComm.call(this, myCastles, castleOrderAll, unitTracking, prims);
+  var val = castleLocComm.call(this, myCastles, castleOrderAll, unitTracking, prims, addEnemyCastle);
   totalCastles = prims[0];
   castleOrder = prims[1];
   if(typeof(val) != 'undefined')
     return val;
 
   // track units
-  trackUnits.call(this, unitTracking, untracked, totalCastles);
+  trackUnits.call(this, unitTracking, untracked, totalCastles, deleteEnemyCastle);
 
-  // // deletes dead enemyCastles
-  // for( var x = 0; x < vars.commRobots.length; x++ ) {
-  //   if(deusVulters[vars.commRobots[x].id]!=null) {
-  //     var message = vars.commRobots[x].castle_talk;
-  //     if (message >= 64) {
-  //       for (var i = 0; i < enemyCastles.length; i++) {
-  //         if (enemyCastles[i]==deusVulters[vars.commRobots[x].id]) {
-  //           this.log("Killed enemy castle at "+enemyCastles[i]);
-  //           enemyCastles.splice(i, 1);
-  //           if(curAttack > i) {
-  //             curAttack--;
-  //           }
-  //           if (enemyCastles.length>0) {
-  //             curAttack%=enemyCastles.length;
-  //           }
-  //         }
-  //       }
-  //       delete deusVulters[vars.commRobots[x].id];
-  //     }
-  //   }
-  // }
 
   attackerCount = 0;
   farthestAttacker = 0;
@@ -282,7 +261,7 @@ export default function castleTurn() {
   }
 }
 
-export function attackPhase () {
+function attackPhase () {
   if (this.fuel < 10) {
     return null;
   }
@@ -293,4 +272,35 @@ export function attackPhase () {
   if (attackableEnemies.length>0) {
       return [attackableEnemies[0].x-this.me.x, attackableEnemies[0].y-this.me.y];
     }
+}
+
+function addEnemyCastle(myCastleLoc) {
+  if (symmetry[0]) {
+      enemyCastles.push([vars.xmax-1-myCastleLoc[0], myCastleLoc[1]]);
+  }
+  if (symmetry[1]) {
+      enemyCastles.push([myCastleLoc[0], vars.ymax-1-myCastleLoc[1]]);
+  }
+}
+
+function deleteEnemyCastle(id) {
+  if(deusVulters[id] != null) {
+    // deletes dead enemyCastles
+    for (var i = 0; i < enemyCastles.length; i++) {
+      if (enemyCastles[i]==deusVulters[id]) {
+        this.log("CASTLEKILL: Killed enemy castle at " + enemyCastles[i]);
+        enemyCastles.splice(i, 1);
+        if(curAttack > i) {
+          curAttack--;
+        }
+        if (enemyCastles.length>0) {
+          curAttack%=enemyCastles.length;
+        }
+      }
+    }
+    delete deusVulters[id];
+  }
+  else {
+    this.log("CASTLEKILL: Unit " + id + " is not DEUSVULTing");
+  }
 }

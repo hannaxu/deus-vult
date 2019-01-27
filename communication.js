@@ -125,12 +125,13 @@ export function cypherMessage(message, team) {
  * Use proposeTrade (for now) to avoid castleTalk collisions.
  * Send only during first turn.
  * Receive during first and second turns.
- * @param {Object}  myCastles       {id: [x, y]} to store the castles to.
- * @param {int[]}   castleOrderAll  List of castle ids in turn order.
- * @param {Object}  unitTracking    {id: Robot} of all tracked robots.
- * @param {int[]}   prims           [totalCastles, castleOrder].
+ * @param {Object}    myCastles       {id: [x, y]} to store the castles to.
+ * @param {int[]}     castleOrderAll  List of castle ids in turn order.
+ * @param {Object}    unitTracking    {id: Robot} of all tracked robots.
+ * @param {int[]}     prims           [totalCastles, castleOrder].
+ * @param {function}  addFunction     Function to call when adding a castle.
  */
-export function castleLocComm(myCastles, castleOrderAll, unitTracking, prims) {
+export function castleLocComm(myCastles, castleOrderAll, unitTracking, prims, addFunction) {
   if(this.me.turn == 1) {
     prims[0] = vars.commRobots.length;
     //this.log("There are " + prims[0] + " total castles");
@@ -141,7 +142,7 @@ export function castleLocComm(myCastles, castleOrderAll, unitTracking, prims) {
           if(other_r.id != this.me.id ) {
           prims[1]++;
           // read other information
-          readInfo.call(this, myCastles, castleOrderAll, unitTracking, other_r);
+          readInfo.call(this, myCastles, castleOrderAll, unitTracking, other_r, addFunction);
         }
       }
       else{
@@ -151,6 +152,7 @@ export function castleLocComm(myCastles, castleOrderAll, unitTracking, prims) {
     }
     myCastles[this.me.id] = [this.me.x, this.me.y];
     castleOrderAll[prims[1]] = this.me.id;
+    addFunction.call(this, myCastles[this.me.id]);
     startTracking(unitTracking, this.me, this.me.x, this.me.y, this.me.unit, this.me.team);
     //this.log("I am castle " + prims[1]);
     if(prims[0] - prims[1] == 1){
@@ -179,7 +181,7 @@ export function castleLocComm(myCastles, castleOrderAll, unitTracking, prims) {
       var other_r = vars.commRobots[i];
       if(temp.has(other_r.id)) {
         // read other information
-        readInfo.call(this, myCastles, castleOrderAll, unitTracking, other_r);
+        readInfo.call(this, myCastles, castleOrderAll, unitTracking, other_r, addFunction);
       }
     }
     if(prims[0] - prims[1] > 1){
@@ -192,11 +194,12 @@ export function castleLocComm(myCastles, castleOrderAll, unitTracking, prims) {
 /**
  * Modifies the unitTracking structure based on received signals.
  * Additionally tracks: unit, team, x, y, fuel, farbonite.
- * @param {Object}  unitTracking  {id: Robot} of all tracked robots.
- * @param {int[]}   untracked     Ids of all untracked robots.
- * @param {int}     totalCastles  The number of total friendly castles.
+ * @param {Object}    unitTracking    {id: Robot} of all tracked robots.
+ * @param {int[]}     untracked       Ids of all untracked robots.
+ * @param {int}       totalCastles    The number of total friendly castles.
+ * @param {function}  deleteFunction  Function to call to delete a castle.
  */
-export function trackUnits(unitTracking, untracked, totalCastles){
+export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction){
   if(this.me.turn == 1)
     return;
   
@@ -281,7 +284,7 @@ export function trackUnits(unitTracking, untracked, totalCastles){
               break;
             case "opt":
               if(unitTracking[other_r.id].unit > 2 && actions[name] > 0)
-                this.log("TODO: CASTLE KILLED");
+                deleteFunction.call(this, other_r.id);
           }
         }
       }
@@ -392,17 +395,18 @@ function checkParams(message, sq_radius, isLong){
   return true;
 }
 
-function readInfo(myCastles, castleOrderAll, unitTracking, other_r){
+function readInfo(myCastles, castleOrderAll, unitTracking, other_r, addFunction){
   var order = other_r.castle_talk >> 6;
   var x = other_r.castle_talk & 63;
   var y = Math.abs(this.last_offer[this.me.team][order&1]) & (2**6-1);
   myCastles[other_r.id] = [x, y];
   castleOrderAll[order] = other_r.id;
+  addFunction.call(this, myCastles[other_r.id]);
   startTracking(unitTracking, other_r, x, y, vars.SPECS.CASTLE, this.me.team);
 }
 
 function startTracking(unitTracking, other_r, x, y, unit, team){
   unitTracking[other_r.id] = {type:"robot", id:other_r.id, turn:other_r.turn,
     team:team, unit:unit, x:x, y:y, fuel:0, karbonite:0,
-    signal:other_r.signal, signal_radius:other_r.signal_radius, castle_talk:other_r.castle_talk}
+    signal:other_r.signal, signal_radius:other_r.signal_radius, castle_talk:other_r.castle_talk};
 }
