@@ -194,15 +194,17 @@ export function castleLocComm(myCastles, castleOrderAll, unitTracking, prims, ad
 /**
  * Modifies the unitTracking structure based on received signals.
  * Additionally tracks: unit, team, x, y, fuel, farbonite.
- * @param {Object}    unitTracking    {id: Robot} of all tracked robots.
- * @param {int[]}     untracked       Ids of all untracked robots.
- * @param {int}       totalCastles    The number of total friendly castles.
- * @param {function}  deleteFunction  Function to call to delete a castle.
+ * @param   {Object}    unitTracking    {id: Robot} of all tracked units.
+ * @param   {int[]}     untracked       Ids of all untracked robots.
+ * @param   {int}       totalCastles    The number of total friendly castles.
+ * @param   {function}  deleteFunction  Function to call to delete a castle.
+ * @returns {Object}                    Updated {id: Robot} of all tracked units.
  */
 export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction){
   if(this.me.turn == 1)
     return;
   
+  var unitTrackingNew = {}
   var appeared = [];
   var built = [];
 
@@ -215,29 +217,32 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
         continue;
 
       // unit currently tracked
-      unitTracking[other_r.id].turn = other_r.turn;
-      unitTracking[other_r.id].signal = other_r.signal;
-      unitTracking[other_r.id].signal_radius = other_r.signal_radius;
-      unitTracking[other_r.id].castle_talk = other_r.castle_talk;
+      var tracked_r = unitTracking[other_r.id];
+      unitTrackingNew[other_r.id] = tracked_r;
+
+      tracked_r.turn = other_r.turn;
+      tracked_r.signal = other_r.signal;
+      tracked_r.signal_radius = other_r.signal_radius;
+      tracked_r.castle_talk = other_r.castle_talk;
 
       // receive updates
       try{
-        var actions = vars.CastleTalk.receive(other_r.castle_talk, unitTracking[other_r.id].unit);
+        var actions = vars.CastleTalk.receive(other_r.castle_talk, tracked_r.unit);
         for(var name in actions){
           switch(name){
             case "move":
-              if(utils.checkBounds(unitTracking[other_r.id].x + actions[name].dxdy[0],
-                unitTracking[other_r.id].y + actions[name].dxdy[1])){
-                unitTracking[other_r.id].x += actions[name].dxdy[0];
-                unitTracking[other_r.id].y += actions[name].dxdy[1];
+              if(utils.checkBounds(tracked_r.x + actions[name].dxdy[0],
+                tracked_r.y + actions[name].dxdy[1])){
+                tracked_r.x += actions[name].dxdy[0];
+                tracked_r.y += actions[name].dxdy[1];
               }
               else
                 this.log("UTRACK: Attempted to move " + other_r.id + " off of the map.");
               break;
             case "build":
               var info = [actions[name].unit,
-                unitTracking[other_r.id].x + actions[name].dxdy[0],
-                unitTracking[other_r.id].y + actions[name].dxdy[1]
+                tracked_r.x + actions[name].dxdy[0],
+                tracked_r.y + actions[name].dxdy[1]
               ];
               if(utils.checkBounds(info[1], info[2]))
                 built.push(info);
@@ -245,15 +250,15 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
                 this.log("UTRACK: Attempted to build by " + other_r.id + " outside the map.");
               break;
             case "mine":
-              if(vars.karbMap[unitTracking[other_r.id].y][unitTracking[other_r.id].x])
-                unitTracking[other_r.id].karbonite += 2;
-              else if(vars.fuelMap[unitTracking[other_r.id].y][unitTracking[other_r.id].x])
-                unitTracking[other_r.id].fuel += 10;
+              if(vars.karbMap[tracked_r.y][tracked_r.x])
+                tracked_r.karbonite += 2;
+              else if(vars.fuelMap[tracked_r.y][tracked_r.x])
+                tracked_r.fuel += 10;
               else
-                this.log("UTRACK: Location " + unitTracking[other_r.id].x + ", " + unitTracking[other_r.id].y + " is not mineable.");
+                this.log("UTRACK: Location " + tracked_r.x + ", " + tracked_r.y + " is not mineable.");
               break;
             case "give":
-              var loc = [unitTracking[other_r.id].x+actions[name].dxdy[0], unitTracking[other_r.id].y+actions[name].dxdy[1]];
+              var loc = [tracked_r.x+actions[name].dxdy[0], tracked_r.y+actions[name].dxdy[1]];
               var recepient = null;
               for(var id in unitTracking){
                 if(unitTracking[id].x == loc[0] && unitTracking[id].y == loc[1]){
@@ -264,8 +269,8 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
               if(recepient == null)
                 this.log("UTRACK: Recepient at (" + loc[0] + ", " + loc[1] + ") not found.");
               else{
-                var karb = unitTracking[other_r.id].karbonite;
-                var fuel = unitTracking[other_r.id].fuel;
+                var karb = tracked_r.karbonite;
+                var fuel = tracked_r.fuel;
                 var karb_cap = vars.SPECS.UNITS[recepient.unit].KARBONITE_CAPACITY;
                 var fuel_cap = vars.SPECS.UNITS[recepient.unit].FUEL_CAPACITY;
                 
@@ -273,17 +278,17 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
                   karb = Math.min(karb_cap - recepient.karbonite, karb);
                   recepient.karbonite += karb;
                 }
-                unitTracking[other_r.id].karbonite -= karb;
+                tracked_r.karbonite -= karb;
                 
                 if(fuel_cap != null){
                   fuel = Math.min(fuel_cap - recepient.fuel, fuel);
                   recepient.fuel += fuel;
                 }
-                unitTracking[other_r.id].fuel -= fuel;
+                tracked_r.fuel -= fuel;
               }
               break;
             case "opt":
-              if(unitTracking[other_r.id].unit > 2 && actions[name] > 0)
+              if(tracked_r.unit > 2 && actions[name] > 0)
                 deleteFunction.call(this, other_r.id);
           }
         }
