@@ -87,7 +87,8 @@ export default function prophetTurn() {
     }
 
     if (deusVult!=null) {
-      if (this.me.time>1.2*vars.NAVIGATION_TIME_LIMIT) {
+      this.log(utils.timeLeft());
+      if (utils.timeLeft()>1.2*vars.NAVIGATION_TIME_LIMIT) {
         var curDist = (this.me.x-deusVult[0])**2+(this.me.y-deusVult[1])**2;
         if (vars.attackRadius[0] > curDist || curDist > vars.attackRadius[1]) {
           var path = utils.navigate.call(this, [this.me.x, this.me.y], deusVultTiles, vars.ATTACK_DEPTH);
@@ -141,7 +142,7 @@ export default function prophetTurn() {
       // this.log("betterPos");
       // this.log(betterPos);
 
-      if (this.me.time>1.2*vars.NAVIGATION_TIME_LIMIT) {
+      if (utils.timeLeft()>1.2*vars.NAVIGATION_TIME_LIMIT) {
         var path = utils.navigate.call(this, [this.me.x, this.me.y], betterPos, vars.DEFENSE_DEPTH);
         if (path!=null) {
           //this.log(path);

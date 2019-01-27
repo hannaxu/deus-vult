@@ -22,6 +22,7 @@ class MyRobot extends BCAbstractRobot {
 
   turn () {
     try {
+      vars.turnStartTime = new Date().getTime();
       vars.visibleRobotMap = this.getVisibleRobotMap();
       vars.me = this.me;
       vars.xpos = this.me.x;
@@ -51,7 +52,7 @@ class MyRobot extends BCAbstractRobot {
         vars.buildable = utils.findConnections.call(this, vars.buildRadius);
 
         vars.CastleTalk = new CastleTalk(this);
-        
+
         for (var x = 0; x < vars.xmax; x++) {
           vars.fuzzyCost.push([]);
           for (var y = 0; y < vars.ymax; y++) {
@@ -164,7 +165,7 @@ class MyRobot extends BCAbstractRobot {
         }
       }
       vars.CastleTalk.send();
-      
+
       vars.firstTurn = false;
       return ret;
     }

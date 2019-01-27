@@ -64,7 +64,7 @@ export default {
 
   // Managers
   CastleTalk: null,
-  
+
   // tiles
   dangerTiles: null,
 
@@ -80,5 +80,7 @@ export default {
   castleLocs: {}, // (castles only, for now) {id: [x, y]} of all friendly castles
   baseLocs: {}, // stores Castle and Church locations
   baseChange: true, //set to true when the base list is updated (set to false by some pilgrim methods)
-  fuzzyCost: []
+  fuzzyCost: [],
+
+  turnStartTime: null,
 };
