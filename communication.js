@@ -198,7 +198,7 @@ export function castleLocComm(myCastles, castleOrderAll, unitTracking, prims, ad
  * @param   {int[]}     untracked       Ids of all untracked robots.
  * @param   {int}       totalCastles    The number of total friendly castles.
  * @param   {function}  deleteFunction  Function to call to delete a castle.
- * @returns {Object}                    Updated {id: Robot} of all tracked units.
+* @returns {[Object, int]}              Updated unitTracking; number of churching pilgrims.
  */
 export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction){
   if(this.me.turn == 1)
@@ -207,15 +207,12 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
   var unitTrackingNew = {}
   var appeared = [];
   var built = [];
+  var churching = 0;
 
   for(var i in vars.commRobots){
     var other_r = vars.commRobots[i];
     
     if(other_r.id in unitTracking){
-      // prevent castleLoc messages from messing with unit tracking
-      if(this.me.turn == 2 && totalCastles > 1 && (other_r.turn < 2 || other_r.id == this.me.id))
-        continue;
-
       // unit currently tracked
       var tracked_r = unitTracking[other_r.id];
       unitTrackingNew[other_r.id] = tracked_r;
@@ -224,6 +221,10 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
       tracked_r.signal = other_r.signal;
       tracked_r.signal_radius = other_r.signal_radius;
       tracked_r.castle_talk = other_r.castle_talk;
+
+      // prevent castleLoc messages from messing with unit tracking
+      if(this.me.turn == 2 && totalCastles > 1 && (other_r.turn < 2 || other_r.id == this.me.id))
+        continue;
 
       // receive updates
       try{
@@ -260,6 +261,7 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
             case "give":
               var loc = [tracked_r.x+actions[name].dxdy[0], tracked_r.y+actions[name].dxdy[1]];
               var recepient = null;
+              //TODO: fix mmoving + giving
               for(var id in unitTracking){
                 if(unitTracking[id].x == loc[0] && unitTracking[id].y == loc[1]){
                   recepient = unitTracking[id];
@@ -288,8 +290,12 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
               }
               break;
             case "opt":
-              if(tracked_r.unit > 2 && actions[name] > 0)
-                deleteFunction.call(this, other_r.id);
+              if(actions[name] > 0){
+                if(tracked_r.unit == 2)
+                  churching++;
+                else if(tracked_r.unit > 2)
+                  deleteFunction.call(this, other_r.id);
+              }
           }
         }
       }
@@ -327,7 +333,7 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
       else{
         // found build job
         //this.log("UTRACK: Tracking unit " + other_r.id + " at (" + other_r.x + ", " + other_r.y + ")");
-        startTracking(unitTracking, other_r, other_r.x, other_r.y, other_r.unit, other_r.team);
+        startTracking(unitTrackingNew, other_r, other_r.x, other_r.y, other_r.unit, other_r.team);
       }
       built.splice(idx, 1);
       toRemove.add(parseInt(i));
@@ -352,7 +358,7 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
           }
         }
         //this.log("UTRACK: Tracking unit " + appeared[0].id + " at (" + built[0][1] + ", " + built[0][2] + ")");
-        startTracking(unitTracking, appeared[0], built[0][1], built[0][2], built[0][0], this.me.team);
+        startTracking(unitTrackingNew, appeared[0], built[0][1], built[0][2], built[0][0], this.me.team);
       }
       break;
     default:
@@ -362,11 +368,7 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
         untracked.add(parseInt(other_r.id));
       }
   }
-
-  if(false && this.me.turn % 250 == 0){
-    this.log(unitTracking);
-    this.log([...untracked]);
-  }
+  return [unitTrackingNew, churching];
 }
 
 

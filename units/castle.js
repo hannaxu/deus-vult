@@ -83,7 +83,14 @@ export default function castleTurn() {
     return val;
 
   // track units
-  trackUnits.call(this, unitTracking, untracked, totalCastles, deleteEnemyCastle);
+  var ret = trackUnits.call(this, unitTracking, untracked, totalCastles, deleteEnemyCastle);
+  unitTracking = ret[0];
+  var churching = ret[1];
+
+  if(true && this.me.turn % 250 == 0 && castleOrder == 0){
+    this.log(unitTracking);
+    this.log([...untracked]);
+  }
 
 
   attackerCount = 0;
@@ -154,6 +161,7 @@ export default function castleTurn() {
       attackPos = [this.me.y+visibleEnemies[i][1], this.me.x+visibleEnemies[i][0]];
   }
 
+  //this.log(churching);
   //if (!defend && (headcount[2]<1 || (headcount[2]<3 && this.me.turn > 10 && closePilgrim < deposits && castleOrder != 0)) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     if ( !defend && (( headcount[2]<1 || ((castleOrder != 0 || headcount[4] > 2) && closePilgrim < Math.min(deposits[1].length+1, deposits[0])) ) || (leastDepo && (closePilgrim < deposits[0] || builtChurch == false))) ) {

@@ -126,7 +126,7 @@ export default function pilgrimTurn () {
     //go build a church [sometimes returns]
     if (true) {
         //this.log('facts');
-        // ALEXEY IM CHURCHING
+        vars.CastleTalk.performOptional(1);
         newFactVal.call(this);
         //this.log('xddd');
         var bx=factPos[0];
