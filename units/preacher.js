@@ -73,7 +73,6 @@ export default function preacherTurn() {
     }
     if (bestDir!=null&&maxHit>=0) {
       //this.log("Attacking "+(this.me.x+bestDir[0])+" "+(this.me.y+bestDir[1]));
-      vars.CastleTalk.performAction('move', {'dxdy': bestDir});
       return this.attack(bestDir[0], bestDir[1]);
     }
   }
@@ -101,7 +100,6 @@ export default function preacherTurn() {
     if (curPath.length>0) {
       var move = curPath.splice(0, 1)[0];
       if (vars.visibleRobotMap[this.me.y+move[1]][this.me.x+move[0]] == 0) {
-        vars.CastleTalk.performAction('move', {'dxdy': move});
         return this.move(move[0], move[1])
       }
       curPath = [];
@@ -122,7 +120,6 @@ export default function preacherTurn() {
       var move = utils.findMoveD.call(this, [this.me.x, this.me.y], deusVult);
       if (move != null) {
         //this.log("Moving towards "+x+" "+y);
-        vars.CastleTalk.performAction('move', {'dxdy': move});
         return this.move(move[0], move[1]);
       }
     }
@@ -165,7 +162,6 @@ export default function preacherTurn() {
         var move = path.splice(0, 1)[0];
         curPath = path;
         //this.castleTalk(utils.connIndexOf(vars.moveable, move));
-        vars.CastleTalk.performAction('move', {'dxdy': move});
         return this.move(move[0], move[1]);
       }
     }

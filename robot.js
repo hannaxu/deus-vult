@@ -145,6 +145,24 @@ class MyRobot extends BCAbstractRobot {
           break;
       }
 
+      if(ret != null){
+        switch(ret.action){
+          case 'build':
+            var val = {'dxdy': [ret.dx, ret.dy]};
+            if(this.me.unit != vars.SPECS.PILGRIM)
+              val.unit = ret.build_unit;
+            vars.CastleTalk.performAction('build', val);
+            break;
+          case 'move':
+            vars.CastleTalk.performAction('move', {'dxdy': [ret.dx, ret.dy]});
+            break;
+          case 'mine':
+            vars.CastleTalk.performAction('mine', {});
+            break;
+          case 'give':
+            vars.CastleTalk.performAction('give', {'dxdy': [ret.dx, ret.dy]});
+        }
+      }
       vars.CastleTalk.send();
       
       vars.firstTurn = false;

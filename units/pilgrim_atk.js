@@ -51,7 +51,6 @@ export function pilgrimAtkTurn() {
     if (curPath.length>0) {
       var move = curPath.splice(0, 1)[0];
       if (vars.visibleRobotMap[this.me.y+move[1]][this.me.x+move[0]] == 0) {
-        vars.CastleTalk.performAction('move', {'dxdy': move});
         return this.move(move[0], move[1])
       }
       curPath = [];
@@ -73,7 +72,6 @@ export function pilgrimAtkTurn() {
       if (move != null) {
         //this.log("Moving towards "+x+" "+y);
         //this.castleTalk(utils.connIndexOf(vars.moveable, move));
-        vars.CastleTalk.performAction('move', {'dxdy': move});
         return this.move(move[0], move[1]);
       }
     }
@@ -116,7 +114,6 @@ export function pilgrimAtkTurn() {
         var move = path.splice(0, 1)[0];
         curPath = path;
         //this.castleTalk(utils.connIndexOf(vars.moveable, move));
-        vars.CastleTalk.performAction('move', {'dxdy': move});
         return this.move(move[0], move[1]);
       }
     }

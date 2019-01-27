@@ -72,7 +72,6 @@ export default function prophetTurn() {
         var empty = utils.checkBounds(x, y)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]<=0;
         if (empty && vars.dangerTiles[utils.hashCoordinates([x, y])]==null) {
           curPath = [];
-          vars.CastleTalk.performAction('move', {'dxdy': vars.moveable[i]});
           return this.move(vars.moveable[i][0], vars.moveable[i][1]);
         }
       }
@@ -82,7 +81,6 @@ export default function prophetTurn() {
     if (curPath.length>0) {
       var move = curPath.splice(0, 1)[0];
       if (vars.visibleRobotMap[this.me.y+move[1]][this.me.x+move[0]] == 0) {
-        vars.CastleTalk.performAction('move', {'dxdy': move});
         return this.move(move[0], move[1])
       }
       curPath = [];
@@ -96,7 +94,6 @@ export default function prophetTurn() {
           if (path!=null) {
             var move = path.splice(0, 1)[0];
             curPath = path;
-            vars.CastleTalk.performAction('move', {'dxdy': move});
             return this.move(move[0], move[1]);
           }
         }
@@ -108,7 +105,6 @@ export default function prophetTurn() {
       var move = utils.findMoveD.call(this, [this.me.x, this.me.y], deusVult);
       if (move != null) {
         //this.log("Moving towards "+x+" "+y);
-        vars.CastleTalk.performAction('move', {'dxdy': move});
         return this.move(move[0], move[1]);
       }
     }
@@ -152,7 +148,6 @@ export default function prophetTurn() {
           var move = path.splice(0, 1)[0];
           curPath = path;
           //this.castleTalk(utils.connIndexOf(vars.moveable, move));
-          vars.CastleTalk.performAction('move', {'dxdy': move});
           return this.move(move[0], move[1]);
         }
       }

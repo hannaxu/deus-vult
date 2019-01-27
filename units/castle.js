@@ -187,7 +187,6 @@ export default function castleTurn() {
         //this.log(buildLoc);
         buildCount[2]++;
         vars.buildRobot = 2;
-        vars.CastleTalk.performAction('build', {'dxdy': [buildLoc[1], buildLoc[0]], 'unit':vars.SPECS.PILGRIM});
         return this.buildUnit(vars.SPECS.PILGRIM, buildLoc[1], buildLoc[0]);
       }
     }
@@ -203,7 +202,6 @@ export default function castleTurn() {
         //this.log("Building pilgrim at "+x+" "+y);
         buildCount[5]++;
         vars.buildRobot = 5;
-        vars.CastleTalk.performAction('build', {'dxdy': [vars.buildable[i][0], vars.buildable[i][1]], 'unit':vars.SPECS.PREACHER});
         return this.buildUnit(vars.SPECS.PREACHER, vars.buildable[i][0], vars.buildable[i][1]);
       }
     }
@@ -223,7 +221,6 @@ export default function castleTurn() {
         //this.log(buildLoc);
         buildCount[4]++;
         vars.buildRobot = 4;
-        vars.CastleTalk.performAction('build', {'dxdy': [buildLoc[1], buildLoc[0]], 'unit':vars.SPECS.PROPHET});
         return this.buildUnit(vars.SPECS.PROPHET, buildLoc[1], buildLoc[0]);
       }
     }
@@ -240,7 +237,6 @@ export default function castleTurn() {
           //this.log("Building pilgrim at "+x+" "+y);
           buildCount[2]++;
           vars.buildRobot = 2;
-          vars.CastleTalk.performAction('build', {'dxdy': [vars.buildable[i][0], vars.buildable[i][1]], 'unit':vars.SPECS.PILGRIM});
           return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
         }
       }

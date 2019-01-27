@@ -68,7 +68,6 @@ export default function churchTurn() {
       if( buildLoc != null ) {
         buildCount[2]++;
         vars.buildRobot = 2;
-        vars.CastleTalk.performAction('build', {'dxdy': [buildLoc[1], buildLoc[0]], 'unit':vars.SPECS.PILGRIM});
         return this.buildUnit(vars.SPECS.PILGRIM, buildLoc[1], buildLoc[0]);
       }
     }
@@ -81,7 +80,6 @@ export default function churchTurn() {
       if( buildLoc != null ) {
         buildCount[2]++;
         vars.buildRobot = 4;
-        vars.CastleTalk.performAction('build', {'dxdy': [buildLoc[1], buildLoc[0]], 'unit':vars.SPECS.PROPHET});
         return this.buildUnit(vars.SPECS.PROPHET, buildLoc[1], buildLoc[0]);
       }
     }

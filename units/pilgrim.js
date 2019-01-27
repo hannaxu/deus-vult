@@ -70,7 +70,6 @@ export default function pilgrimTurn () {
                 var r=this.getRobot(vars.visibleRobotMap[y][x]);
                 if (r!=null && (r.unit==vars.SPECS.CASTLE || r.unit==vars.SPECS.CHURCH)) {
                     //this.log("giving stuff");
-                    vars.CastleTalk.performAction('give', {'dxdy': [vars.buildable[i][0],vars.buildable[i][1]]});
                     return this.give(vars.buildable[i][0],vars.buildable[i][1],me.karbonite,me.fuel);
                 }
             }
@@ -122,7 +121,6 @@ export default function pilgrimTurn () {
     //mine stuff [always returns]
     if (vars.teamFuel>=1 && (vars.karbMap[me.y][me.x] && me.karbonite!=20 || vars.fuelMap[me.y][me.x] && me.fuel!=100)) {
         //this.log("Mined stuff");
-        vars.CastleTalk.performAction('mine', {});
         return this.mine();
     }
     //go build a church [sometimes returns]
@@ -138,14 +136,12 @@ export default function pilgrimTurn () {
         if ((bx-me.x)**2 + (by-me.y)**2<=2 && vars.teamKarb>50 && vars.teamFuel>200) {
             if (vars.visibleRobotMap[by][bx]==0) {
                 this.log("Built church!");
-                vars.CastleTalk.performAction('build', {'dxdy': [bx-me.x, by-me.y]});
                 return this.buildUnit(vars.SPECS.CHURCH,bx-me.x,by-me.y);
             } else if (bx==me.x && by==me.y) {
                 for (var i=0; i<8; i++) {
                     var xp=me.x+vars.buildable[i][0];
                     var yp=me.y+vars.buildable[i][1];
                     if (utils.checkBounds(xp,yp) && vars.passableMap[yp][xp] && vars.visibleRobotMap[yp][xp]==0) {
-                        vars.CastleTalk.performAction('move', {'dxdy': vars.buildable[i]});
                         return this.move(vars.buildable[i][0],vars.buildable[i][1]);
                     }
                 }
@@ -279,7 +275,6 @@ function pickAdjMove(costs, pri) {
     } else {
         //thas.log(bestd);
         //thas.log(vars.passableMap[y][x]);
-        vars.CastleTalk.performAction('move', {'dxdy': vars.moveable[bestd]});
         return this.move(vars.moveable[bestd][0],vars.moveable[bestd][1]);
     }
 }
