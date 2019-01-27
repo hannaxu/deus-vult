@@ -65,7 +65,7 @@ export function pilgrimAtkTurn() {
       if (id==0||(id>0&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
         deusVult = null;
         deusVultFrom = null;
-        this.castleTalk(64);
+        vars.CastleTalk.performOptional(1);
         return;
       }
       var move = utils.findMoveD.call(this, [this.me.x, this.me.y], deusVult);

@@ -43,7 +43,7 @@ export default function prophetTurn() {
     var id = vars.visibleRobotMap[deusVult[1]][deusVult[0]];
     if (id==0||(id>0&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
       deusVult = null;
-      this.castleTalk(64);
+      vars.CastleTalk.performOptional(1);
     }
   }
 
@@ -147,7 +147,6 @@ export default function prophetTurn() {
           //this.log(path);
           var move = path.splice(0, 1)[0];
           curPath = path;
-          //this.castleTalk(utils.connIndexOf(vars.moveable, move));
           return this.move(move[0], move[1]);
         }
       }

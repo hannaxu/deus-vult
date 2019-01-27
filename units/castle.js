@@ -225,7 +225,7 @@ export default function castleTurn() {
   // DEUS VULTING
   if (this.fuel >= vars.MIN_ATK_FUEL && enemyCastles.length > 0 && this.me.turn%50==0) {
     if (attackerCount >= vars.MIN_ATK_ROBOTS) {
-      curAttack = (this.me.turn/50)%enemyCastles.length;
+      curAttack = parseInt(this.me.turn/50)%enemyCastles.length;
       this.log("DEUS VULT "+enemyCastles[curAttack]);
       deusVult = enemyCastles[curAttack];
       //this.log(deusVult);
