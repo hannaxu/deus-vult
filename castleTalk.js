@@ -29,7 +29,7 @@ export default class {
       for(var i in units) {
         var unit = units[i];
         vars.moveRadius = vars.SPECS.UNITS[unit].SPEED;
-        vars.moveable = findConnections.call(_this, 1, vars.moveRadius);
+        vars.moveable = findConnections.call(_this, vars.moveRadius);
 
         if(vars.moveRadius > 0)
           this.registerAction(unit, 'move', {'dxdy': vars.moveable});

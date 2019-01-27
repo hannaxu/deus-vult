@@ -1,15 +1,20 @@
 import vars from '../variables';
 import * as utils from '../utils';
 import { sendMessage, castleLocComm, trackUnits } from '../communication';
+import * as buildUtils from '../buildUtils';
 
 var team;
-var myCastles = []; // in turn order, contains IDs and locations
+var myCastles = {}; // contains locations
+var castleOrderAll = [];  // ids in order
 var castleOrder = 0;
 var totalCastles;
 var teamID = {}; // hashmap stores info
 var symmetry;
-var deposits = 0;
+var deposits = [0,[],[]]; //total, karb locs, fuel locs
 var buildCount = [0,0,0,0,0,0];
+var buildOptPil = []; //pilgrims,
+var buildOptUnit = []; //units
+var attackPos = null;
 
 var unitTracking = {};
 var untracked = new Set();
@@ -21,15 +26,25 @@ var deusVult = null; // where to attack
 var deusVulters = {}; // robots currently deusVulting and their target deusVult
 var attackerCount = 0; // how many of our damaging troops in vision
 var farthestAttacker = 0; // r^2 distance of our farthest attacker
+var visionPilgrims = 0;
+
+var trackMap = []; // [id, unit]
+var trackRobots = {}; // trackRobots[id] = [pos, unit]
+
+var builtChurch = false;
+var leastDepo = false;
+var attackPosEarly;
+
 
 export default function castleTurn() {
-  if (this.me.team==0 && castleOrder == 0) {
-    this.log("Round "+this.me.turn);
+  vars.buildRobot = 0;
+  if (this.me.team==0&&this.me.turn%25==0&&castleOrder==0) {
+    this.log("Castle Round "+this.me.turn);
   }
   //this.log("I am a Castle at "+this.me.x+" "+this.me.y);
   // utils.heapTest.call(this);
   // return;
-  if (vars.firstTurn) {
+  if (this.me.turn==1) {
     symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
     this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
     //Castle information, first turn only
@@ -38,37 +53,30 @@ export default function castleTurn() {
     //  try to determine if map is truly horizontal or vertical if symmetry returned both
     team = this.me.team;
 
-    //this.log(enemyCastles);
-    //this.log("test");
-    var lowX = this.me.x-5;
-    var lowY = this.me.y-5;
-    var highX = lowX+10;
-    var highY = lowY+10;
-    if( lowX < 0 ) lowX = 0;
-    if( lowY < 0 ) lowY = 0;
-    if( highX > vars.xmax ) highX = vars.xmax;
-    if( highY > vars.ymax ) highY = vars.ymax;
+    if (symmetry[0]) {
+      attackPosEarly = [this.me.y, vars.xmax-1-this.me.x];
+    }
+    else {
+      attackPosEarly = [this.me.x, vars.ymax-1-this.me.y];
+    }
 
-    for (var x=lowX; x<highX; x++) {
-      for (var y=lowY; y<highY; y++) {
-        if (vars.fuelMap[y][x]) {
-          deposits += 1;
-        }
-        if (vars.karbMap[y][x]) {
-          deposits += 1;
-        }
+    deposits = buildUtils.resources.call(this, this.me.x, this.me.y);
+    //for( var i = 0; i < castl)
+    //this.log("help");
+    // tracking robots
+    for (var x = 0; x < vars.xmax; x++) {
+      trackMap.push([]);
+      for (var y = 0; y < vars.ymax; y++) {
+        trackMap[x].push(null);
       }
     }
-    this.log("nearby deposits: " + deposits);
-
-    vars.firstTurn = false;
-    //this.log("Test: " +vars.firstTurn);
+    trackMap[this.me.y][this.me.x] = [this.me.id, this.me.unit];
   }
 
   // communicate castleLocs
   // only the first two turns
   var prims = [totalCastles, castleOrder];
-  var val = castleLocComm.call(this, myCastles, unitTracking, prims);
+  var val = castleLocComm.call(this, myCastles, castleOrderAll, unitTracking, prims);
   totalCastles = prims[0];
   castleOrder = prims[1];
   if(typeof(val) != 'undefined')
@@ -84,7 +92,7 @@ export default function castleTurn() {
   //     if (message >= 64) {
   //       for (var i = 0; i < enemyCastles.length; i++) {
   //         if (enemyCastles[i]==deusVulters[vars.commRobots[x].id]) {
-  //           this.log("deleted "+enemyCastles[i]);
+  //           this.log("Killed enemy castle at "+enemyCastles[i]);
   //           enemyCastles.splice(i, 1);
   //           if(curAttack > i) {
   //             curAttack--;
@@ -146,7 +154,7 @@ export default function castleTurn() {
   var defend = false;
   if( enemyUnit > 0 ) {
     defend = true;
-    //this.log("defend");
+    this.log("defend");
   }
 
   var closePilgrim = 0;
@@ -156,20 +164,31 @@ export default function castleTurn() {
         closePilgrim += 1;
   }
 
+  var attackDir = attackPhase.call(this);
+  if (attackDir!=null) {
+    return this.attack(attackDir[0], attackDir[1]);
+  }
+
+  var visibleEnemies = buildUtils.findVisibleEnemies.call(this);
+  for (var i = 0; i < visibleEnemies.length; i++) {
+    if (visibleEnemies[i][2] != vars.SPECS.PILGRIM)
+      attackPos = [this.me.y+visibleEnemies[i][1], this.me.x+visibleEnemies[i][0]];
+  }
 
   //if (!defend && (headcount[2]<1 || (headcount[2]<3 && this.me.turn > 10 && closePilgrim < deposits && castleOrder != 0)) && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
-    if (!defend && (headcount[2]<1 || (headcount[4] > 4 && this.me.turn > 10 && closePilgrim < deposits))) {
-      for (var i = 0; i < vars.buildable.length; i++) {
-        var x = this.me.x+vars.buildable[i][0];
-        var y = this.me.y+vars.buildable[i][1];
-        if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-          sendMessage.call(this, i, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
-          //this.log("Building pilgrim at "+x+" "+y);
-          buildCount[2]++;
-          vars.CastleTalk.performAction('build', {'dxdy': [vars.buildable[i][0], vars.buildable[i][1]], 'unit':vars.SPECS.PILGRIM});
-          return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
-        }
+    if ( !defend && (( headcount[2]<1 || ((castleOrder != 0 || headcount[4] > 2) && closePilgrim < Math.min(deposits[1].length+1, deposits[0])) ) || (leastDepo && (closePilgrim < deposits[0] || builtChurch == false))) ) {
+      var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PILGRIM, this.me.x, this.me.y);
+      //sendMessage.call(this, castleOrder, buildOptPil[i][1]**2+buildOptPil[i][0]**2);
+      //this.log("Building pilgrim at "+x+" "+y);
+      if( buildLoc != null ) {
+        if( leastDepo && !builtChurch && closePilgrim == deposits[0])
+          builtChurch = true;
+        //this.log(buildLoc);
+        buildCount[2]++;
+        vars.buildRobot = 2;
+        vars.CastleTalk.performAction('build', {'dxdy': [buildLoc[1], buildLoc[0]], 'unit':vars.SPECS.PILGRIM});
+        return this.buildUnit(vars.SPECS.PILGRIM, buildLoc[1], buildLoc[0]);
       }
     }
   }
@@ -180,16 +199,10 @@ export default function castleTurn() {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
       if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-        var message = i;
-        if (symmetry[0]) {
-          message += vars.buildable.length;
-        }
-        if (symmetry[1]) {
-          message += vars.buildable.length*2;
-        }
-        sendMessage.call(this, message, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
+        //sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
         //this.log("Building pilgrim at "+x+" "+y);
         buildCount[5]++;
+        vars.buildRobot = 5;
         vars.CastleTalk.performAction('build', {'dxdy': [vars.buildable[i][0], vars.buildable[i][1]], 'unit':vars.SPECS.PREACHER});
         return this.buildUnit(vars.SPECS.PREACHER, vars.buildable[i][0], vars.buildable[i][1]);
       }
@@ -197,43 +210,90 @@ export default function castleTurn() {
   }
 
   // prophet build
-  if ((castleOrder == 0 || this.me.turn > 10) && headcount[4] < 20 && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
-    for (var i = 0; i < vars.buildable.length; i++) {
-      var x = this.me.x+vars.buildable[i][0];
-      var y = this.me.y+vars.buildable[i][1];
-      if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-        var message = i;
-        if (symmetry[0]) {
-          message += vars.buildable.length;
-        }
-        if (symmetry[1]) {
-          message += vars.buildable.length*2;
-        }
-        sendMessage.call(this, message, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
-        //this.log("Building pilgrim at "+x+" "+y);
+  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
+    if ( defend || 
+        ( (headcount[4] < 3 && this.me.turn < totalCastles*25) || (headcount[4] < 20 && this.me.turn > totC*25) ) || 
+        (this.karbonite >= 60 && this.fuel >= 300) ) {
+      var buildLoc;
+      if( attackPos == null && this.me.turn < 15 ) 
+        buildLoc = buildUtils.buildOpt.call(this, attackPosEarly, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
+      else
+        buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
+      if( buildLoc != null ) {
+        //this.log(buildLoc);
         buildCount[4]++;
-        vars.CastleTalk.performAction('build', {'dxdy': [vars.buildable[i][0], vars.buildable[i][1]], 'unit':vars.SPECS.PROPHET});
-        return this.buildUnit(vars.SPECS.PROPHET, vars.buildable[i][0], vars.buildable[i][1]);
+        vars.buildRobot = 4;
+        vars.CastleTalk.performAction('build', {'dxdy': [buildLoc[1], buildLoc[0]], 'unit':vars.SPECS.PROPHET});
+        return this.buildUnit(vars.SPECS.PROPHET, buildLoc[1], buildLoc[0]);
       }
     }
   }
 
-  //this.log("attackers "+headcount[3]+headcount[4]+headcount[5]);
-  if (enemyCastles.length > 0 && this.me.turn-lastDeusVult >= 20 && attackerCount >= vars.MIN_ATK && this.fuel >= vars.CAMPDIST) {
-    this.log("DEUS VULT "+enemyCastles[curAttack]);
-    deusVult = enemyCastles[curAttack];
-    //this.log(deusVult);
-    sendMessage.call(this, 2**15+utils.hashCoordinates(deusVult), vars.CAMPDIST);
-    for (var i = 0; i < vars.visibleRobots.length; i++) {
-      var dx = this.me.x-vars.visibleRobots[i].x;
-      var dy = this.me.y-vars.visibleRobots[i].y;
-      if (dx**2+dy**2<=farthestAttacker&&deusVulters[vars.visibleRobots[i].id]==null) {
-        deusVulters[vars.visibleRobots[i].id] = enemyCastles[curAttack];
+  //attacker pilgrims
+  if (false && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+    if (headcount[4] >= vars.MIN_ATK_ROBOTS-2 && visionPilgrims < 3) {
+      for (var i = 0; i < vars.buildable.length; i++) {
+        var x = this.me.x+vars.buildable[i][0];
+        var y = this.me.y+vars.buildable[i][1];
+        if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
+          sendMessage.call(this, 1 << 14, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
+          //this.log("Building pilgrim at "+x+" "+y);
+          buildCount[2]++;
+          vars.buildRobot = 2;
+          return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
+        }
       }
     }
-    //this.log(deusVulters);
-    lastDeusVult = this.me.turn;
-    curAttack = (curAttack+1)%enemyCastles.length;
-    return;
   }
+
+  // DEUS VULTING
+  if (this.fuel >= vars.MIN_ATK_FUEL && enemyCastles.length > 0 && this.me.turn%50==0) {
+    if (attackerCount >= vars.MIN_ATK_ROBOTS) {
+      curAttack = (this.me.turn/50)%enemyCastles.length;
+      this.log("DEUS VULT "+enemyCastles[curAttack]);
+      deusVult = enemyCastles[curAttack];
+      //this.log(deusVult);
+      var stayDistance = 0; // robots within this radius will remain on defense
+      var curDefenders = 0;
+      for (var i = 0; i < vars.visible.length; i++) {
+        var x = this.me.x+vars.visible[i][0];
+        var y = this.me.y+vars.visible[i][1];
+        if (!utils.checkBounds(x, y)) continue;
+        var robot = this.getRobot(vars.visibleRobotMap[y][x]);
+        if (robot!=null && robot.team==this.me.team && robot.unit >= 3) {
+          curDefenders++;
+        }
+        if (curDefenders > vars.CASTLE_MIN_DEF) {
+          stayDistance = Math.min(7, vars.visible[i][0]**2+vars.visible[i][1]**2-1);
+          this.log("Stay distance "+stayDistance);
+          break;
+        }
+      }
+
+      sendMessage.call(this, 2**15+(stayDistance<<12)+utils.hashCoordinates(deusVult), vars.visionRadius);
+      for (var i = 0; i < vars.visibleRobots.length; i++) {
+        var dx = this.me.x-vars.visibleRobots[i].x;
+        var dy = this.me.y-vars.visibleRobots[i].y;
+        if (dx**2+dy**2<=farthestAttacker&&deusVulters[vars.visibleRobots[i].id]==null) {
+          deusVulters[vars.visibleRobots[i].id] = enemyCastles[curAttack];
+        }
+      }
+      //this.log(deusVulters);
+      lastDeusVult = this.me.turn;
+      return;
+    }
+  }
+}
+
+export function attackPhase () {
+  if (this.fuel < 10) {
+    return null;
+  }
+  if (this.karbonite >= vars.SPECS.UNITS[4]) {
+    return null;
+  }
+  var attackableEnemies = utils.findAttackableEnemies.call(this);
+  if (attackableEnemies.length>0) {
+      return [attackableEnemies[0].x-this.me.x, attackableEnemies[0].y-this.me.y];
+    }
 }

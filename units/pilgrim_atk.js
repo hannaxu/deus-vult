@@ -2,14 +2,12 @@ import vars from '../variables';
 import * as utils from '../utils';
 import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from '../communication';
 
-var enemyCastles = [];
-var symmetry = [false, false];
-var deusVult = null; // boolean for whether or not in attack phase
+var deusVult = null;
 var deusVultFrom = null;
 var curPath = [];
 
-export default function preacherTurn() {
-  //this.log("I am a Preacher at "+vars.xpos+" "+vars.ypos);
+export function pilgrimAtkTurn() {
+  // this.log("I am an Attacker Pilgrim at "+vars.xpos+" "+vars.ypos);
   if (this.me.turn==1) {
 
   }
@@ -32,53 +30,6 @@ export default function preacherTurn() {
       }
     }
   }
-
-  // attacking
-  if (this.fuel >= vars.attackCost) {
-    var bestDir = null;
-    var maxHit = vars.NEG_INF;
-    for (var i = 0; i < vars.attackable.length; i++) {
-      var x = this.me.x+vars.attackable[i][0];
-      var y = this.me.y+vars.attackable[i][1];
-      var dx = vars.attackable[i][0];
-      var dy = vars.attackable[i][1];
-      if (utils.checkBounds(x, y)) {
-        var hit = 0;
-        var damaging = false;
-        vars.buildable.push([0, 0]);
-        for (var j = 0; j < vars.buildable.length; j++) {
-          var xhit = x+vars.buildable[j][0];
-          var yhit = y+vars.buildable[j][1];
-          if (!utils.checkBounds(xhit, yhit)) {
-            continue;
-          }
-          var id = vars.visibleRobotMap[yhit][xhit];
-          if (id>0) {
-            if (this.getRobot(id).team==this.me.team) {
-              hit--;
-            }
-            else {
-              hit++;
-              damaging = true;
-            }
-          }
-        }
-        vars.buildable.splice(8, 1);
-        //this.log(hit);
-        if (damaging && hit > maxHit) {
-          bestDir = [dx, dy];
-          maxHit = hit;
-        }
-      }
-    }
-    if (bestDir!=null&&maxHit>=0) {
-      //this.log("Attacking "+(this.me.x+bestDir[0])+" "+(this.me.y+bestDir[1]));
-      return this.attack(bestDir[0], bestDir[1]);
-    }
-  }
-
-  if (vars.creatorPos==null)
-    return;
 
   // moving
   if (this.fuel >= vars.moveCost*vars.moveRadius) {
@@ -120,7 +71,7 @@ export default function preacherTurn() {
       var move = utils.findMoveD.call(this, [this.me.x, this.me.y], deusVult);
       if (move != null) {
         //this.log("Moving towards "+x+" "+y);
-        vars.CastleTalk.performAction('move', {'dxdy': move});
+        //this.castleTalk(utils.connIndexOf(vars.moveable, move));
         return this.move(move[0], move[1]);
       }
     }

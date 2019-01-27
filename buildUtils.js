@@ -1,0 +1,142 @@
+import vars from './variables';
+import * as utils from './utils';
+
+export function buildOpt(attackPos, deposits, unit, cx, cy) {
+  var d = {};
+  for(var i = 0; i < vars.buildable.length; i++) {
+    //this.log(vars.buildable[i]);
+    d[vars.buildable[i]] = 1;
+  }
+  for( var i = 0; i < deposits[1].length; i++ ) {
+    d[deposits[1][i]] += (deposits[0]-i)*2;
+  }
+  for( var i = 0; i < deposits[2].length; i++ ) {
+    d[deposits[2][i]] += deposits[0]-i;
+  }
+  //this.log(d);
+  var pos = []
+  for( var key in d ) {
+    var temp = key.split(",").map(parseFloat);
+    var x = cx+temp[1];
+    var y = cy+temp[0];
+    if (!(utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0)) {
+      delete d[key];
+    }
+    else {
+      pos.push([y, x])
+    }
+  }
+  if( pos.length == 0 )
+    return null;
+  //this.log(pos);
+  //if pilgrim, sort max is better, closest to opposite of attackPos
+  //this.log(d);
+  if( unit == vars.SPECS.PILGRIM ) {
+    if( attackPos ) { //null for early game
+      attackPos[0] = 2*cy-attackPos[0];
+      attackPos[1] = 2*cx-attackPos[1];
+      var temp = closestPos(pos, attackPos);
+      return [temp[0]-cy, temp[1]-cx];
+    }
+    else {
+      var build = [];
+      for(var key in d) {
+        build.push({
+          name: key.split(",").map(parseFloat),
+          value: d[key]
+        });
+      }
+      build.sort(function(a, b){return b.value - a.value});
+      //this.log(build);
+      return build[0].name;
+    }
+  }
+  //if attack, sort min is better, closest to attackPos
+  else {
+    if( attackPos ) { //enemy castle for early game
+      var temp = closestPos(pos, attackPos);
+      return [temp[0]-cy, temp[1]-cx];
+    }
+    else {
+      var build = [];
+      for(var key in d) {
+        build.push({
+          name: key.split(",").map(parseFloat),
+          value: d[key]
+        });
+      }
+      build.sort(function(a, b){return a.value - b.value});
+      return build[0].name;
+    }
+  }
+}
+//possible locations, target position
+function closestPos(pos, targetPos) {
+  var dist = [];
+  for(var i = 0; i < pos.length; i++) {
+    var s = pos[i];
+    dist.push({
+      loc: s,
+      value: (s[0]-targetPos[0])**2+(s[1]-targetPos[1])**2
+    });
+  }
+  dist.sort(function(a, b){return a.value - b.value});
+  return dist[0].loc;
+}
+export function resources(cx, cy) {
+    //resource consideration
+    var deposits = [0,[],[]];
+
+    var di = 1;
+    var dj = 0;
+    var seg = 1;
+    var i = cx;
+    var j = cy;
+    var segPass = 0;
+    for (var k = 0; k < 100; ++k) {
+      if( !(i < 0 || j < 0 || i >= vars.xmax || j >= vars.ymax) ) {
+        if (vars.karbMap[j][i]) {
+          deposits[0] += 1;
+          deposits[1].push(transferPt([j,i], cx, cy));
+        }
+        if (vars.fuelMap[j][i]) {
+          deposits[0] += 1;
+          deposits[2].push(transferPt([j,i], cx, cy));
+        }
+      }
+      i += di;
+      j += dj;
+      ++segPass;
+      if (segPass == seg) {
+        segPass = 0;
+        var temp = di;
+        di = -dj;
+        dj = temp;
+        if (dj == 0)
+            ++seg;
+      }
+    }
+    return deposits;
+}
+
+export function transferPt(coor, mx, my) {
+    var y = coor[0]-my;
+    if( y != 0 ) y = y/Math.abs(y);
+    var x = coor[1]-mx;
+    if( x != 0 ) x = x/Math.abs(x);
+    return [y, x];
+}
+
+export function findVisibleEnemies (pos=[this.me.x, this.me.y]) {
+  //this.log("hello");
+  var ret = [];
+  for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
+    var dx = vars.visibleEnemyRobots[i].x-this.me.x;
+    var dy = vars.visibleEnemyRobots[i].y-this.me.y;
+    ret.push([dx, dy, vars.visibleEnemyRobots[i].unit]);
+  }
+  ret.sort(function(x, y) {
+    return x[0]**2+x[1]**2-y[0]**2-y[1]**2;
+  });
+  return ret;
+}

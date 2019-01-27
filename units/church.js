@@ -1,58 +1,88 @@
 import vars from '../variables';
 import * as utils from '../utils';
 import { sendMessage } from '../communication';
+import * as buildUtils from '../buildUtils';
 
-var deposits = 0;
 var buildCount = [0,0,0,0,0,0];
 var team;
+var deposits = [0,[],[]]; //total, karb locs, fuel locs
+var attackPos = null;
+var defend = false;
 
-export default function castleTurn() {
+export default function churchTurn() {
   //this.log("I am a Church at "+this.me.x+" "+this.me.y);
   //this.log("Resources: "+this.karbonite+" "+this.fuel);
-  if (vars.firstTurn) {
+  if (this.me.turn == 1) {
     team = this.me.team;
-
-    var lowX = this.me.x-2;
-    var lowY = this.me.y-2;
-    var highX = lowX+4;
-    var highY = lowY+4;
-    if( lowX < 0 ) lowX = 0;
-    if( lowY < 0 ) lowY = 0;
-    if( highX > vars.xmax ) highX = vars.xmax;
-    if( highY > vars.ymax ) highY = vars.ymax;
-
-    for (var x=lowX; x<highX; x++) {
-      for (var y=lowY; y<highY; y++) {
-        if (vars.fuelMap[y][x]) {
-          deposits += 1;
-        }
-        if (vars.karbMap[y][x]) {
-          deposits += 1;
-        }
-      }
-    }
-    vars.firstTurn = false;
+    deposits = buildUtils.resources.call(this, this.me.x, this.me.y);
+    //this.log(deposits[0]);
   }
 
-  var closePilgrim = 0;
+  /*var closePilgrim = 0;
   for( var i = 0; i < vars.visibleRobots.length; i++ ) {
     if( vars.visibleRobots[i].team == team )
       if( vars.visibleRobots[i].unit == vars.SPECS.PILGRIM )
         closePilgrim += 1;
+  }*/
+
+  //headcount 0: castle, 1: church, 2: pilgrim, 3: crusader, 4: prophet, 5: preacher
+  var headcount = [0,1,0,0,0,0];
+  var enemyUnit = 0;
+  for( var i = 0; i < vars.visibleRobots.length; i++ ) {
+    if( vars.visibleRobots[i].team == team ) {
+      var u = vars.visibleRobots[i].unit;
+      if( u == vars.SPECS.CASTLE )
+        headcount[0] += 1;
+      else if( u == vars.SPECS.CHURCH )
+        headcount[1] += 1;
+      else if( u == vars.SPECS.PILGRIM )
+        headcount[2] += 1;
+      else if( u == vars.SPECS.CRUSADER )
+        headcount[3] += 1;
+      else if( u == vars.SPECS.PROPHET )
+        headcount[4] += 1;
+      else if( u == vars.SPECS.PREACHER )
+        headcount[5] += 1;
+    }
+    else {
+      enemyUnit += 1;
+    }
   }
 
-  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
-    if ((closePilgrim < deposits)) {
-      for (var i = 0; i < vars.buildable.length; i++) {
-        var x = this.me.x+vars.buildable[i][0];
-        var y = this.me.y+vars.buildable[i][1];
-        if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-          sendMessage.call(this, i, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
-          //this.log("Building pilgrim at "+x+" "+y);
-          buildCount[2]++;
-          vars.CastleTalk.performAction('build', {'dxdy': [vars.buildable[i][0], vars.buildable[i][1]], 'unit':vars.SPECS.PILGRIM});
-          return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
-        }
+  if( enemyUnit > headcount[4] )
+    defend = true;
+
+  var visibleEnemies = buildUtils.findVisibleEnemies.call(this);
+  for (var i = 0; i < visibleEnemies.length; i++) {
+    //if (visibleEnemies[i][2] != vars.SPECS.PILGRIM)
+    attackPos = [this.me.y+visibleEnemies[i][1], this.me.x+visibleEnemies[i][0]];
+  }
+
+  //this.log(headcount[2]);
+
+  if (!defend && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+    if ((headcount[2] < deposits[0] && headcount[4] >= vars.CHURCH_MIN_DEF) || headcount[2] < deposits[1].length) {
+      var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PILGRIM, this.me.x, this.me.y);
+      //sendMessage.call(this, castleOrder, buildOptPil[i][1]**2+buildOptPil[i][0]**2);
+      //this.log("Building pilgrim at "+x+" "+y);
+      if( buildLoc != null ) {
+        buildCount[2]++;
+        vars.buildRobot = 2;
+        vars.CastleTalk.performAction('build', {'dxdy': [vars.buildable[i][0], vars.buildable[i][1]], 'unit':vars.SPECS.PILGRIM});
+        return this.buildUnit(vars.SPECS.PILGRIM, buildLoc[1], buildLoc[0]);
+      }
+    }
+  }
+
+  // prophet build
+  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
+    if (headcount[4] < vars.CHURCH_MAX_DEF) {
+      var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
+      if( buildLoc != null ) {
+        buildCount[2]++;
+        vars.buildRobot = 4;
+        vars.CastleTalk.performAction('build', {'dxdy': [vars.buildable[i][0], vars.buildable[i][1]], 'unit':vars.SPECS.PROPHET});
+        return this.buildUnit(vars.SPECS.PROPHET, buildLoc[1], buildLoc[0]);
       }
     }
   }
