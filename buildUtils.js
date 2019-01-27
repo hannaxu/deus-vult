@@ -182,9 +182,9 @@ export function buildPilgrim (defend, churchLoc, churching, visibleCount, deposi
   if( visibleCount[2] < Math.min(deposits[1].length+1, deposits[0]) )
     return true;
   if( visibleCount[4] > 2 ) {
-    if( visibleCount[2] < deposits[0].length )
+    if( visibleCount[2] < deposits[0] )
       return true;
-    if( churchLoc.length > 0 && !churching )
+    if( churchLoc > 0 && !churching )
       return true;
   }
   return false;
@@ -218,15 +218,17 @@ export function buildProphet(defend, churching,  castleOrder, visibleCount, cast
       minI = i;
     }
   }
-  //this.log(castleOrder);
-  if( castleOrder == minI ) {
+  //this.log(units[castleOrder]);
+  //this.log(min);
+  if( units[castleOrder] == min ) {
+    //this.log("build");
     if( visibleCount[4] < 2 )
       return true;
-    if( visibleCount[4] < 24 && this.karbonite >= 50 && this.fuel >= 300 /*replace with churching constraint*/)
-      return true;
-    if( visibleCount[4] >= 24 && this.karbonite >= 100 && this.fuel >= 300 )
+    if( visibleCount[4] < 12 && this.karbonite >= 50 && this.fuel >= 300 /*replace with churching constraint*/)
       return true;
   }
+  if( visibleCount[4] >= 12 && this.karbonite >= 100 && this.fuel >= 300 )
+      return true;
   return false;
 }
 

@@ -256,7 +256,7 @@ export default function castleTurn() {
   }
   if(allProtected){
     if(castleOrder == 0){
-      this.log("All Castles Protected");
+      //this.log("All Castles Protected");
     }
     //TODO: Deus Vult
   }
