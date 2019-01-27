@@ -229,7 +229,8 @@ function newFactVal() {
                         }
                     }
                     if (validp) {
-                        best=pval;
+                        
+                        best=pval*(Math.random()*0.3+0.7);
                         bx=x;
                         by=y;
                     }
