@@ -193,7 +193,7 @@ export function buildPilgrim (defend, churchLoc, churching, visibleCount, deposi
   return false;
 }
 
-export function buildProphet(defend, churching,  castleOrder, visibleCount, castleOrderAll, myCastles, unitTracking) {
+export function buildProphet(defend, churchLoc,  castleOrder, visibleCount, castleOrderAll, myCastles, unitTracking) {
   var units = [];
   var numC = castleOrderAll.length;
   var castleLoc = [];
@@ -228,6 +228,8 @@ export function buildProphet(defend, churching,  castleOrder, visibleCount, cast
     if( visibleCount[4] < 2 )
       return true;
     if( visibleCount[4] < 12 && this.karbonite >= 50 && this.fuel >= 300 /*replace with churching constraint*/)
+      return true;
+    if( churchLoc == 0 && visibleCount[4] < 4 && vars.ymax < 48 )
       return true;
   }
   if( this.karbonite >= 100 && this.fuel >= 300 )
