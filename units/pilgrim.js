@@ -59,13 +59,14 @@ export default function pilgrimTurn () {
         }
     }
     if (minDR!=-1) utils.soloBFS([vars.rLocs[minDR].x,vars.rLocs[minDR].y],4);
-    
+    //this.log('pilgrim here');
     for (var i=0; i<vars.visibleEnemyRobots.length; i++) {
         if (vars.visibleEnemyRobots[i].unit!=vars.SPECS.PILGRIM) {
             seenEnms[utils.hashCoordinates([vars.visibleEnemyRobots[i].x,vars.visibleEnemyRobots[i].y])]=me.turn;
         }
     }
     for (var i=0; i<vars.radioRobots.length; i++) {
+        //this.log('Pilgrim intercepted signal');
         seenEnms[utils.hashCoordinates([vars.radioRobots[i].x,vars.radioRobots[i].y])]=me.turn;
     }
     //return rescources to the factory [always returns]
@@ -132,14 +133,17 @@ export default function pilgrimTurn () {
     }
     //go build a church [sometimes returns]
     if (vars.teamFuel>=4) {
-        //this.log('facts');
+        //this.log('churching');
         vars.CastleTalk.performOptional(1);
         newFactVal.call(this);
         //this.log('xddd');
         var bx=factPos[0];
         var by=factPos[1];
-        
         //this.log(bx+" "+by+" is the best new base");
+        if (bx==-1) {
+            return null;
+        }
+        
         if ((bx-me.x)**2 + (by-me.y)**2<=2 && vars.teamKarb>=50 && vars.teamFuel>=200) {
             if (vars.visibleRobotMap[by][bx]==0) {
                 this.log("Built church!");
@@ -170,6 +174,7 @@ var factPos;
 var seenEnms={}; //x,y->turn
 
 function notNearEnemy(x,y,turn) {
+    //return true;
     for (var h in seenEnms) {
             if (turn-seenEnms[h]>100) {
                 delete seenEnms[h];
@@ -184,7 +189,7 @@ function notNearEnemy(x,y,turn) {
 }
 
 function newFactVal() {
-    if (!vars.baseChange && factPos!=undefined &&  notNearEnemy(factPos[0],factPos[1],this.me.turn)) {
+    if (!vars.baseChange && factPos!=undefined && notNearEnemy(factPos[0],factPos[1],this.me.turn)) {
         return factPos;
     }
     
@@ -220,8 +225,8 @@ function newFactVal() {
     }
     
     var best=0.5;
-        var bx=5;
-        var by=5;
+        var bx=-1;
+        var by=-1;
         var distsC=utils.soloBFS([me.x,me.y],20);
         for (var x=0; x<vars.xmax; x++) {
             for (var y=0; y<vars.ymax; y++) {
@@ -244,6 +249,12 @@ function newFactVal() {
                 }
             }
         }
+    if (bx==-1) {
+        for (var h in seenEnms) {
+            seenEnms[h]-=50;
+        }
+        return newFactVal.call(this);
+    }
     //this.log('kek');
     factPos=[bx,by];
     return factPos;
