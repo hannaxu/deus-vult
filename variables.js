@@ -3,21 +3,21 @@ export default {
   POS_INF: 2147483647,
   NEG_INF: -2147483648,
 
-  MIN_ATK_ROBOTS: 30, // minimum number of visible ally attackers before deusVulting
-  MIN_ATK_FUEL: 7500, // minimum amount of fuel before deusVulting
+  MIN_ATK_ROBOTS: 50, // minimum number of visible ally attackers before deusVulting
+  MIN_ATK_FUEL: 10000, // minimum amount of fuel before deusVulting
   ATTACK_DEPTH: 50, // maximum search depth of navigate when finding path to deusVult
 
   MIN_LAT_DIST: 2, // must be strictly greater than this
   DEFENSE_DEPTH: 10, // maximum search depth of navigate() when forming the defensive lattice
-  NAVIGATION_TIME_LIMIT: 50, // maximum amount of time used in navigate()
+  NAVIGATION_TIME_LIMIT: 80, // maximum amount of time used in navigate()
 
   ENEMY_PRIORITY: [5, 4, 3, 0, 1, 2],
 
   CASTLE_MIN_DEF: 8, // minimum number of visible ally attackers on defense per castle
 
   CHURCH_DEPTH: 20, // how many moves a pilgrim is willing to make to build a church
-  CHURCH_MIN_DEF: 4,
-  CHURCH_MAX_DEF: 12,
+  CHURCH_MIN_DEF: 2,
+  CHURCH_MAX_DEF: 20,
 
   SPECS: null,
 

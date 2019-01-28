@@ -66,9 +66,9 @@ export default function churchTurn() {
       }
     }
   }
-  
+
  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.CRUSADER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.CRUSADER].CONSTRUCTION_FUEL)  {
-    if ( !defend && headcount[3] < 1 ) {
+    if ( defend && headcount[3] < 1 ) {
       var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.CRUSADER, this.me.x, this.me.y);
       if( buildLoc != null ) {
         buildCount[3]++;
