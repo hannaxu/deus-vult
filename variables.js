@@ -3,7 +3,7 @@ export default {
   POS_INF: 2147483647,
   NEG_INF: -2147483648,
 
-  MIN_ATK_ROBOTS: 50, // minimum number of visible ally attackers before deusVulting
+  MIN_ATK_ROBOTS: 60, // minimum number of visible ally attackers before deusVulting
   MIN_ATK_FUEL: 10000, // minimum amount of fuel before deusVulting
   ATTACK_DEPTH: 50, // maximum search depth of navigate when finding path to deusVult
 
