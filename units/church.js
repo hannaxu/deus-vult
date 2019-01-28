@@ -66,6 +66,17 @@ export default function churchTurn() {
       }
     }
   }
+  
+ if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.CRUSADER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.CRUSADER].CONSTRUCTION_FUEL)  {
+    if ( !defend && headcount[3] < 1 ) {
+      var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.CRUSADER, this.me.x, this.me.y);
+      if( buildLoc != null ) {
+        buildCount[3]++;
+        vars.buildRobot = 3;
+        return this.buildUnit(vars.SPECS.CRUSADER, buildLoc[1], buildLoc[0]);
+      }
+    }
+  }
 
   // prophet build
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
@@ -75,16 +86,6 @@ export default function churchTurn() {
         buildCount[4]++;
         vars.buildRobot = 4;
         return this.buildUnit(vars.SPECS.PROPHET, buildLoc[1], buildLoc[0]);
-      }
-    }
-  }
- if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.CRUSADER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.CRUSADER].CONSTRUCTION_FUEL)  {
-    if ( !defend && headcount[3] < 1 ) {
-      var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.CRUSADER, this.me.x, this.me.y);
-      if( buildLoc != null ) {
-        buildCount[3]++;
-        vars.buildRobot = 3;
-        return this.buildUnit(vars.SPECS.CRUSADER, buildLoc[1], buildLoc[0]);
       }
     }
   }
