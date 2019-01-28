@@ -419,7 +419,8 @@ export function castleLocSend(turn, myCastles, castleOrderAll, myCastlesAlive, e
     case 2:
       castleLoc1 = myCastles[castleOrderAll[idx1]];
       order = 3;
-      myAlive = myAlive | (1 << 2);
+      if(idx == 1)
+        myAlive = myAlive | (1 << 2);
       break;
     case 1:
       order = 3;
