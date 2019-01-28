@@ -198,7 +198,7 @@ function notNearEnemy(x,y,turn) {
 function newFactVal() {
     //factPos=[23,23];
     //return factPos;
-    if (!vars.baseChange && factPos!=undefined && notNearEnemy(factPos[0],factPos[1],this.me.turn)) {
+    if ((!vars.baseChange && factPos!=undefined && notNearEnemy(factPos[0],factPos[1],this.me.turn)) && Math.random()>0.02) {
         return factPos;
     }
 
@@ -241,7 +241,7 @@ function newFactVal() {
         for (var x=0; x<vars.xmax; x++) {
             for (var y=0; y<vars.ymax; y++) {
                 if (distsC[x][y]==null) continue;
-                var pval=(ret[x][y]/distsC[x][y][0])*(Math.random()*0.3+0.7);
+                var pval=(ret[x][y]/distsC[x][y][0])*(Math.random()*0.5+0.5);
                 if (pval>best && notNearEnemy(x,y,me.turn)) {
                     var validp=true;
                     for (var i=0; i<8; i++) {
