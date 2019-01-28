@@ -222,7 +222,7 @@ export default function castleTurn() {
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
     if ( buildUtils.buildProphet.call(this, defend, totChurchLoc, castleOrder, visibleCount, castleOrderAll, myCastles, unitTracking) ) {
       var buildLoc;
-      if( attackPos == null && this.me.turn < 15 ) 
+      if( attackPos == null && this.me.turn < 15 )
         buildLoc = buildUtils.buildOpt.call(this, attackPosEarly, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
       else
         buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
@@ -279,9 +279,9 @@ export default function castleTurn() {
     //TODO: Deus Vult
   }
 
-  // DEUS VULTING
-  if (this.fuel >= vars.MIN_ATK_FUEL && enemyCastles.length > 0 && this.me.turn%50==0) {
-    if (attackerCount >= vars.MIN_ATK_ROBOTS) {
+  var desp = (this.me.turn==950 && headcount[0] < enemyCastles.length);
+  if (desp||(this.fuel >= vars.MIN_ATK_FUEL && enemyCastles.length > 0 && this.me.turn%50==0)) {
+    if (desp||attackerCount >= vars.MIN_ATK_ROBOTS) {
       curAttack = parseInt(this.me.turn/50)%enemyCastles.length;
       this.log("DEUS VULT "+enemyCastles[curAttack]);
       deusVult = enemyCastles[curAttack];
