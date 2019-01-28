@@ -9,7 +9,7 @@ export default {
 
   MIN_LAT_DIST: 2, // must be strictly greater than this
   DEFENSE_DEPTH: 10, // maximum search depth of navigate() when forming the defensive lattice
-  NAVIGATION_TIME_LIMIT: 100, // maximum amount of time used in navigate()
+  NAVIGATION_TIME_LIMIT: 50, // maximum amount of time used in navigate()
 
   ENEMY_PRIORITY: [5, 4, 3, 0, 1, 2],
 
