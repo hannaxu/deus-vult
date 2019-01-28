@@ -205,6 +205,8 @@ export function buildProphet(defend, totChurchLoc,  castleOrder, visibleCount, c
   var churchC = 0;
   if ( defend )
     return true;
+  if( visibleCount[4] > 30 )
+    return false;
   for( var key in unitTracking ) {
     if( unitTracking[key]["unit"] == vars.SPECS.PROPHET ) {
       var temp = nearestCastle(unitTracking[key]["x"], unitTracking[key]["y"], castleLoc, 100);
