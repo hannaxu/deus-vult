@@ -1,6 +1,6 @@
 import vars from '../variables';
 import * as utils from '../utils';
-import { sendMessage, castleLocComm, trackUnits } from '../communication';
+import { sendMessage, castleLocComm, trackUnits, castleLocSend } from '../communication';
 import * as buildUtils from '../buildUtils';
 
 var team;
@@ -10,7 +10,6 @@ var castleOrderAll = [];  // ids in order
 var castleOrder = 0;
 var totalCastles;
 var teamID = {}; // hashmap stores info
-var symmetry;
 var deposits = [0,[],[]]; //total, karb locs, fuel locs
 var buildCount = [0,0,0,0,0,0];
 var attackPos = null;
@@ -45,12 +44,11 @@ export default function castleTurn() {
   // utils.heapTest.call(this);
   // return;
   if (this.me.turn==1) {
-    symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
-    this.log("VERTICAL: " + symmetry[0] + "; HORIZONTAL: " + symmetry[1]);
+    this.log("VERTICAL: " + vars.symmetry[0] + "; HORIZONTAL: " + vars.symmetry[1]);
 
     team = this.me.team;
 
-    if (symmetry[0]) {
+    if (vars.symmetry[0]) {
       attackPosEarly = [this.me.y, vars.xmax-1-this.me.x];
     }
     else {
@@ -89,10 +87,18 @@ export default function castleTurn() {
 
   // track units
   var ret = trackUnits.call(this, unitTracking, untracked, totalCastles, deleteEnemyCastle);
+  var buildDisable = false;
   if(ret != null){
     unitTracking = ret[0];
     var churching = ret[1];
+    var builtRobot = ret[2];
+    if(builtRobot != null){
+      var message1 = castleLocSend.call(this, 1, myCastles, castleOrderAll, myCastlesAlive, enemyCastlesAlive);
+      sendMessage.call(this, message1, (this.me.x-builtRobot.x)**2 + (this.me.y-builtRobot.y)**2);
+      buildDisable = true;
+    }
   }
+  //if(buildDisable) this.log("I AM DISABLED");
 
   if(false && this.me.turn % 250 == 0 && castleOrder == 0){
     this.log(unitTracking);
@@ -187,7 +193,7 @@ export default function castleTurn() {
     churched = false;*/
   //this.log(churchLoc);
 
-  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+  if (!buildDisable && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     var test = buildUtils.buildPilgrim.call(this, defend, churchLoc, churching, visibleCount, deposits);
     if( test || test == null ) {
       var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PILGRIM, this.me.x, this.me.y);
@@ -197,13 +203,14 @@ export default function castleTurn() {
           churchLoc--;
         buildCount[2]++;
         vars.buildRobot = 2;
+        temp.call(this, buildLoc[1], buildLoc[0]);
         return this.buildUnit(vars.SPECS.PILGRIM, buildLoc[1], buildLoc[0]);
       }
     }
   }
 
   // preacher build
-  if(false && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_FUEL)  {
+  if(false && !buildDisable && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_FUEL)  {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
@@ -212,13 +219,14 @@ export default function castleTurn() {
         //this.log("Building pilgrim at "+x+" "+y);
         buildCount[5]++;
         vars.buildRobot = 5;
+        temp.call(this, vars.buildable[i][0], vars.buildable[i][1]);
         return this.buildUnit(vars.SPECS.PREACHER, vars.buildable[i][0], vars.buildable[i][1]);
       }
     }
   }
 
   // prophet build
-  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
+  if (!buildDisable && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
     if ( buildUtils.buildProphet.call(this, defend, churchLoc, castleOrder, visibleCount, castleOrderAll, myCastles, unitTracking) ) {
       var buildLoc;
       if( attackPos == null && this.me.turn < 15 ) 
@@ -229,13 +237,14 @@ export default function castleTurn() {
         //this.log(buildLoc);
         buildCount[4]++;
         vars.buildRobot = 4;
+        temp.call(this, buildLoc[1], buildLoc[0]);
         return this.buildUnit(vars.SPECS.PROPHET, buildLoc[1], buildLoc[0]);
       }
     }
   }
 
   //attacker pilgrims
-  if (false && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+  if (false && !buildDisable && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     if (headcount[4] >= vars.MIN_ATK_ROBOTS-2 && visionPilgrims < 3) {
       for (var i = 0; i < vars.buildable.length; i++) {
         var x = this.me.x+vars.buildable[i][0];
@@ -245,6 +254,7 @@ export default function castleTurn() {
           //this.log("Building pilgrim at "+x+" "+y);
           buildCount[2]++;
           vars.buildRobot = 2;
+          temp.call(this, vars.buildable[i][0], vars.buildable[i][1]);
           return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
         }
       }
@@ -331,10 +341,10 @@ function attackPhase () {
 }
 
 function addEnemyCastle(myCastleLoc) {
-  if (symmetry[0]) {
+  if (vars.symmetry[0]) {
       enemyCastles.push([vars.xmax-1-myCastleLoc[0], myCastleLoc[1]]);
   }
-  if (symmetry[1]) {
+  if (vars.symmetry[1]) {
       enemyCastles.push([myCastleLoc[0], vars.ymax-1-myCastleLoc[1]]);
   }
 }
@@ -364,4 +374,9 @@ function deleteEnemyCastle(id) {
   else {
     this.log("CASTLEKILL: Unit " + id + " is not DEUSVULTing");
   }
+}
+
+function temp(dx, dy){
+  var message0 = castleLocSend.call(this, 0, myCastles, castleOrderAll, myCastlesAlive, enemyCastlesAlive);
+  sendMessage.call(this, message0, dx**2 + dy**2);
 }
