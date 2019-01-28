@@ -175,7 +175,7 @@ export function churchLoc(castleOrderAll, castleOrder, enemyCastles, myCastles, 
     if( temp[0] == castleOrder && temp[1] > 16 && temp[1] < dConst && temp1[1] > 25 ) 
       opt.push(ret[i]);
   }
-  this.log(opt)
+  this.log("Church loc optimum: " + JSON.stringify(opt));
   return opt.length; //{x, y}
 }
 

@@ -68,6 +68,9 @@ export default function pilgrimTurn () {
     }
     
     for (var i=0; i<vars.radioRobots.length; i++) {
+        if(this.isVisible(vars.radioRobots[i]) && vars.radioRobots[i].team == this.me.team)
+            continue;
+        //TODO: check for trusted signature
         this.log('Pilgrim intercepted signal');
         seenEnms[utils.hashCoordinates([vars.radioRobots[i].x,vars.radioRobots[i].y])]=me.turn;
     } 

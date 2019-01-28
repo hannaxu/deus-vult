@@ -83,14 +83,14 @@ class MyRobot extends BCAbstractRobot {
       }
       
       // receive castle locations
-      if (false && this.me.turn <= 2 && this.me.unit >= 2) {
+      if (this.me.turn <= 2 && this.me.unit >= 2) {
         try{
           var creator = this.getRobot(vars.creatorID);
           if(creator == null)
             this.log("BIRTHCOMM: Creator " + vars.creatorID + " is not visible.");
           else if(creator.unit != 1){
             var dist = (this.me.x-creator.x)**2 + (this.me.y-creator.y)**2;
-            if(creator.signal_radius == 0)
+            if(creator.signal_radius == -1)
               this.log("BIRTHCOMM: Creator is not sending signal");
             else if(creator.signal_radius != dist)
               this.log("BIRTHCOMM: Creator is sending signal over an incorrect distance: " + creator.signal_radius + " != " + dist);
@@ -98,7 +98,7 @@ class MyRobot extends BCAbstractRobot {
               castleLocReceive.call(this, creator, vars.symmetry, vars.castleVars);
               if(this.me.turn == 2){
                 //TODO: Fix order of castles
-                this.log("Received castle locations: " + vars.castleVars[0]);
+                this.log("Received castle locations: " + JSON.stringify(vars.castleVars[0]));
               }
             }
           }
