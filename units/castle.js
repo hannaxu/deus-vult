@@ -211,7 +211,7 @@ export default function castleTurn() {
   }
 
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.CRUSADER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.CRUSADER].CONSTRUCTION_FUEL)  {
-    if ( !defend && visibleCount[4] > 30 ) {
+    if ( !defend && visibleCount[4] > 40 ) {
       var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.CRUSADER, this.me.x, this.me.y);
       if( buildLoc != null ) {
         buildCount[3]++;
