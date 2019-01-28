@@ -203,7 +203,7 @@ function newFactVal() {
         bases.push(utils.unhashCoordinates(h));
     }
     //this.log(bases);
-    var bdist=utils.bfs(bases,4);
+    var bdist=utils.bfs.call(this, bases,4);
     //this.log(bdist[33][10]);
     for (var i=0; i<vars.rLocs.length; i++) {
         var rx=vars.rLocs[i].x;
