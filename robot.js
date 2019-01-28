@@ -82,7 +82,7 @@ class MyRobot extends BCAbstractRobot {
       }
       
       // receive castle locations
-      if (this.me.turn <= 2 && this.me.unit >= 2) {
+      if (false && this.me.turn <= 2 && this.me.unit >= 2) {
         try{
           var creator = this.getRobot(vars.creatorID);
           if(creator == null)

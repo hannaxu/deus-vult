@@ -377,7 +377,7 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
       }
       break;
     default:
-      this.log("UTRACK: Ambiguous builds detected. Units not matched.");
+      //this.log("UTRACK: Ambiguous builds detected. Units not matched.");
       for(var i in appeared){
         var other_r = appeared[i];
         untracked.add(parseInt(other_r.id));

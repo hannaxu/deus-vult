@@ -31,7 +31,7 @@ var trackMap = []; // [id, unit]
 var trackRobots = {}; // trackRobots[id] = [pos, unit]
 
 var churchLoc = 0;
-var churched = false;
+var totChurchLoc = 0;
 var attackPosEarly;
 
 
@@ -70,6 +70,7 @@ export default function castleTurn() {
 
   if( this.me.turn == 3 ) {
     churchLoc = buildUtils.churchLoc.call(this, castleOrderAll, castleOrder, enemyCastles, myCastles, vars.ymax*vars.ymax);
+    totChurchLoc = churchLoc;
   }
 
   // communicate castleLocs
@@ -94,7 +95,7 @@ export default function castleTurn() {
     var builtRobot = ret[2];
     if(builtRobot != null){
       var message1 = castleLocSend.call(this, 1, myCastles, castleOrderAll, myCastlesAlive, enemyCastlesAlive);
-      sendMessage.call(this, message1, (this.me.x-builtRobot.x)**2 + (this.me.y-builtRobot.y)**2);
+      //sendMessage.call(this, message1, (this.me.x-builtRobot.x)**2 + (this.me.y-builtRobot.y)**2);
       buildDisable = true;
     }
   }
@@ -193,7 +194,7 @@ export default function castleTurn() {
     churched = false;*/
   //this.log(churchLoc);
 
-  if (!buildDisable && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     var test = buildUtils.buildPilgrim.call(this, defend, churchLoc, churching, visibleCount, deposits);
     if( test || test == null ) {
       var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PILGRIM, this.me.x, this.me.y);
@@ -210,7 +211,7 @@ export default function castleTurn() {
   }
 
   // preacher build
-  if(false && !buildDisable && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_FUEL)  {
+  if(false && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_FUEL)  {
     for (var i = 0; i < vars.buildable.length; i++) {
       var x = this.me.x+vars.buildable[i][0];
       var y = this.me.y+vars.buildable[i][1];
@@ -226,8 +227,8 @@ export default function castleTurn() {
   }
 
   // prophet build
-  if (!buildDisable && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
-    if ( buildUtils.buildProphet.call(this, defend, churchLoc, castleOrder, visibleCount, castleOrderAll, myCastles, unitTracking) ) {
+  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
+    if ( buildUtils.buildProphet.call(this, defend, totChurchLoc, castleOrder, visibleCount, castleOrderAll, myCastles, unitTracking) ) {
       var buildLoc;
       if( attackPos == null && this.me.turn < 15 ) 
         buildLoc = buildUtils.buildOpt.call(this, attackPosEarly, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
@@ -244,7 +245,7 @@ export default function castleTurn() {
   }
 
   //attacker pilgrims
-  if (false && !buildDisable && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+  if (false && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     if (headcount[4] >= vars.MIN_ATK_ROBOTS-2 && visionPilgrims < 3) {
       for (var i = 0; i < vars.buildable.length; i++) {
         var x = this.me.x+vars.buildable[i][0];
@@ -378,5 +379,5 @@ function deleteEnemyCastle(id) {
 
 function temp(dx, dy){
   var message0 = castleLocSend.call(this, 0, myCastles, castleOrderAll, myCastlesAlive, enemyCastlesAlive);
-  sendMessage.call(this, message0, dx**2 + dy**2);
+  //sendMessage.call(this, message0, dx**2 + dy**2);
 }
