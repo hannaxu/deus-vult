@@ -6,7 +6,8 @@ var enemyCastles = [];
 var symmetry = [false, false];
 var deusVult = null;
 var deusVultTiles = null;
-var curPath = [];
+var curFuzzy = null;
+var clearPath = false;
 
 export default function prophetTurn() {
   // this.log("I am a Prophet at "+vars.xpos+" "+vars.ypos);
@@ -78,24 +79,28 @@ export default function prophetTurn() {
     }
 
     // continues moving along the current path
-    if (curPath.length>0) {
-      var move = curPath.splice(0, 1)[0];
-      if (vars.visibleRobotMap[this.me.y+move[1]][this.me.x+move[0]] == 0) {
+    if (clearPath&&curFuzzy[this.me.x][this.me.y]!=null&&curFuzzy[this.me.x][this.me.y][0]>0) {
+      var move = utils.findMove.call(this, vars.myPos, curFuzzy);
+      if (move!=null) {
         return this.move(move[0], move[1])
       }
-      curPath = [];
+      else {
+        clearPath = false;
+      }
     }
 
     if (deusVult!=null) {
-      this.log(utils.timeLeft());
-      if (utils.timeLeft()>1.2*vars.NAVIGATION_TIME_LIMIT) {
+      if (utils.timeLeft.call(this)>1.2*vars.NAVIGATION_TIME_LIMIT) {
         var curDist = (this.me.x-deusVult[0])**2+(this.me.y-deusVult[1])**2;
         if (vars.attackRadius[0] > curDist || curDist > vars.attackRadius[1]) {
-          var path = utils.navigate.call(this, [this.me.x, this.me.y], deusVultTiles, vars.ATTACK_DEPTH);
-          if (path!=null) {
-            var move = path.splice(0, 1)[0];
-            curPath = path;
-            return this.move(move[0], move[1]);
+          clearPath = true;
+          curFuzzy = utils.bfs2.call(this, [deusVult], 20, vars.myPos, true);
+          var move = utils.findMove.call(this, vars.myPos, curFuzzy);
+          if (move!=null) {
+            return this.move(move[0], move[1])
+          }
+          else {
+            clearPath = false;
           }
         }
       }
@@ -103,10 +108,14 @@ export default function prophetTurn() {
       var y = deusVult[1];
       var id = vars.visibleRobotMap[y][x];
       // check if already dead
-      var move = utils.findMoveD.call(this, [this.me.x, this.me.y], deusVult);
+      var move = utils.findMove.call(this, vars.myPos, curFuzzy);
       if (move != null) {
         //this.log("Moving towards "+x+" "+y);
+        clearPath = true;
         return this.move(move[0], move[1]);
+      }
+      else {
+        clearPath = false;
       }
     }
     else {
@@ -134,6 +143,9 @@ export default function prophetTurn() {
         }
         betterPos.push([x, y]);
       }
+      if (betterPos.length==0) {
+        return;
+      }
       betterPos.sort(function (v1, v2) {
         var d1 = (v1[0]-vars.creatorPos[0])**2+(v1[1]-vars.creatorPos[1])**2;
         var d2 = (v2[0]-vars.creatorPos[0])**2+(v2[1]-vars.creatorPos[1])**2;
@@ -142,13 +154,19 @@ export default function prophetTurn() {
       // this.log("betterPos");
       // this.log(betterPos);
 
-      if (utils.timeLeft()>1.2*vars.NAVIGATION_TIME_LIMIT) {
-        var path = utils.navigate.call(this, [this.me.x, this.me.y], betterPos, vars.DEFENSE_DEPTH);
-        if (path!=null) {
-          //this.log(path);
-          var move = path.splice(0, 1)[0];
-          curPath = path;
-          return this.move(move[0], move[1]);
+      if (utils.timeLeft.call(this)>1.2*vars.NAVIGATION_TIME_LIMIT) {
+        clearPath = true;
+        curFuzzy = utils.bfs2.call(this, betterPos, 20, vars.myPos, true);
+        // this.log("here "+curFuzzy[this.me.x][this.me.y]+" "+vars.myPos);
+        // for(var i = 0; i < curFuzzy.length; i++) {
+        //   this.log(curFuzzy[i]);
+        // }
+        var move = utils.findMove.call(this, vars.myPos, curFuzzy);
+        if (move!=null) {
+          return this.move(move[0], move[1])
+        }
+        else {
+          clearPath = false;
         }
       }
     }
