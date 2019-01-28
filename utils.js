@@ -112,7 +112,7 @@ export function soloBFS(end,maxdist) {
     vars.fuzzyCost[end[0]][end[1]] = bfs.call(this, [end],maxdist);
     //this.log("Conducted bfs "+start+" "+end);
   }
-    return vars.fuzzyCost[end[0]][end[1]]
+    return vars.fuzzyCost[end[0]][end[1]];
 }
 
 //list of [x,y]

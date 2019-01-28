@@ -19,6 +19,7 @@ export default function pilgrimTurn () {
     var me=this.me;
     var minDR=-1;
     var minDRv=9999;
+    //this.log(vars.visibleEnemyRobots);
     if (this.me.turn==1) {
 
         //ALEXEY LOOK HERE
@@ -44,7 +45,7 @@ export default function pilgrimTurn () {
         this.log('attack pilgrim');
         return pilgrim_atk.pilgrimAtkTurn.call(this);
     }
-
+    
     for (var i=0; i<vars.rLocs.length; i++) {
         var p=vars.rLocs[i];
         if (vars.visibleRobotMap[p.y][p.x]>0 && (p.x!=me.x || p.y!=me.y) && this.getRobot(vars.visibleRobotMap[p.y][p.x]).unit==2) {
@@ -59,16 +60,17 @@ export default function pilgrimTurn () {
         }
     }
     if (minDR!=-1) utils.soloBFS.call(this, [vars.rLocs[minDR].x,vars.rLocs[minDR].y],4);
-
+    
     for (var i=0; i<vars.visibleEnemyRobots.length; i++) {
-        if (vars.visibleEnemyRobots[i].unit!=vars.SPECS.PILGRIM) {
+        if (vars.visibleEnemyRobots[i].unit!=2) {
             seenEnms[utils.hashCoordinates([vars.visibleEnemyRobots[i].x,vars.visibleEnemyRobots[i].y])]=me.turn;
         }
     }
+    
     for (var i=0; i<vars.radioRobots.length; i++) {
-        //this.log('Pilgrim intercepted signal');
+        this.log('Pilgrim intercepted signal');
         seenEnms[utils.hashCoordinates([vars.radioRobots[i].x,vars.radioRobots[i].y])]=me.turn;
-    }
+    } 
     //return rescources to the factory [always returns]
     if ( me.fuel==vars.maxFuel || me.karbonite== vars.maxKarb || (me.karbonite == vars.maxKarb/2 && vars.teamKarb <=15) ) {
         for (var i=0; i<8; i++) {
@@ -139,7 +141,10 @@ export default function pilgrimTurn () {
         //this.log('xddd');
         var bx=factPos[0];
         var by=factPos[1];
-
+        
+        //var bx=23;
+        //var by=15;
+        
         //this.log(bx+" "+by+" is the best new base");
         if (bx==-1) {
             return null;
@@ -161,6 +166,7 @@ export default function pilgrimTurn () {
                 return null;
             }
         }
+        //return null;
         var fdists=utils.soloBFS.call(this, [bx,by],20);
         //this.log('to facct');
         return pickAdjMove.call(this,[fdists],[0]);
@@ -181,7 +187,7 @@ function notNearEnemy(x,y,turn) {
                 delete seenEnms[h];
             } else {
                 var pos=utils.unhashCoordinates(h);
-                if ((pos[0]-x)**2 + (pos[1]-y)**2 < 64) {
+                if ((pos[0]-x)**2 + (pos[1]-y)**2 <= 64) {
                     return false;
                 }
             }
@@ -190,6 +196,8 @@ function notNearEnemy(x,y,turn) {
 }
 
 function newFactVal() {
+    //factPos=[23,23];
+    //return factPos;
     if (!vars.baseChange && factPos!=undefined && notNearEnemy(factPos[0],factPos[1],this.me.turn)) {
         return factPos;
     }
@@ -209,6 +217,7 @@ function newFactVal() {
         bases.push(utils.unhashCoordinates(h));
     }
     //this.log(bases);
+    //this.log(seenEnms);
     var bdist=utils.bfs(bases,4);
     //this.log(bdist[33][10]);
     for (var i=0; i<vars.rLocs.length; i++) {
@@ -225,14 +234,14 @@ function newFactVal() {
         }
     }
 
-    var best=0.5;
+    var best=0.0001;
         var bx=-1;
         var by=-1;
         var distsC=utils.soloBFS.call(this,[me.x,me.y],20);
         for (var x=0; x<vars.xmax; x++) {
             for (var y=0; y<vars.ymax; y++) {
                 if (distsC[x][y]==null) continue;
-                var pval=ret[x][y]/distsC[x][y][0]*2;
+                var pval=(ret[x][y]/distsC[x][y][0])*(Math.random()*0.3+0.7);
                 if (pval>best && notNearEnemy(x,y,me.turn)) {
                     var validp=true;
                     for (var i=0; i<8; i++) {
@@ -242,20 +251,22 @@ function newFactVal() {
                         }
                     }
                     if (validp) {
-
-                        best=pval*(Math.random()*0.3+0.7);
+                        best=pval;
                         bx=x;
                         by=y;
                     }
                 }
             }
         }
+    /*
     if (bx==-1) {
+        this.log('all full');
         for (var h in seenEnms) {
-            seenEnms[h]-=50;
+            seenEnms[h]=seenEnms[h]-50;
         }
         return newFactVal.call(this);
     }
+    */
     //this.log('kek');
     factPos=[bx,by];
     return factPos;

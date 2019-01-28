@@ -22,6 +22,7 @@ class MyRobot extends BCAbstractRobot {
 
   turn () {
     try {
+        //this.log('hi');
       vars.visibleRobotMap = this.getVisibleRobotMap();
       vars.me = this.me;
       vars.xpos = this.me.x;
@@ -114,9 +115,9 @@ class MyRobot extends BCAbstractRobot {
       for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
         var robot = vars.visibleEnemyRobots[i];
         var u = robot.unit;
-        for (var i = 0; i < vars.allAttackable[u].length; i++) {
-          var x = robot.x+vars.allAttackable[u][i][0];
-          var y = robot.y+vars.allAttackable[u][i][1];
+        for (var j = 0; j < vars.allAttackable[u].length; j++) {
+          var x = robot.x+vars.allAttackable[u][j][0];
+          var y = robot.y+vars.allAttackable[u][j][1];
           vars.dangerTiles[utils.hashCoordinates([x, y])] = 0;
         }
       }
