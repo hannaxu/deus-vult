@@ -258,7 +258,7 @@ function newFactVal() {
                 }
             }
         }
-    /*
+    
     if (bx==-1) {
         this.log('all full');
         for (var h in seenEnms) {
@@ -266,7 +266,7 @@ function newFactVal() {
         }
         return newFactVal.call(this);
     }
-    */
+    
     //this.log('kek');
     factPos=[bx,by];
     return factPos;
