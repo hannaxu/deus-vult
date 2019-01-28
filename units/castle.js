@@ -32,7 +32,7 @@ var trackMap = []; // [id, unit]
 var trackRobots = {}; // trackRobots[id] = [pos, unit]
 
 var churchLoc = 0;
-var churched = false;
+var totChurchLoc = 0;
 var attackPosEarly;
 
 
@@ -71,7 +71,8 @@ export default function castleTurn() {
   }
 
   if( this.me.turn == 3 ) {
-    churchLoc = buildUtils.churchLoc.call(this, castleOrderAll, castleOrder, enemyCastles, myCastles);
+    churchLoc = buildUtils.churchLoc.call(this, castleOrderAll, castleOrder, enemyCastles, myCastles, vars.ymax*vars.ymax);
+    totChurchLoc = churchLoc;
   }
 
   // communicate castleLocs
@@ -219,7 +220,7 @@ export default function castleTurn() {
 
   // prophet build
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
-    if ( buildUtils.buildProphet.call(this, defend, churching, castleOrder, visibleCount, castleOrderAll, myCastles, unitTracking) ) {
+    if ( buildUtils.buildProphet.call(this, defend, totChurchLoc, castleOrder, visibleCount, castleOrderAll, myCastles, unitTracking) ) {
       var buildLoc;
       if( attackPos == null && this.me.turn < 15 ) 
         buildLoc = buildUtils.buildOpt.call(this, attackPosEarly, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);

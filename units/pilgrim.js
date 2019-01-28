@@ -66,6 +66,7 @@ export default function pilgrimTurn () {
         }
     }
     for (var i=0; i<vars.radioRobots.length; i++) {
+        //this.log('Pilgrim intercepted signal');
         seenEnms[utils.hashCoordinates([vars.radioRobots[i].x,vars.radioRobots[i].y])]=me.turn;
     }
     //return rescources to the factory [always returns]
@@ -132,7 +133,7 @@ export default function pilgrimTurn () {
     }
     //go build a church [sometimes returns]
     if (vars.teamFuel>=4) {
-        //this.log('facts');
+        //this.log('churching');
         vars.CastleTalk.performOptional(1);
         newFactVal.call(this);
         //this.log('xddd');
@@ -140,6 +141,10 @@ export default function pilgrimTurn () {
         var by=factPos[1];
 
         //this.log(bx+" "+by+" is the best new base");
+        if (bx==-1) {
+            return null;
+        }
+        
         if ((bx-me.x)**2 + (by-me.y)**2<=2 && vars.teamKarb>=50 && vars.teamFuel>=200) {
             if (vars.visibleRobotMap[by][bx]==0) {
                 this.log("Built church!");
@@ -170,12 +175,13 @@ var factPos;
 var seenEnms={}; //x,y->turn
 
 function notNearEnemy(x,y,turn) {
+    //return true;
     for (var h in seenEnms) {
             if (turn-seenEnms[h]>100) {
                 delete seenEnms[h];
             } else {
                 var pos=utils.unhashCoordinates(h);
-                if ((pos[0]-x)**2 + (pos[1]-y)**2 < 80) {
+                if ((pos[0]-x)**2 + (pos[1]-y)**2 < 64) {
                     return false;
                 }
             }
@@ -184,7 +190,7 @@ function notNearEnemy(x,y,turn) {
 }
 
 function newFactVal() {
-    if (!vars.baseChange && factPos!=undefined &&  notNearEnemy(factPos[0],factPos[1],this.me.turn)) {
+    if (!vars.baseChange && factPos!=undefined && notNearEnemy(factPos[0],factPos[1],this.me.turn)) {
         return factPos;
     }
 
@@ -220,9 +226,9 @@ function newFactVal() {
     }
 
     var best=0.5;
-        var bx=5;
-        var by=5;
-        var distsC=utils.soloBFS.call(this, [me.x,me.y],20);
+        var bx=-1;
+        var by=-1;
+        var distsC=utils.soloBFS.call(this,[me.x,me.y],20);
         for (var x=0; x<vars.xmax; x++) {
             for (var y=0; y<vars.ymax; y++) {
                 if (distsC[x][y]==null) continue;
@@ -237,13 +243,19 @@ function newFactVal() {
                     }
                     if (validp) {
 
-                        best=pval*(utils.random()*0.3+0.7);
+                        best=pval*(Math.random()*0.3+0.7);
                         bx=x;
                         by=y;
                     }
                 }
             }
         }
+    if (bx==-1) {
+        for (var h in seenEnms) {
+            seenEnms[h]-=50;
+        }
+        return newFactVal.call(this);
+    }
     //this.log('kek');
     factPos=[bx,by];
     return factPos;
