@@ -198,7 +198,7 @@ export function castleLocComm(myCastles, castleOrderAll, unitTracking, prims, ad
  * @param   {int[]}     untracked       Ids of all untracked robots.
  * @param   {int}       totalCastles    The number of total friendly castles.
  * @param   {function}  deleteFunction  Function to call to delete a castle.
-* @returns {[Object, int]}              Updated unitTracking; number of churching pilgrims.
+ * @returns {[Object, int, Robot]}      Updated unitTracking; number of churching pilgrims; prev built robot.
  */
 export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction){
   if(this.me.turn == 1)
@@ -208,6 +208,7 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
   var appeared = [];
   var built = [];
   var churching = 0;
+  var builtRobot = null;
 
   for(var i in vars.commRobots){
     var other_r = vars.commRobots[i];
@@ -243,7 +244,8 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
             case "build":
               var info = [actions[name].unit,
                 tracked_r.x + actions[name].dxdy[0],
-                tracked_r.y + actions[name].dxdy[1]
+                tracked_r.y + actions[name].dxdy[1],
+                other_r.id
               ];
               if(tracked_r.unit == vars.SPECS.PILGRIM)
                 info[0] = vars.SPECS.CHURCH;
@@ -263,7 +265,7 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
             case "give":
               var loc = [tracked_r.x+actions[name].dxdy[0], tracked_r.y+actions[name].dxdy[1]];
               var recepient = null;
-              //TODO: fix mmoving + giving
+              //TODO: fix moving + giving
               for(var id in unitTracking){
                 if(unitTracking[id].x == loc[0] && unitTracking[id].y == loc[1]){
                   recepient = unitTracking[id];
@@ -343,6 +345,10 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
         // found build job
         //this.log("UTRACK: Tracking unit " + other_r.id + " at (" + other_r.x + ", " + other_r.y + ")");
         startTracking(unitTrackingNew, other_r, other_r.x, other_r.y, other_r.unit, other_r.team);
+        if(built[idx][3] == this.me.id){
+          // send follow-up message and disable building
+          builtRobot = other_r;
+        }
       }
       built.splice(idx, 1);
       toRemove.add(parseInt(i));
@@ -371,13 +377,13 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
       }
       break;
     default:
-      this.log("UTRACK: Ambiguous builds detected. Units not matched.");
+      //this.log("UTRACK: Ambiguous builds detected. Units not matched.");
       for(var i in appeared){
         var other_r = appeared[i];
         untracked.add(parseInt(other_r.id));
       }
   }
-  return [unitTrackingNew, churching];
+  return [unitTrackingNew, churching, builtRobot];
 }
 
 
@@ -452,7 +458,7 @@ export function castleLocReceive(creator, symmetry, variables){
   var myCastlesAlive = variables[2];
   var enemyCastlesAlive = variables[3];
 
-  var message = creator.castle_talk;
+  var message = cypherMessage(creator.signal, this.me.team);
   var loc = [message >> 10, (message >> 4) & ((1 << 6) - 1)];
   switch(this.me.turn){
     case 1:
