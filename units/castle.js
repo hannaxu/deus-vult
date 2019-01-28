@@ -210,6 +210,17 @@ export default function castleTurn() {
     }
   }
 
+  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.CRUSADER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.CRUSADER].CONSTRUCTION_FUEL)  {
+    if ( !defend && visibleCount[4] > 30 ) {
+      var buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.CRUSADER, this.me.x, this.me.y);
+      if( buildLoc != null ) {
+        buildCount[3]++;
+        vars.buildRobot = 3;
+        return this.buildUnit(vars.SPECS.CRUSADER, buildLoc[1], buildLoc[0]);
+      }
+    }
+  }
+
   // preacher build
   if(false && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PREACHER].CONSTRUCTION_FUEL)  {
     for (var i = 0; i < vars.buildable.length; i++) {
