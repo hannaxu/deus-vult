@@ -198,7 +198,7 @@ export function castleLocComm(myCastles, castleOrderAll, unitTracking, prims, ad
  * @param   {int[]}     untracked       Ids of all untracked robots.
  * @param   {int}       totalCastles    The number of total friendly castles.
  * @param   {function}  deleteFunction  Function to call to delete a castle.
-* @returns {[Object, int]}              Updated unitTracking; number of churching pilgrims.
+ * @returns {[Object, int, Robot]}      Updated unitTracking; number of churching pilgrims; prev built robot.
  */
 export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction){
   if(this.me.turn == 1)
@@ -208,6 +208,7 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
   var appeared = [];
   var built = [];
   var churching = 0;
+  var builtRobot = null;
 
   for(var i in vars.commRobots){
     var other_r = vars.commRobots[i];
@@ -243,7 +244,8 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
             case "build":
               var info = [actions[name].unit,
                 tracked_r.x + actions[name].dxdy[0],
-                tracked_r.y + actions[name].dxdy[1]
+                tracked_r.y + actions[name].dxdy[1],
+                other_r.id
               ];
               if(tracked_r.unit == vars.SPECS.PILGRIM)
                 info[0] = vars.SPECS.CHURCH;
@@ -263,7 +265,7 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
             case "give":
               var loc = [tracked_r.x+actions[name].dxdy[0], tracked_r.y+actions[name].dxdy[1]];
               var recepient = null;
-              //TODO: fix mmoving + giving
+              //TODO: fix moving + giving
               for(var id in unitTracking){
                 if(unitTracking[id].x == loc[0] && unitTracking[id].y == loc[1]){
                   recepient = unitTracking[id];
@@ -343,6 +345,10 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
         // found build job
         //this.log("UTRACK: Tracking unit " + other_r.id + " at (" + other_r.x + ", " + other_r.y + ")");
         startTracking(unitTrackingNew, other_r, other_r.x, other_r.y, other_r.unit, other_r.team);
+        if(built[idx][3] == this.me.id){
+          // send follow-up message and disable building
+          builtRobot = other_r;
+        }
       }
       built.splice(idx, 1);
       toRemove.add(parseInt(i));
@@ -371,26 +377,150 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
       }
       break;
     default:
-      this.log("UTRACK: Ambiguous builds detected. Units not matched.");
+      //this.log("UTRACK: Ambiguous builds detected. Units not matched.");
       for(var i in appeared){
         var other_r = appeared[i];
         untracked.add(parseInt(other_r.id));
       }
   }
-  return [unitTrackingNew, churching];
+  return [unitTrackingNew, churching, builtRobot];
 }
 
 
 
 // OTHER UNIT FUNCTIONS
 
-export function castleLocSend(myCastles, castleOrderAll, ){
-  var message;
-  return message;
+export function castleLocSend(turn, myCastles, castleOrderAll, myCastlesAlive, enemyCastlesAlive){
+  //determine values
+  var order = 0;
+  var myAlive = 0;
+  var enemyAlive = 0;
+  var castleLoc1 = [0, 0];
+  var castleLoc2 = [0, 0];
+  for(var i = 0; i < castleOrderAll.length; i++){
+    if(myCastlesAlive[i])
+      myAlive = myAlive | (1 << i);
+    if(enemyCastlesAlive[i])
+      enemyAlive = enemyAlive | (1 << i);
+  }
+  var idx = castleOrderAll.indexOf(this.me.id);
+  if(idx == -1){
+    this.log("CREATIONCOMM: This castle is not in castleOrderAll");
+    return null;
+  }
+  var idx1 = (idx == 0) ? 1 : 0;
+  var idx2 = (idx == 2) ? 1 : 2;
+  switch(castleOrderAll.length){
+    case 3:
+      castleLoc1 = myCastles[castleOrderAll[idx1]];
+      castleLoc2 = myCastles[castleOrderAll[idx2]];
+      order = idx;
+      break;
+    case 2:
+      castleLoc1 = myCastles[castleOrderAll[idx1]];
+      order = 3;
+      myAlive = myAlive | (1 << 2);
+      break;
+    case 1:
+      order = 3;
+      enemyAlive = enemyAlive | (1 << 2);
+  }
+  if(typeof(castleLoc1) == 'undefined'){
+    this.log("BIRTHCOMM: myCastles does not contain id " + castleOrderAll[idx1]);
+    return null;
+  }
+  if(typeof(castleLoc2) == 'undefined'){
+    this.log("BIRTHCOMM: myCastles does not contain id " + castleOrderAll[idx2]);
+    return null;
+  }
+
+  //encode message
+  var message = 0;
+  switch(turn){
+    case 0:
+      message = message | (castleLoc1[0] << 6 | castleLoc1[1]) << 4;
+      message = message | order << 2;
+      message = message | (myAlive >> 2) << 1;
+      message = message | enemyAlive >> 2;
+      return message;
+    case 1:
+      message = message | (castleLoc2[0] << 6 | castleLoc2[1]) << 4;
+      message = message | (myAlive & ((1 << 2) - 1)) << 2;
+      message = message | enemyAlive & ((1 << 2) - 1);
+      return message;
+  }
+  return null;
 }
 
-export function castleLocReceive(message){
+export function castleLocReceive(creator, symmetry, variables){
+  var myCastles = variables[0];
+  var enemyCastles = variables[1];
+  var myCastlesAlive = variables[2];
+  var enemyCastlesAlive = variables[3];
 
+  var message = cypherMessage(creator.signal, this.me.team);
+  var loc = [message >> 10, (message >> 4) & ((1 << 6) - 1)];
+  switch(this.me.turn){
+    case 1:
+      var creatorId = (message >> 2) & ((1 << 2) - 1);
+      var my2 = (message >> 1) & 1;
+      var en2 = message & 1;
+
+      // determine length and order
+      if(creatorId == 3){
+        switch(en2){
+          case 0:
+            createCastles(variables, 2);
+            switch(my2){
+              case 0:
+                creatorId = 0;
+                break;
+              case 1:
+                creatorId = 1;
+            }
+            break;
+          case 1:
+            createCastles(variables, 1);
+            creatorId = 0;
+        }
+      }
+      else{
+        createCastles(variables, 3);
+        myCastlesAlive[2] = (my2 == 1);
+        enemyCastlesAlive[2] = (en2 == 1);
+      }
+
+      // fill information
+      if(!this.isVisible(creator)){
+        this.log("BIRTHCOMM: Creator " + creator.id + " is not visible");
+      }
+      else{
+        myCastles[creatorId] = [creator.x, creator.y];
+        addEnemyCastle(enemyCastles, [creator.x, creator.y], creatorId, symmetry);
+      }
+      if(myCastles.length > 1){
+        var idx1 = (creatorId == 0) ? 1 : 0;
+        myCastles[idx1] = loc;
+        addEnemyCastle(enemyCastles, loc, idx1, symmetry);
+      }
+      break;
+    case 2:
+      var my10 = (message >> 2) & ((1 << 2) - 1);
+      var en10 = message & ((1 << 2) - 1);
+
+      // fill information
+      myCastlesAlive[0] = ((my10 & 1) == 1);
+      enemyCastlesAlive[0] = ((en10 & 1) == 1);
+      if(myCastles.length > 1){
+        myCastlesAlive[1] = (((my10 >> 1) & 1) == 1);
+        enemyCastlesAlive[1] = (((en10 >> 1) & 1) == 1);
+      }
+      if(myCastles.length > 2){
+        var idx2 = (myCastles[2] != null) ? 1 : 2;
+        myCastles[idx2] = loc;
+        addEnemyCastle(enemyCastles, loc, idx2, symmetry);
+      }
+  }
 }
 
 
@@ -438,4 +568,21 @@ function startTracking(unitTracking, other_r, x, y, unit, team){
   unitTracking[other_r.id] = {type:"robot", id:other_r.id, turn:other_r.turn,
     team:team, unit:unit, x:x, y:y, fuel:0, karbonite:0,
     signal:other_r.signal, signal_radius:other_r.signal_radius, castle_talk:other_r.castle_talk};
+}
+
+function createCastles(variables, len){
+  for(var i = 0; i < len; i++){
+    for(var j = 0; j < variables.length; j++){
+      variables[j].push(null);
+    }
+  }
+}
+
+function addEnemyCastle(enemyCastles, myLoc, idx, symmetry) {
+  if (symmetry[0]) {
+    enemyCastles[idx] = [vars.xmax-1-myLoc[0], myLoc[1]];
+  }
+  if (symmetry[1]) {
+    enemyCastles[idx] = [myLoc[0], vars.ymax-1-myLoc[1]];
+  }
 }

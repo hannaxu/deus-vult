@@ -141,7 +141,7 @@ export function findVisibleEnemies (pos=[this.me.x, this.me.y]) {
   return ret;
 }
 
-export function churchLoc(castleOrderAll, castleOrder, enemyCastles, myCastles) {
+export function churchLoc(castleOrderAll, castleOrder, enemyCastles, myCastles, dConst) {
   var numC = castleOrderAll.length;
   var castleLoc = [];
   for( var i = 0; i < numC; i++ ) {
@@ -169,10 +169,10 @@ export function churchLoc(castleOrderAll, castleOrder, enemyCastles, myCastles) 
   var opt = [];
   //this.log(castleOrder);
   for( var i = 0; i < ret.length; i++ ) {
-    var temp = nearestCastle(ret[i][0], ret[i][1], castleLoc, 5000);
+    var temp = nearestCastle(ret[i][0], ret[i][1], castleLoc, dConst);
     var temp1 = nearestCastle(ret[i][0], ret[i][1], enemyCastles, 5000);
     //this.log(temp);
-    if( temp[0] == castleOrder && temp[1] > 16 && temp[1] < vars.ymax*vars.ymax/4 && temp1[1] > 25 ) 
+    if( temp[0] == castleOrder && temp[1] > 16 && temp[1] < dConst && temp1[1] > 25 ) 
       opt.push(ret[i]);
   }
   this.log(opt)
@@ -193,7 +193,7 @@ export function buildPilgrim (defend, churchLoc, churching, visibleCount, deposi
   return false;
 }
 
-export function buildProphet(defend, churching,  castleOrder, visibleCount, castleOrderAll, myCastles, unitTracking) {
+export function buildProphet(defend, totChurchLoc,  castleOrder, visibleCount, castleOrderAll, myCastles, unitTracking) {
   var units = [];
   var numC = castleOrderAll.length;
   var castleLoc = [];
@@ -202,6 +202,7 @@ export function buildProphet(defend, churching,  castleOrder, visibleCount, cast
     castleLoc.push([myCastles[castleOrderAll[i]][0], myCastles[castleOrderAll[i]][1]]);
   }
   //this.log(castleLoc);
+  var churchC = 0;
   if ( defend )
     return true;
   for( var key in unitTracking ) {
@@ -211,6 +212,8 @@ export function buildProphet(defend, churching,  castleOrder, visibleCount, cast
       if( temp[0] > -1 )
         units[temp[0]] += 1;
     }
+    if( unitTracking[key]["unit"] == vars.SPECS.CHURCH ) 
+      churchC++;
   }
   //this.log(units);
   var min = 5000;
@@ -227,7 +230,11 @@ export function buildProphet(defend, churching,  castleOrder, visibleCount, cast
     //this.log("build");
     if( visibleCount[4] < 2 )
       return true;
-    if( visibleCount[4] < 12 && this.karbonite >= 50 && this.fuel >= 300 /*replace with churching constraint*/)
+    if( visibleCount[4] < 12 && this.karbonite >= 65 && this.fuel >= 300 && totChurchLoc/2 < churchC )
+      return true;
+    if( visibleCount[4] < 7 && this.karbonite >= 50 && this.fuel >= 300 && this.me.turn > totChurchLoc*vars.ymax/2 )
+      return true;
+    if( churchC == Math.min(totChurchLoc, 1) && visibleCount[4] < 4 && vars.ymax < 48 && this.me.turn < 12 )
       return true;
   }
   if( this.karbonite >= 100 && this.fuel >= 300 )
