@@ -1,6 +1,5 @@
 import vars from '../variables';
 import * as utils from '../utils';
-import * as pilgrim_atk from './pilgrim_atk';
 import {readMessageTrusted} from '../communication';
 
 //rLocs:
@@ -42,11 +41,6 @@ export default function pilgrimTurn () {
         //initPossChurches.call(this);
     }
 
-    if (attacking) {
-        this.log('attack pilgrim');
-        return pilgrim_atk.pilgrimAtkTurn.call(this);
-    }
-    
     for (var i=0; i<vars.rLocs.length; i++) {
         var p=vars.rLocs[i];
         if (vars.visibleRobotMap[p.y][p.x]>0 && (p.x!=me.x || p.y!=me.y) && this.getRobot(vars.visibleRobotMap[p.y][p.x]).unit==2) {
@@ -61,13 +55,13 @@ export default function pilgrimTurn () {
         }
     }
     if (minDR!=-1) utils.soloBFS.call(this, [vars.rLocs[minDR].x,vars.rLocs[minDR].y],4);
-    
+
     for (var i=0; i<vars.visibleEnemyRobots.length; i++) {
         if (vars.visibleEnemyRobots[i].unit!=2) {
             seenEnms[utils.hashCoordinates([vars.visibleEnemyRobots[i].x,vars.visibleEnemyRobots[i].y])]=me.turn;
         }
     }
-    
+
     for (var i=0; i<vars.radioRobots.length; i++) {
         var res = readMessageTrusted.call(this, vars.radioRobots[i]);
         if(res[0] && res[1] == 1){
@@ -77,7 +71,7 @@ export default function pilgrimTurn () {
         }
         this.log('Pilgrim intercepted signal');
         seenEnms[utils.hashCoordinates([vars.radioRobots[i].x,vars.radioRobots[i].y])]=me.turn;
-    } 
+    }
     //return rescources to the factory [always returns]
     if ( me.fuel==vars.maxFuel || me.karbonite== vars.maxKarb || (me.karbonite == vars.maxKarb/2 && vars.teamKarb <=15) ) {
         for (var i=0; i<8; i++) {
@@ -148,15 +142,15 @@ export default function pilgrimTurn () {
         //this.log('xddd');
         var bx=factPos[0];
         var by=factPos[1];
-        
+
         //var bx=23;
         //var by=15;
-        
+
         //this.log(bx+" "+by+" is the best new base");
         if (bx==-1) {
             return null;
         }
-        
+
         if ((bx-me.x)**2 + (by-me.y)**2<=2 && vars.teamKarb>=50 && vars.teamFuel>=200) {
             if (vars.visibleRobotMap[by][bx]==0) {
                 this.log("Built church!");
@@ -265,7 +259,7 @@ function newFactVal() {
                 }
             }
         }
-    
+
     if (bx==-1) {
         this.log('all full');
         for (var h in seenEnms) {
@@ -273,7 +267,7 @@ function newFactVal() {
         }
         return newFactVal.call(this);
     }
-    
+
     //this.log('kek');
     factPos=[bx,by];
     return factPos;
