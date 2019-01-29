@@ -51,7 +51,7 @@ class MyRobot extends BCAbstractRobot {
         vars.buildable = utils.findConnections.call(this, vars.buildRadius);
 
         vars.symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
-        
+
         for (var x = 0; x < vars.xmax; x++) {
           vars.fuzzyCost.push([]);
           for (var y = 0; y < vars.ymax; y++) {
@@ -122,6 +122,16 @@ class MyRobot extends BCAbstractRobot {
       }
 
       readMessages.call(this);
+
+
+      for (var i=0; i<vars.radioRobots.length; i++) {
+        var res = readMessageTrusted.call(this, vars.radioRobots[i]);
+        if(res[0] && res[1] == 1){
+          this.log("LAST TURN: RECEIVED");
+          vars.isLastTurn = true;
+          break;
+        }
+      }
 
       var ret = null;
       switch (this.me.unit) {

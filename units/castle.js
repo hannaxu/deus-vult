@@ -68,8 +68,8 @@ export default function castleTurn() {
     trackMap[this.me.y][this.me.x] = [this.me.id, this.me.unit];
   }
 
-  if(this.me.turn == 9){
-    sendMessageTrusted.call(this, 1, vars.xmax-1);
+  if(this.me.turn == vars.LAST_TURN){
+    sendMessageTrusted.call(this, 1, vars.xmax**2);
     this.log("LAST TURN: SENT");
   }
 
@@ -249,26 +249,9 @@ export default function castleTurn() {
     }
   }
 
-  //attacker pilgrims
-  if (false && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
-    if (headcount[4] >= vars.MIN_ATK_ROBOTS-2 && visionPilgrims < 3) {
-      for (var i = 0; i < vars.buildable.length; i++) {
-        var x = this.me.x+vars.buildable[i][0];
-        var y = this.me.y+vars.buildable[i][1];
-        if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
-          sendMessage.call(this, 1 << 14, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
-          //this.log("Building pilgrim at "+x+" "+y);
-          buildCount[2]++;
-          vars.buildRobot = 2;
-          return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
-        }
-      }
-    }
-  }
-
   var desp = (this.me.turn==950 && headcount[0] < enemyCastles.length);
-  if (desp||(this.fuel >= vars.MIN_ATK_FUEL && enemyCastles.length > 0 && this.me.turn%50==0)) {
-    if (desp||attackerCount >= vars.MIN_ATK_ROBOTS) {
+  if (false&&this.fuel >= vars.MIN_ATK_FUEL && enemyCastles.length > 0 && this.me.turn%50==0) {
+    if (attackerCount >= vars.MIN_ATK_ROBOTS) {
       curAttack = parseInt(this.me.turn/50)%enemyCastles.length;
       this.log("DEUS VULT "+enemyCastles[curAttack]);
       deusVult = enemyCastles[curAttack];

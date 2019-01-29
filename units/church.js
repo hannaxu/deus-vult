@@ -18,6 +18,21 @@ export default function churchTurn() {
     //this.log(deposits[0]);
   }
 
+  //last minute church building
+  if(this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+    if (vars.isLastTurn) {
+      for (var i = 0; i < vars.buildable.length; i++) {
+        var x = this.me.x+vars.buildable[i][0];
+        var y = this.me.y+vars.buildable[i][1];
+        if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
+          //sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
+          this.log("Last minute pilgrim building at "+x+" "+y);
+          return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
+        }
+      }
+    }
+  }
+
   //headcount 0: castle, 1: church, 2: pilgrim, 3: crusader, 4: prophet, 5: preacher
   var headcount = [0,1,0,0,0,0];
   var enemyUnit = 0;
