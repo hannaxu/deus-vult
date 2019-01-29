@@ -68,8 +68,8 @@ export default function castleTurn() {
     trackMap[this.me.y][this.me.x] = [this.me.id, this.me.unit];
   }
 
-  if(this.me.turn == 9){
-    sendMessageTrusted.call(this, 1, vars.xmax-1);
+  if(this.me.turn == vars.LAST_TURN){
+    sendMessageTrusted.call(this, 1, vars.xmax**2);
     this.log("LAST TURN: SENT");
   }
 

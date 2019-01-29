@@ -1,5 +1,6 @@
 export default {
   // CONSTANTS
+  LAST_TURN: 100,
   POS_INF: 2147483647,
   NEG_INF: -2147483648,
 
