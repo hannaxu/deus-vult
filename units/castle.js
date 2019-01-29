@@ -1,6 +1,6 @@
 import vars from '../variables';
 import * as utils from '../utils';
-import { sendMessage, castleLocComm, trackUnits, castleLocSend } from '../communication';
+import { sendMessage, sendMessageTrusted, castleLocComm, trackUnits, castleLocSend } from '../communication';
 import * as buildUtils from '../buildUtils';
 
 var team;
@@ -66,6 +66,11 @@ export default function castleTurn() {
       }
     }
     trackMap[this.me.y][this.me.x] = [this.me.id, this.me.unit];
+  }
+
+  if(this.me.turn == 9){
+    sendMessageTrusted.call(this, 1, vars.xmax-1);
+    this.log("LAST TURN: SENT");
   }
 
   if( this.me.turn == 3 ) {
