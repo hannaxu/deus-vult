@@ -82,11 +82,14 @@ export default class {
           this.log("CASTLETALK: Could not send action " + ret.name + " with combination " + ret.comb + " for unit " + this.me.unit);
         else
           // send action
-          message += ret.opt * max_message[this.me.unit]
+          if(ret.optf)
+            message = message | (ret.opt << 6);
+          else
+            message += ret.opt * max_message[this.me.unit];
           this.castleTalk(message);
       }
       
-      ret = {name: null, comb: null, opt: null};
+      ret = {name: null, comb: null, opt: null, optf: null};
       return message;
     }
 
@@ -134,6 +137,11 @@ export default class {
       // return action
       //this.log("CASTLETALK: Recv - unit:" + unit + " actions:" + JSON.stringify(ret2));
       return ret2;
+    }
+    // Returns optional
+    // Returns shaved message that can be received normally
+    receiveForced(message) {
+      return [message >> 6, message & ((1 << 6) - 1)];
     }
 
     // Called upon initialization.
@@ -200,6 +208,19 @@ export default class {
         return false;
       }
       ret.opt = val;
+      ret.optf = false;
+      return true;
+    }
+    // Don't need to know unit type to read
+    // Overrides performOptional
+    // 2 leading bits
+    forceOptional(val) {
+      if(val > 3) {
+        this.log("CASTLETALK: Forced value " + val + " is is too large (max 3)");
+        return false;
+      }
+      ret.opt = val;
+      ret.optf = true;
       return true;
     }
   }

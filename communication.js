@@ -200,13 +200,17 @@ export function castleLocComm(myCastles, castleOrderAll, unitTracking, prims, ad
  * @param   {function}  deleteFunction  Function to call to delete a castle.
  * @returns {[Object, int, Robot]}      Updated unitTracking; number of churching pilgrims; prev built robot.
  */
+var appeared = [];
+var built = [];
 export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction){
   if(this.me.turn == 1)
     return null;
   
   var unitTrackingNew = {}
-  var appeared = [];
-  var built = [];
+  var appearedLast = appeared;
+  var builtLast = built;
+  appeared = [];
+  built = [];
   var churching = 0;
   var builtRobot = null;
 
@@ -228,92 +232,7 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
         continue;
 
       // receive updates
-      try{
-        var actions = vars.CastleTalk.receive(other_r.castle_talk, tracked_r.unit);
-        for(var name in actions){
-          switch(name){
-            case "move":
-              if(utils.checkBounds(tracked_r.x + actions[name].dxdy[0],
-                tracked_r.y + actions[name].dxdy[1])){
-                tracked_r.x += actions[name].dxdy[0];
-                tracked_r.y += actions[name].dxdy[1];
-              }
-              else
-                this.log("UTRACK: Attempted to move " + other_r.id + " off of the map.");
-              break;
-            case "build":
-              var info = [actions[name].unit,
-                tracked_r.x + actions[name].dxdy[0],
-                tracked_r.y + actions[name].dxdy[1],
-                other_r.id
-              ];
-              if(tracked_r.unit == vars.SPECS.PILGRIM)
-                info[0] = vars.SPECS.CHURCH;
-              if(utils.checkBounds(info[1], info[2]))
-                built.push(info);
-              else
-                this.log("UTRACK: Attempted to build by " + other_r.id + " outside the map.");
-              break;
-            case "mine":
-              if(vars.karbMap[tracked_r.y][tracked_r.x])
-                tracked_r.karbonite += 2;
-              else if(vars.fuelMap[tracked_r.y][tracked_r.x])
-                tracked_r.fuel += 10;
-              else
-                this.log("UTRACK: Location " + tracked_r.x + ", " + tracked_r.y + " is not mineable.");
-              break;
-            case "give":
-              var loc = [tracked_r.x+actions[name].dxdy[0], tracked_r.y+actions[name].dxdy[1]];
-              var recepient = null;
-              //TODO: fix moving + giving
-              for(var id in unitTracking){
-                if(unitTracking[id].x == loc[0] && unitTracking[id].y == loc[1]){
-                  recepient = unitTracking[id];
-                  break;
-                }
-              }
-              if(recepient == null)
-                this.log("UTRACK: Recepient at (" + loc[0] + ", " + loc[1] + ") not found.");
-              else{
-                var karb = tracked_r.karbonite;
-                var fuel = tracked_r.fuel;
-                var karb_cap = vars.SPECS.UNITS[recepient.unit].KARBONITE_CAPACITY;
-                var fuel_cap = vars.SPECS.UNITS[recepient.unit].FUEL_CAPACITY;
-                
-                if(karb_cap != null){
-                  karb = Math.min(karb_cap - recepient.karbonite, karb);
-                  recepient.karbonite += karb;
-                }
-                tracked_r.karbonite -= karb;
-                
-                if(fuel_cap != null){
-                  fuel = Math.min(fuel_cap - recepient.fuel, fuel);
-                  recepient.fuel += fuel;
-                }
-                tracked_r.fuel -= fuel;
-              }
-              break;
-            case "opt":
-              if(actions[name] > 0){
-                if(tracked_r.unit == 2)
-                  churching++;
-                else if(tracked_r.unit > 2)
-                  deleteFunction.call(this, other_r.id);
-              }
-          }
-        }
-      }
-      catch(err){
-        this.log("UTRACK: Failed when tracking " + tracked_r.id + " at (" + tracked_r.x + ", " + tracked_r.y + ")");
-        if(false){
-          var lines = err.stack.split('\n');
-          for(var i in lines){
-            this.log(lines[i]);
-          }
-        }
-        else
-          this.log(err.toString());
-      }
+      unitTrackingReceive.call(this, tracked_r);
     }
 
     else if(!this.isVisible(other_r) || other_r.team == this.me.team){
@@ -324,10 +243,21 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
   }
 
 
+  // This turn, current structures
+  appeared = appeared.filter(function(other_r){
+    if(other_r.turn == 0)
+      return true;
+    return !creatorOrderMatch.call(this, other_r, built);
+  }, this);
+  // Next turn, last structures
+  appearedLast = appearedLast.filter(function(other_r){
+    return !creatorOrderMatch.call(this, other_r, builtLast);
+  }, this);
+
+  // temorary fail cases
   // add any visible
-  var toRemove = new Set();
-  for(var i in appeared){
-    var other_r = appeared[i];
+  
+  appearedLast = appearedLast.filter(function(other_r){
     if(this.isVisible(other_r)){
       var dxdy = [0, 0];
       if(other_r.turn > 0){
@@ -335,51 +265,46 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
         if('move' in actions)
           dxdy = actions.move.dxdy;
       }
-      var idx = built.findIndex(function(loc){
+      var idx = builtLast.findIndex(function(loc){
         return loc[1] == (other_r.x-dxdy[0]) &&
           loc[2] == (other_r.y-dxdy[1]);
       });
-      if(idx == -1)
+      if(idx == -1){
         this.log("UTRACK: No matching build job found for visible unit " + other_r.id);
+        untracked.add(parseInt(other_r.id));
+      }
       else{
         // found build job
-        //this.log("UTRACK: Tracking unit " + other_r.id + " at (" + other_r.x + ", " + other_r.y + ")");
         startTracking(unitTrackingNew, other_r, other_r.x, other_r.y, other_r.unit, other_r.team);
-        if(built[idx][3] == this.me.id){
+        unitTrackingReceive.call(this, other_r);
+        //this.log("UTRACK: Tracking unit " + other_r.id + " at (" + other_r.x + ", " + other_r.y + ")");
+        if(builtLast[idx][3] == this.me.id){
           // send follow-up message and disable building
           builtRobot = other_r;
         }
       }
-      built.splice(idx, 1);
-      toRemove.add(parseInt(i));
+      builtLast.splice(idx, 1);
+      return false;
     }
-  }
-  appeared = appeared.filter(function(_, i){
-    return !toRemove.has(i);
-  });
-  // match built units with appeared
-  switch(built.length){
+    return true;
+  }, this);
+  // match by number
+  switch(builtLast.length){
     case 0:
       break;
     case 1:
-      if(appeared.length == 0)
-        this.log("UTRACK: No matching unit found for build at " + built[0][1] + ", " + built[0][2]);
+      if(appearedLast.length == 0)
+        this.log("UTRACK: No matching unit found for build at " + builtLast[0][1] + ", " + builtLast[0][2]);
       else{
-        if(appeared[0].turn > 0){
-          var actions = vars.CastleTalk.receive(appeared[0].castle_talk, built[0][0]);
-          if('move' in actions){
-            built[0][1] += actions.move.dxdy[0];
-            built[0][2] += actions.move.dxdy[1];
-          }
-        }
-        //this.log("UTRACK: Tracking unit " + appeared[0].id + " at (" + built[0][1] + ", " + built[0][2] + ")");
-        startTracking(unitTrackingNew, appeared[0], built[0][1], built[0][2], built[0][0], this.me.team);
+        var tracked_r = startTracking(unitTrackingNew, appearedLast[0], builtLast[0][1], builtLast[0][2], builtLast[0][0], this.me.team);
+        unitTrackingReceive.call(this, tracked_r);
+        //this.log("UTRACK: Tracking unit " + tracked_r.id + " at (" + tracked_r.x + ", " + tracked_r.y + ")");
       }
       break;
     default:
       //this.log("UTRACK: Ambiguous builds detected. Units not matched.");
-      for(var i in appeared){
-        var other_r = appeared[i];
+      for(var i in appearedLast){
+        var other_r = appearedLast[i];
         untracked.add(parseInt(other_r.id));
       }
   }
@@ -405,7 +330,7 @@ export function castleLocSend(turn, myCastles, castleOrderAll, myCastlesAlive, e
   }
   var idx = castleOrderAll.indexOf(this.me.id);
   if(idx == -1){
-    this.log("CREATIONCOMM: This castle is not in castleOrderAll");
+    this.log("BIRTHCOMM: This castle is not in castleOrderAll");
     return null;
   }
   var idx1 = (idx == 0) ? 1 : 0;
@@ -565,10 +490,105 @@ function readInfo(myCastles, castleOrderAll, unitTracking, other_r, addFunction)
   startTracking(unitTracking, other_r, x, y, vars.SPECS.CASTLE, this.me.team);
 }
 
+function unitTrackingReceive(tracked_r){
+  try{
+    var actions = vars.CastleTalk.receive(tracked_r.castle_talk, tracked_r.unit);
+    for(var name in actions){
+      switch(name){
+        case "move":
+          if(utils.checkBounds(tracked_r.x + actions[name].dxdy[0],
+            tracked_r.y + actions[name].dxdy[1])){
+            tracked_r.x += actions[name].dxdy[0];
+            tracked_r.y += actions[name].dxdy[1];
+          }
+          else
+            this.log("UTRACK: Attempted to move " + tracked_r.id + " off of the map.");
+          break;
+        case "build":
+          var info = [actions[name].unit,
+            tracked_r.x + actions[name].dxdy[0],
+            tracked_r.y + actions[name].dxdy[1],
+            tracked_r.id
+          ];
+          if(tracked_r.unit == vars.SPECS.PILGRIM)
+            info[0] = vars.SPECS.CHURCH;
+          if(utils.checkBounds(info[1], info[2]))
+            built.push(info);
+          else
+            this.log("UTRACK: Attempted to build by " + tracked_r.id + " outside the map.");
+          break;
+        case "mine":
+          if(vars.karbMap[tracked_r.y][tracked_r.x])
+            tracked_r.karbonite += 2;
+          else if(vars.fuelMap[tracked_r.y][tracked_r.x])
+            tracked_r.fuel += 10;
+          else
+            this.log("UTRACK: Location " + tracked_r.x + ", " + tracked_r.y + " is not mineable.");
+          break;
+        case "give":
+          var loc = [tracked_r.x+actions[name].dxdy[0], tracked_r.y+actions[name].dxdy[1]];
+          var recepient = null;
+          //TODO: fix moving + giving
+          for(var id in unitTracking){
+            if(unitTracking[id].x == loc[0] && unitTracking[id].y == loc[1]){
+              recepient = unitTracking[id];
+              break;
+            }
+          }
+          if(recepient == null)
+            this.log("UTRACK: Recepient at (" + loc[0] + ", " + loc[1] + ") not found.");
+          else{
+            var karb = tracked_r.karbonite;
+            var fuel = tracked_r.fuel;
+            var karb_cap = vars.SPECS.UNITS[recepient.unit].KARBONITE_CAPACITY;
+            var fuel_cap = vars.SPECS.UNITS[recepient.unit].FUEL_CAPACITY;
+            
+            if(karb_cap != null){
+              karb = Math.min(karb_cap - recepient.karbonite, karb);
+              recepient.karbonite += karb;
+            }
+            tracked_r.karbonite -= karb;
+            
+            if(fuel_cap != null){
+              fuel = Math.min(fuel_cap - recepient.fuel, fuel);
+              recepient.fuel += fuel;
+            }
+            tracked_r.fuel -= fuel;
+          }
+          break;
+        case "opt":
+          if(actions[name] > 0){
+            if(tracked_r.unit == 2)
+              churching++;
+            else if(tracked_r.unit > 2)
+              deleteFunction.call(this, tracked_r.id);
+          }
+      }
+    }
+  }
+  catch(err){
+    this.log("UTRACK: Failed when tracking " + tracked_r.id + " at (" + tracked_r.x + ", " + tracked_r.y + ")");
+    if(false){
+      if(typeof(err.stack) != 'undefined'){
+        var lines = err.stack.split('\n');
+        for(var i in lines){
+          this.log(lines[i]);
+        }
+      }
+      else
+        this.log(err.toString());
+    }
+    else
+      this.log(err.toString());
+  }
+}
+
 function startTracking(unitTracking, other_r, x, y, unit, team){
-  unitTracking[other_r.id] = {type:"robot", id:other_r.id, turn:other_r.turn,
+  var tracked_r = {type:"robot", id:other_r.id, turn:other_r.turn,
     team:team, unit:unit, x:x, y:y, fuel:0, karbonite:0,
     signal:other_r.signal, signal_radius:other_r.signal_radius, castle_talk:other_r.castle_talk};
+  unitTracking[other_r.id] = tracked_r;
+  return tracked_r;
 }
 
 function createCastles(variables, len){
@@ -586,4 +606,31 @@ function addEnemyCastle(enemyCastles, myLoc, idx, symmetry) {
   if (symmetry[1]) {
     enemyCastles[idx] = [myLoc[0], vars.ymax-1-myLoc[1]];
   }
+}
+
+function creatorOrderMatch(appeared_r, built){
+  var ret = vars.CastleTalk.receiveForced(appeared_r.castle_talk);
+  var creatorOrder = ret[0]-1;
+  appeared_r.castle_talk = ret[1];
+  if(creatorOrder == -1){
+    this.log("UTRACK: Unit " + appeared_r.id + " is not confirming creator order");
+    return false;
+  }
+  this.log("UTRACK: Received creator order " + creatorOrder + " from " + appeared_r.id);
+  //TODO: current/last -> RIPE/UNRIPE
+  // var idx = built.findIndex(function(build){
+  //   return build[3] == castleOrderAll[creatorOrder];
+  // });
+  // if(idx == -1){
+  //   this.log("UTRACK: No matching build job found for unit " + appeared_r.id);
+  //   untracked.add(parseInt(other_r.id));
+  // }
+  // startTracking(unitTrackingNew, appeared_r, appeared_r.x, appeared_r.y, appeared_r.unit, appeared_r.team);
+  // unitTrackingReceive.call(this, appearedr_r);
+  // //this.log("UTRACK: Tracking unit " + appeared_r.id + " at (" + appeared_r.x + ", " + appeared_r.y + ")");
+  // if(built[idx][3] == this.me.id){
+  //   // send follow-up message and disable building
+  //   builtRobot = appeared_r;
+  // }
+  return true;
 }

@@ -99,7 +99,7 @@ export default function castleTurn() {
       buildDisable = true;
     }
   }
-  //if(buildDisable) this.log("I AM DISABLED");
+  if(buildDisable) this.log("I AM DISABLED");
 
   if(false && this.me.turn % 250 == 0 && castleOrder == 0){
     this.log(unitTracking);

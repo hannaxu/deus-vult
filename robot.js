@@ -96,9 +96,22 @@ class MyRobot extends BCAbstractRobot {
               this.log("BIRTHCOMM: Creator is sending signal over an incorrect distance: " + creator.signal_radius + " != " + dist);
             else{
               castleLocReceive.call(this, creator, vars.symmetry, vars.castleVars);
-              if(this.me.turn == 2){
-                //TODO: Fix order of castles
-                this.log("Received castle locations: " + JSON.stringify(vars.castleVars[0]));
+              switch(this.me.turn){
+                case 1:
+                  // clarify my builder to unitTracking
+                  var idx = vars.castleVars[0].findIndex(function(x){
+                    return x != null && x[0] == creator.x && x[1] == creator.y;
+                  });
+                  if(idx == -1){
+                    this.log("BIRTHCOMM: Creator is not in received castles");
+                  }
+                  else{
+                    vars.CastleTalk.forceOptional(idx+1);
+                  }
+                  break;
+                case 2:
+                  //TODO: Fix order of castles
+                  this.log("Received castle locations: " + JSON.stringify(vars.castleVars[0]));
               }
             }
           }
@@ -201,10 +214,14 @@ class MyRobot extends BCAbstractRobot {
     catch (err) {
       this.log("Error in unit "+this.me.unit+" at ("+this.me.x+", "+this.me.y+")");
       if(true){
-        var lines = err.stack.split('\n');
-        for(var i in lines){
-          this.log(lines[i]);
+        if(typeof(err.stack) != 'undefined'){
+          var lines = err.stack.split('\n');
+          for(var i in lines){
+            this.log(lines[i]);
+          }
         }
+        else
+          this.log(err.toString());
       }
       else
         this.log(err.toString());
