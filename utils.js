@@ -8,10 +8,12 @@ import vars from './variables';
  * @returns {bool[]}            Array length 2, representing symmetry in the [vert, horiz] form.
  */
 export function checkMapSymmetry (passMap, karbMap, fuelMap) {
+    seed=vars.me.id; //just needs to be done at the beginning of the game
   return [symmetry2DVert(passMap) && symmetry2DVert(karbMap) && symmetry2DVert(fuelMap),
     symmetry2DHoriz(passMap) && symmetry2DHoriz(karbMap) && symmetry2DHoriz(fuelMap)];
 }
 function symmetry2DVert (arr) {
+    
   var N = arr[0].length;
   var leftFlipped = arr.map(function(row){return row.slice(0, Math.floor(N/2)).reverse()});
   var right = arr.map(function(row){return row.slice(Math.floor((N+1)/2))});
@@ -552,8 +554,9 @@ export function timeLeft () {
   return this.me.time-(new Date().getTime()-vars.turnStartTime);
 }
 
+var seed = 1;
 export function random() {
-  var seed = 1;
+  
   var x = Math.sin(seed++) * 10000;
   return x - Math.floor(x);
 }
