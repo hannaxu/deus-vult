@@ -4,11 +4,13 @@ export default {
   POS_INF: 2147483647,
   NEG_INF: -2147483648,
 
+  MIN_DEF_ROBOTS: 40, // minimum number of visible ally prophets before building crusaders
+
   MIN_ATK_ROBOTS: 60, // minimum number of visible ally attackers before deusVulting
   MIN_ATK_FUEL: 10000, // minimum amount of fuel before deusVulting
   ATTACK_DEPTH: 50, // maximum search depth of navigate when finding path to deusVult
 
-  MIN_LAT_DIST: 2, // must be strictly greater than this
+  MIN_LAT_DIST: 4, // must be strictly greater than this
   DEFENSE_DEPTH: 10, // maximum search depth of navigate() when forming the defensive lattice
   NAVIGATION_TIME_LIMIT: 80, // maximum amount of time used in navigate()
 
@@ -21,6 +23,8 @@ export default {
   CHURCH_MAX_DEF: 20,
 
   SPECS: null,
+
+  isLastTurn: false,
 
   creatorID: 0,
   creatorPos: null,
