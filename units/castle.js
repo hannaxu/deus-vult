@@ -288,8 +288,8 @@ export default function castleTurn() {
   }
 
   var desp = (this.me.turn==950 && headcount[0] < enemyCastles.length);
-  if (desp||(this.fuel >= vars.MIN_ATK_FUEL && enemyCastles.length > 0 && this.me.turn%50==0)) {
-    if (desp||attackerCount >= vars.MIN_ATK_ROBOTS) {
+  if (false&&this.fuel >= vars.MIN_ATK_FUEL && enemyCastles.length > 0 && this.me.turn%50==0) {
+    if (attackerCount >= vars.MIN_ATK_ROBOTS) {
       curAttack = parseInt(this.me.turn/50)%enemyCastles.length;
       this.log("DEUS VULT "+enemyCastles[curAttack]);
       deusVult = enemyCastles[curAttack];
