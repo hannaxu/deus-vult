@@ -58,10 +58,11 @@ export function checkBounds (x, y) {
 
 export function findMove (start, costs) {
   if (costs==null) {
-    throw "COSTS ARE NULL FINDMOVE()";
+    this.log("COSTS ARE NULL FINDMOVE()");
   }
   if (costs[start[0]][start[1]]==null) {
-    throw "occupied";
+    this.log("no path found");
+    return null;
   }
   var bestMove = [costs[start[0]][start[1]][0], costs[start[0]][start[1]][1], null];
   for (var i = 0; i < vars.moveable.length; i++) {
@@ -296,7 +297,7 @@ export function equalArrays(arr1, arr2) {
 }
 
 export function multiDest (ends) {
-  throw "DEPRECATED";
+  this.log("DEPRECATED multiDest");
   return bfs.call(this, ends);
 }
 
@@ -360,7 +361,7 @@ export function connIndexOf (conn, val) {
       return i;
     }
   }
-  throw "ERROR Not in connection";
+  this.log("ERROR Not in connection");
   return -1;
 }
 
@@ -466,7 +467,7 @@ export function heappush(array, val, compare=heapCompare) {
 
 export function heappop(array, compare=heapCompare) {
   if (array.length==0) {
-    throw "empty heap";
+    this.log("empty heap heappop()");
   }
   var ret = array[0];
   array[0] = array[array.length-1];
