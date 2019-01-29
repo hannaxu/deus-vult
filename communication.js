@@ -206,11 +206,9 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
   if(this.me.turn == 1)
     return null;
   
-  var unitTrackingNew = {}
-  var appearedLast = appeared;
-  var builtLast = built;
-  appeared = [];
-  built = [];
+  var unitTrackingNew = {};
+  var builtUnripe = [];
+  var appearedUnripe = [];
   var churching = 0;
   var builtRobot = null;
 
@@ -232,40 +230,41 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
         continue;
 
       // receive updates
-      unitTrackingReceive.call(this, tracked_r);
+      unitTrackingReceive.call(this, tracked_r, built, builtUnripe);
     }
 
     else if(!this.isVisible(other_r) || other_r.team == this.me.team){
       if(!untracked.has(other_r.id)){
-        appeared.push(other_r);
+        switch(other_r.turn){
+          case 0:
+            appearedUnripe.push(other_r);
+            break;
+          case 1: 
+            appeared.push(other_r);
+        }
       }
     }
   }
 
 
-  // This turn, current structures
+  // Attempt to match appeared with built
   appeared = appeared.filter(function(other_r){
-    if(other_r.turn == 0)
-      return true;
-    return !creatorOrderMatch.call(this, other_r, built);
-  }, this);
-  // Next turn, last structures
-  appearedLast = appearedLast.filter(function(other_r){
-    return !creatorOrderMatch.call(this, other_r, builtLast);
+    if(other_r.turn != 1){
+      this.log("UTRACK: Unit " + other_r.id + " has incorrect turn number: " + other_r.turn + " != 1")
+      return false;
+    }
+    return !creatorOrderMatch.call(this, other_r, built, builtUnripe);
   }, this);
 
   // temorary fail cases
   // add any visible
-  
-  appearedLast = appearedLast.filter(function(other_r){
+  appeared = appeared.filter(function(other_r){
     if(this.isVisible(other_r)){
       var dxdy = [0, 0];
-      if(other_r.turn > 0){
-        var actions = vars.CastleTalk.receive(other_r.castle_talk, other_r.unit);
-        if('move' in actions)
-          dxdy = actions.move.dxdy;
-      }
-      var idx = builtLast.findIndex(function(loc){
+      var actions = vars.CastleTalk.receive(other_r.castle_talk, other_r.unit);
+      if('move' in actions)
+        dxdy = actions.move.dxdy;
+      var idx = built.findIndex(function(loc){
         return loc[1] == (other_r.x-dxdy[0]) &&
           loc[2] == (other_r.y-dxdy[1]);
       });
@@ -276,38 +275,40 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
       else{
         // found build job
         startTracking(unitTrackingNew, other_r, other_r.x, other_r.y, other_r.unit, other_r.team);
-        unitTrackingReceive.call(this, other_r);
-        //this.log("UTRACK: Tracking unit " + other_r.id + " at (" + other_r.x + ", " + other_r.y + ")");
-        if(builtLast[idx][3] == this.me.id){
+        unitTrackingReceive.call(this, other_r, built, builtUnripe);
+        this.log("UTRACK: Tracking unit via visible: " + other_r.id + " at (" + other_r.x + ", " + other_r.y + ")");
+        if(built[idx][3] == this.me.id){
           // send follow-up message and disable building
           builtRobot = other_r;
         }
       }
-      builtLast.splice(idx, 1);
+      built.splice(idx, 1);
       return false;
     }
     return true;
   }, this);
   // match by number
-  switch(builtLast.length){
+  switch(built.length){
     case 0:
       break;
     case 1:
-      if(appearedLast.length == 0)
-        this.log("UTRACK: No matching unit found for build at " + builtLast[0][1] + ", " + builtLast[0][2]);
+      if(appeared.length == 0)
+        this.log("UTRACK: No matching unit found for build at " + built[0][1] + ", " + built[0][2]);
       else{
-        var tracked_r = startTracking(unitTrackingNew, appearedLast[0], builtLast[0][1], builtLast[0][2], builtLast[0][0], this.me.team);
+        var tracked_r = startTracking(unitTrackingNew, appeared[0], built[0][1], built[0][2], built[0][0], this.me.team);
         unitTrackingReceive.call(this, tracked_r);
-        //this.log("UTRACK: Tracking unit " + tracked_r.id + " at (" + tracked_r.x + ", " + tracked_r.y + ")");
+        this.log("UTRACK: Tracking unit via singled: " + tracked_r.id + " at (" + tracked_r.x + ", " + tracked_r.y + ")");
       }
       break;
     default:
-      //this.log("UTRACK: Ambiguous builds detected. Units not matched.");
-      for(var i in appearedLast){
-        var other_r = appearedLast[i];
+      this.log("UTRACK: Ambiguous builds detected. Units not matched.");
+      for(var i in appeared){
+        var other_r = appeared[i];
         untracked.add(parseInt(other_r.id));
       }
   }
+  built = builtUnripe;
+  appeared = appearedUnripe;
   return [unitTrackingNew, churching, builtRobot];
 }
 
@@ -490,7 +491,7 @@ function readInfo(myCastles, castleOrderAll, unitTracking, other_r, addFunction)
   startTracking(unitTracking, other_r, x, y, vars.SPECS.CASTLE, this.me.team);
 }
 
-function unitTrackingReceive(tracked_r){
+function unitTrackingReceive(tracked_r, built, builtUnripe){
   try{
     var actions = vars.CastleTalk.receive(tracked_r.castle_talk, tracked_r.unit);
     for(var name in actions){
@@ -512,8 +513,18 @@ function unitTrackingReceive(tracked_r){
           ];
           if(tracked_r.unit == vars.SPECS.PILGRIM)
             info[0] = vars.SPECS.CHURCH;
-          if(utils.checkBounds(info[1], info[2]))
-            built.push(info);
+          if(utils.checkBounds(info[1], info[2])){
+            var myOrd = castleOrderAll.indexOf(this.me.id);
+            var builderOrd = castleOrderAll.indexOf(tracked_r.id);
+            if(myOrd == -1)
+              this.log("BIRTHCOMM: I am not in castleOrderAll");
+            else{
+              if(builderOrd == -1 || myOrd < builderOrd)
+                built.push(info);
+              else
+                builtUnripe.push(info);
+            }
+          }
           else
             this.log("UTRACK: Attempted to build by " + tracked_r.id + " outside the map.");
           break;
@@ -608,7 +619,7 @@ function addEnemyCastle(enemyCastles, myLoc, idx, symmetry) {
   }
 }
 
-function creatorOrderMatch(appeared_r, built){
+function creatorOrderMatch(appeared_r, built, builtUnripe){
   var ret = vars.CastleTalk.receiveForced(appeared_r.castle_talk);
   var creatorOrder = ret[0]-1;
   appeared_r.castle_talk = ret[1];
@@ -617,7 +628,6 @@ function creatorOrderMatch(appeared_r, built){
     return false;
   }
   this.log("UTRACK: Received creator order " + creatorOrder + " from " + appeared_r.id);
-  //TODO: current/last -> RIPE/UNRIPE
   // var idx = built.findIndex(function(build){
   //   return build[3] == castleOrderAll[creatorOrder];
   // });
@@ -626,11 +636,12 @@ function creatorOrderMatch(appeared_r, built){
   //   untracked.add(parseInt(other_r.id));
   // }
   // startTracking(unitTrackingNew, appeared_r, appeared_r.x, appeared_r.y, appeared_r.unit, appeared_r.team);
-  // unitTrackingReceive.call(this, appearedr_r);
+  // unitTrackingReceive.call(this, appearedr_r, built, builtUnripe);
   // //this.log("UTRACK: Tracking unit " + appeared_r.id + " at (" + appeared_r.x + ", " + appeared_r.y + ")");
   // if(built[idx][3] == this.me.id){
   //   // send follow-up message and disable building
   //   builtRobot = appeared_r;
   // }
+  // built.splice(idx, 1);
   return true;
 }
