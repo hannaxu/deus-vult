@@ -1,6 +1,7 @@
 import vars from '../variables';
 import * as utils from '../utils';
 import * as pilgrim_atk from './pilgrim_atk';
+import {readMessageTrusted} from '../communication';
 
 //rLocs:
 //type 0 fuel
@@ -68,6 +69,12 @@ export default function pilgrimTurn () {
     }
     
     for (var i=0; i<vars.radioRobots.length; i++) {
+        var res = readMessageTrusted.call(this, vars.radioRobots[i]);
+        if(res[0] && res[1] == 1){
+            this.log("LAST TURN: RECEIVED");
+            //BUILD CHURCHES HERE
+            continue;
+        }
         this.log('Pilgrim intercepted signal');
         seenEnms[utils.hashCoordinates([vars.radioRobots[i].x,vars.radioRobots[i].y])]=me.turn;
     } 

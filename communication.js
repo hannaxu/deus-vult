@@ -41,6 +41,15 @@ export function sendMessageTrusted(message, sq_radius) {
   //this.log("Successfully sent message " + message.toString(2) + " over sq_radius " + sq_radius);
 }
 
+export function readMessageTrusted(other_r){
+  // Chceck if the message has the trusted signature
+  var message = cypherMessage(other_r.signal, this.me.team);
+  var id_true = other_r.id & 255;
+  var id_restored = message >> 8;
+  var message_restored = message & 255;
+  return [id_restored == id_true, message_restored];
+}
+
 /**
  * Read the full incoming queue of messages.
  * Messages that weren't sent through methods in this file will not make sense.
@@ -65,14 +74,11 @@ export function readMessages() {
     if(typeof(trusted[other_r.id]) == 'undefined')
       trusted[other_r.id] = 0;
 
-    // Chceck if the message has the trusted signature
-    var message = cypherMessage(other_r.signal, this.me.team);
-    var id_true = other_r.id & 255;
-    var id_restored = message >> 8;
-    var message_restored = message & 255;
+    var res = readMessageTrusted.call(this, other_r);
+    var message_restored = res[1];
 
     // Trusted signature detected
-    if(id_restored == id_true){
+    if(res[0]){
       try{
         processMessage.call(this, message_restored, other_r, false);
         trusted[other_r.id] += 1;
