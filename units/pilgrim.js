@@ -248,7 +248,7 @@ function newFactVal() {
         for (var x=0; x<vars.xmax; x++) {
             for (var y=0; y<vars.ymax; y++) {
                 if (distsC[x][y]==null) continue;
-                var pval=(ret[x][y]/distsC[x][y][0])*(Math.random()*0.5+0.5);
+                var pval=(ret[x][y]/distsC[x][y][0])*(Math.random()*1+0);
                 if (pval>best && notNearEnemy(x,y,me.turn)) {
                     var validp=true;
                     for (var i=0; i<8; i++) {
