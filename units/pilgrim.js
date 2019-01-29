@@ -41,6 +41,22 @@ export default function pilgrimTurn () {
         //initPossChurches.call(this);
     }
 
+    //last minute church building
+    if (vars.isLastTurn) {
+      if(this.karbonite >= vars.SPECS.UNITS[vars.SPECS.CHURCH].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.CHURCH].CONSTRUCTION_FUEL) {
+        for (var i = 0; i < vars.buildable.length; i++) {
+          var x = this.me.x+vars.buildable[i][0];
+          var y = this.me.y+vars.buildable[i][1];
+          if (utils.checkBounds(y, x)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]==0) {
+            //sendMessage.call(this, castleOrder, vars.buildable[i][0]**2+vars.buildable[i][1]**2);
+            this.log("Last minute church building at "+x+" "+y);
+            return this.buildUnit(vars.SPECS.CHURCH, vars.buildable[i][0], vars.buildable[i][1]);
+          }
+        }
+      }
+      return;
+    }
+
     for (var i=0; i<vars.rLocs.length; i++) {
         var p=vars.rLocs[i];
         if (vars.visibleRobotMap[p.y][p.x]>0 && (p.x!=me.x || p.y!=me.y) && this.getRobot(vars.visibleRobotMap[p.y][p.x]).unit==2) {
@@ -63,12 +79,6 @@ export default function pilgrimTurn () {
     }
 
     for (var i=0; i<vars.radioRobots.length; i++) {
-        var res = readMessageTrusted.call(this, vars.radioRobots[i]);
-        if(res[0] && res[1] == 1){
-            this.log("LAST TURN: RECEIVED");
-            //BUILD CHURCHES HERE
-            continue;
-        }
         this.log('Pilgrim intercepted signal');
         seenEnms[utils.hashCoordinates([vars.radioRobots[i].x,vars.radioRobots[i].y])]=me.turn;
     }

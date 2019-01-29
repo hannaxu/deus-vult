@@ -10,7 +10,7 @@ import prophetTurn from './units/prophet';
 import preacherTurn from './units/preacher';
 
 import * as utils from './utils';
-import { readMessages, cypherMessage, castleLocReceive } from './communication';
+import { readMessages, cypherMessage, castleLocReceive, readMessageTrusted } from './communication';
 import CastleTalk from './castleTalk';
 import { testAll } from './unitTests';
 
@@ -54,7 +54,7 @@ class MyRobot extends BCAbstractRobot {
         vars.CastleTalk = new CastleTalk(this);
 
         vars.symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
-        
+
         for (var x = 0; x < vars.xmax; x++) {
           vars.fuzzyCost.push([]);
           for (var y = 0; y < vars.ymax; y++) {
@@ -81,7 +81,7 @@ class MyRobot extends BCAbstractRobot {
         // end of init
         //this.log("done init");
       }
-      
+
       // receive castle locations
       if (false && this.me.turn <= 2 && this.me.unit >= 2) {
         try{
@@ -152,6 +152,16 @@ class MyRobot extends BCAbstractRobot {
       }
 
       readMessages.call(this);
+
+
+      for (var i=0; i<vars.radioRobots.length; i++) {
+        var res = readMessageTrusted.call(this, vars.radioRobots[i]);
+        if(res[0] && res[1] == 1){
+          this.log("LAST TURN: RECEIVED");
+          vars.isLastTurn = true;
+          break;
+        }
+      }
 
       var ret = null;
       switch (this.me.unit) {
