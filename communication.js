@@ -203,14 +203,13 @@ export function castleLocComm(myCastles, castleOrderAll, unitTracking, prims, ad
 var appeared = [];
 var built = [];
 var builtRobot = null;
-export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction){
+export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction, castleOrderAll){
   if(this.me.turn == 1)
     return null;
   
   var unitTrackingNew = {};
   var builtUnripe = [];
-  var appearedUnripe = [];
-  var churching = 0;
+  var churching_arr = [0];
   builtRobot = null;
 
   for(var i in vars.commRobots){
@@ -231,17 +230,13 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
         continue;
 
       // receive updates
-      unitTrackingReceive.call(this, tracked_r, built, builtUnripe);
+      unitTrackingReceive.call(this, tracked_r, built, builtUnripe, castleOrderAll, unitTrackingNew, deleteFunction, churching_arr);
     }
 
     else if(!this.isVisible(other_r) || other_r.team == this.me.team){
       if(!untracked.has(other_r.id)){
-        switch(other_r.turn){
-          case 0:
-            appearedUnripe.push(other_r);
-            break;
-          case 1: 
-            appeared.push(other_r);
+        if(other_r.turn == 1){
+          appeared.push(other_r);
         }
       }
     }
@@ -254,7 +249,7 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
       this.log("UTRACK: Unit " + other_r.id + " has incorrect turn number: " + other_r.turn + " != 1")
       return false;
     }
-    return !creatorOrderMatch.call(this, other_r, built, builtUnripe);
+    return !creatorOrderMatch.call(this, other_r, built, builtUnripe, castleOrderAll, unitTrackingNew, untracked, deleteFunction, churching_arr);
   }, this);
 
   // temorary fail cases
@@ -276,7 +271,7 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
       else{
         // found build job
         var tracked_r = startTracking(unitTrackingNew, other_r, other_r.x, other_r.y, other_r.unit, other_r.team);
-        unitTrackingReceive.call(this, tracked_r, built, builtUnripe);
+        unitTrackingReceive.call(this, tracked_r, built, builtUnripe, castleOrderAll, unitTrackingNew, deleteFunction, churching_arr);
         this.log("UTRACK: Tracking unit via visible: " + other_r.id + " at (" + other_r.x + ", " + other_r.y + ")");
         if(built[idx][3] == this.me.id){
           // send follow-up message and disable building
@@ -297,7 +292,7 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
         this.log("UTRACK: No matching unit found for build at " + built[0][1] + ", " + built[0][2]);
       else{
         var tracked_r = startTracking(unitTrackingNew, appeared[0], built[0][1], built[0][2], built[0][0], this.me.team);
-        unitTrackingReceive.call(this, tracked_r, built, builtUnripe);
+        unitTrackingReceive.call(this, tracked_r, built, builtUnripe, castleOrderAll, unitTrackingNew, deleteFunction, churching_arr);
         this.log("UTRACK: Tracking unit via singled: " + tracked_r.id + " at (" + tracked_r.x + ", " + tracked_r.y + ")");
       }
       break;
@@ -309,8 +304,8 @@ export function trackUnits(unitTracking, untracked, totalCastles, deleteFunction
       }
   }
   built = builtUnripe;
-  appeared = appearedUnripe;
-  return [unitTrackingNew, churching, builtRobot];
+  appeared = [];
+  return [unitTrackingNew, churching_arr[0], builtRobot];
 }
 
 
@@ -492,7 +487,7 @@ function readInfo(myCastles, castleOrderAll, unitTracking, other_r, addFunction)
   startTracking(unitTracking, other_r, x, y, vars.SPECS.CASTLE, this.me.team);
 }
 
-function unitTrackingReceive(tracked_r, built, builtUnripe){
+function unitTrackingReceive(tracked_r, built, builtUnripe, castleOrderAll, unitTracking, deleteFunction, churching_arr){
   try{
     var actions = vars.CastleTalk.receive(tracked_r.castle_talk, tracked_r.unit);
     for(var name in actions){
@@ -520,7 +515,7 @@ function unitTrackingReceive(tracked_r, built, builtUnripe){
             if(myOrd == -1)
               this.log("BIRTHCOMM: I am not in castleOrderAll");
             else{
-              if(builderOrd == -1 || myOrd < builderOrd)
+              if(builderOrd == -1 || myOrd <= builderOrd)
                 built.push(info);
               else
                 builtUnripe.push(info);
@@ -571,7 +566,7 @@ function unitTrackingReceive(tracked_r, built, builtUnripe){
         case "opt":
           if(actions[name] > 0){
             if(tracked_r.unit == 2)
-              churching++;
+              churching_arr[0]++;
             else if(tracked_r.unit > 2)
               deleteFunction.call(this, tracked_r.id);
           }
@@ -620,7 +615,7 @@ function addEnemyCastle(enemyCastles, myLoc, idx, symmetry) {
   }
 }
 
-function creatorOrderMatch(appeared_r, built, builtUnripe){
+function creatorOrderMatch(appeared_r, built, builtUnripe, castleOrderAll, unitTrackingNew, untracked, deleteFunction, churching_arr){
   var ret = vars.CastleTalk.receiveForced(appeared_r.castle_talk);
   var creatorOrder = ret[0]-1;
   appeared_r.castle_talk = ret[1];
@@ -628,21 +623,22 @@ function creatorOrderMatch(appeared_r, built, builtUnripe){
     this.log("UTRACK: Unit " + appeared_r.id + " is not confirming creator order");
     return false;
   }
-  this.log("UTRACK: Received creator order " + creatorOrder + " from " + appeared_r.id);
+  //this.log("UTRACK: Received creator order " + creatorOrder + " from " + appeared_r.id);
   
   var idx = built.findIndex(function(build){
     return build[3] == castleOrderAll[creatorOrder];
   });
   if(idx == -1){
-    this.log("UTRACK: Claimed creator of " + appeared_r.id + " (" + build[3] + ") did not send a build job");
-    untracked.add(parseInt(other_r.id));
+    this.log("UTRACK: Claimed creator of " + appeared_r.id + " (" + castleOrderAll[creatorOrder] + ") did not send a build job");
+    untracked.add(parseInt(appeared_r.id));
+    return true;
   }
-  var tracked_r = startTracking(unitTrackingNew, appeared_r, appeared_r.x, appeared_r.y, appeared_r.unit, appeared_r.team);
-  unitTrackingReceive.call(this, tracked_r, built, builtUnripe);
-  this.log("UTRACK: Tracking unit " + appeared_r.id + " at (" + appeared_r.x + ", " + appeared_r.y + ")");
+  var tracked_r = startTracking(unitTrackingNew, appeared_r, built[idx][1], built[idx][2], built[idx][0], this.me.team);
+  unitTrackingReceive.call(this, tracked_r, built, builtUnripe, castleOrderAll, unitTrackingNew, deleteFunction, churching_arr);
+  //this.log("UTRACK: Tracking unit " + tracked_r.id + " at (" + tracked_r.x + ", " + tracked_r.y + ")");
   if(built[idx][3] == this.me.id){
     // send follow-up message and disable building
-    builtRobot = appeared_r;
+    builtRobot = tracked_r;
   }
   built.splice(idx, 1);
   return true;

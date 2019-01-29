@@ -87,7 +87,7 @@ export default function castleTurn() {
     return val;
 
   // track units
-  var ret = trackUnits.call(this, unitTracking, untracked, totalCastles, deleteEnemyCastle);
+  var ret = trackUnits.call(this, unitTracking, untracked, totalCastles, deleteEnemyCastle, castleOrderAll);
   var buildDisable = false;
   if(ret != null){
     unitTracking = ret[0];
@@ -99,7 +99,7 @@ export default function castleTurn() {
       buildDisable = true;
     }
   }
-  if(buildDisable) this.log("I AM DISABLED");
+  //if(buildDisable) this.log("I AM DISABLED");
 
   if(false && this.me.turn % 250 == 0 && castleOrder == 0){
     this.log(unitTracking);
