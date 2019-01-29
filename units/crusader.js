@@ -44,7 +44,7 @@ export default function crusaderTurn() {
     var id = vars.visibleRobotMap[deusVult[1]][deusVult[0]];
     if (id==0||(id>0&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
       deusVult = null;
-      vars.CastleTalk.performOptional(1);
+      this.castleTalk(1);
     }
   }
 

@@ -143,7 +143,7 @@ export default function pilgrimTurn () {
     //go build a church [sometimes returns]
     if (vars.teamFuel>=4) {
         //this.log('churching');
-        vars.CastleTalk.performOptional(1);
+        this.castleTalk(4);
         newFactVal.call(this);
         //this.log('xddd');
         var bx=factPos[0];

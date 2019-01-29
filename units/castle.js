@@ -1,6 +1,6 @@
 import vars from '../variables';
 import * as utils from '../utils';
-import { sendMessage, sendMessageTrusted, castleLocComm, trackUnits, castleLocSend } from '../communication';
+import { sendMessage, sendMessageTrusted, castleLocComm, trackUnits } from '../communication';
 import * as buildUtils from '../buildUtils';
 
 var team;
@@ -14,8 +14,8 @@ var deposits = [0,[],[]]; //total, karb locs, fuel locs
 var buildCount = [0,0,0,0,0,0];
 var attackPos = null;
 
-var unitTracking = {};
-var untracked = new Set();
+var unitTrackingChurches = 0;
+var unitTrackingDefenders = {};
 
 var enemyCastles = []; // enemyCastle locations based on our castleLocations in turn order
 var enemyCastlesAlive = []; // list of booleans in turn order (not matched to enemyCastles!)
@@ -81,7 +81,7 @@ export default function castleTurn() {
   // communicate castleLocs
   // only the first two turns
   var prims = [totalCastles, castleOrder];
-  var val = castleLocComm.call(this, myCastles, castleOrderAll, unitTracking, prims, addEnemyCastle);
+  var val = castleLocComm.call(this, myCastles, castleOrderAll, unitTrackingDefenders, prims, addEnemyCastle);
   totalCastles = prims[0];
   castleOrder = prims[1];
   if(this.me.turn == 1){
@@ -92,24 +92,16 @@ export default function castleTurn() {
     return val;
 
   // track units
-  var ret = trackUnits.call(this, unitTracking, untracked, totalCastles, deleteEnemyCastle);
-  var buildDisable = false;
+  var ret = trackUnits.call(this, unitTrackingChurches, unitTrackingDefenders, totalCastles, deleteEnemyCastle);
   if(ret != null){
-    unitTracking = ret[0];
+    unitTrackingChurches = ret[0];
     var churching = ret[1];
-    var builtRobot = ret[2];
-    if(builtRobot != null){
-      var message1 = castleLocSend.call(this, 1, myCastles, castleOrderAll, myCastlesAlive, enemyCastlesAlive);
-      //sendMessage.call(this, message1, (this.me.x-builtRobot.x)**2 + (this.me.y-builtRobot.y)**2);
-      buildDisable = true;
-    }
   }
-  //if(buildDisable) this.log("I AM DISABLED");
+  // this.log("ATTENTION");
+  // this.log(unitTrackingDefenders);
+  // this.log(unitTrackingChurches);
+  // this.log(churching);
 
-  if(false && this.me.turn % 250 == 0 && castleOrder == 0){
-    this.log(unitTracking);
-    this.log([...untracked]);
-  }
 
   attackerCount = 0;
   farthestAttacker = 0;
@@ -209,7 +201,6 @@ export default function castleTurn() {
           churchLoc--;
         buildCount[2]++;
         vars.buildRobot = 2;
-        temp.call(this, buildLoc[1], buildLoc[0]);
         return this.buildUnit(vars.SPECS.PILGRIM, buildLoc[1], buildLoc[0]);
       }
     }
@@ -236,7 +227,6 @@ export default function castleTurn() {
         //this.log("Building pilgrim at "+x+" "+y);
         buildCount[5]++;
         vars.buildRobot = 5;
-        temp.call(this, vars.buildable[i][0], vars.buildable[i][1]);
         return this.buildUnit(vars.SPECS.PREACHER, vars.buildable[i][0], vars.buildable[i][1]);
       }
     }
@@ -244,7 +234,7 @@ export default function castleTurn() {
 
   // prophet build
   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
-    if ( buildUtils.buildProphet.call(this, defend, totChurchLoc, castleOrder, visibleCount, castleOrderAll, myCastles, unitTracking) ) {
+    if ( buildUtils.buildProphet.call(this, defend, totChurchLoc, castleOrder, visibleCount, castleOrderAll, myCastles, unitTrackingChurches, unitTrackingDefenders) ) {
       var buildLoc;
       if( attackPos == null && this.me.turn < 15 )
         buildLoc = buildUtils.buildOpt.call(this, attackPosEarly, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
@@ -254,7 +244,6 @@ export default function castleTurn() {
         //this.log(buildLoc);
         buildCount[4]++;
         vars.buildRobot = 4;
-        temp.call(this, buildLoc[1], buildLoc[0]);
         return this.buildUnit(vars.SPECS.PROPHET, buildLoc[1], buildLoc[0]);
       }
     }
@@ -271,38 +260,10 @@ export default function castleTurn() {
           //this.log("Building pilgrim at "+x+" "+y);
           buildCount[2]++;
           vars.buildRobot = 2;
-          temp.call(this, vars.buildable[i][0], vars.buildable[i][1]);
           return this.buildUnit(vars.SPECS.PILGRIM, vars.buildable[i][0], vars.buildable[i][1]);
         }
       }
     }
-  }
-
-  // Send signal to let other castles know I'm protected
-  if (attackerCount >= vars.MIN_ATK_ROBOTS) {
-    vars.CastleTalk.performOptional(1);
-  }
-
-  var allProtected = true;
-  for(var i in castleOrderAll){
-    var id = castleOrderAll[i];
-    if(id in unitTracking){
-      myCastlesAlive[i] = true;
-      var actions = vars.CastleTalk.receive(unitTracking[id].castle_talk, vars.SPECS.CASTLE);
-      if(actions.opt == 0){
-        allProtected = false;
-        break;
-      }
-    }
-    else{
-      myCastlesAlive[i] = false;
-    }
-  }
-  if(allProtected){
-    if(castleOrder == 0){
-      //this.log("All Castles Protected");
-    }
-    //TODO: Deus Vult
   }
 
   var desp = (this.me.turn==950 && headcount[0] < enemyCastles.length);
@@ -391,9 +352,4 @@ function deleteEnemyCastle(id) {
   else {
     this.log("CASTLEKILL: Unit " + id + " is not DEUSVULTing");
   }
-}
-
-function temp(dx, dy){
-  var message0 = castleLocSend.call(this, 0, myCastles, castleOrderAll, myCastlesAlive, enemyCastlesAlive);
-  //sendMessage.call(this, message0, dx**2 + dy**2);
 }

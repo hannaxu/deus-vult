@@ -193,7 +193,7 @@ export function buildPilgrim (defend, churchLoc, churching, visibleCount, deposi
   return false;
 }
 
-export function buildProphet(defend, totChurchLoc,  castleOrder, visibleCount, castleOrderAll, myCastles/*, unitTracking*/) {
+export function buildProphet(defend, totChurchLoc, castleOrder, visibleCount, castleOrderAll, myCastles, unitTrackingChurches, unitTrackingDefenders) {
   var units = [];
   var numC = castleOrderAll.length;
   var castleLoc = [];

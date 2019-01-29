@@ -62,9 +62,6 @@ export default {
   teamFuel: null,
   teamKarb: null,
 
-  // Managers
-  CastleTalk: null,
-
   // tiles
   dangerTiles: null,
 
@@ -78,7 +75,6 @@ export default {
 
   // Created information
   symmetry: [null, null],
-  castleVars: [[],[],[],[]],
 
   castleLocs: {}, // (castles only, for now) {id: [x, y]} of all friendly castles
   baseLocs: {}, // stores Castle and Church locations

@@ -114,7 +114,7 @@ export default function preacherTurn() {
       if (id==0||(id>0&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
         deusVult = null;
         deusVultFrom = null;
-        vars.CastleTalk.performOptional(1);
+        this.castleTalk(1);
         return;
       }
       var move = utils.findMoveD.call(this, [this.me.x, this.me.y], deusVult);

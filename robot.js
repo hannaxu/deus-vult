@@ -10,8 +10,7 @@ import prophetTurn from './units/prophet';
 import preacherTurn from './units/preacher';
 
 import * as utils from './utils';
-import { readMessages, cypherMessage, castleLocReceive } from './communication';
-import CastleTalk from './castleTalk';
+import { readMessages, cypherMessage, } from './communication';
 import { testAll } from './unitTests';
 
 class MyRobot extends BCAbstractRobot {
@@ -51,8 +50,6 @@ class MyRobot extends BCAbstractRobot {
         vars.attackable = vars.allAttackable[this.me.unit];
         vars.buildable = utils.findConnections.call(this, vars.buildRadius);
 
-        vars.CastleTalk = new CastleTalk(this);
-
         vars.symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
         
         for (var x = 0; x < vars.xmax; x++) {
@@ -80,33 +77,6 @@ class MyRobot extends BCAbstractRobot {
 
         // end of init
         //this.log("done init");
-      }
-      
-      // receive castle locations
-      if (false && this.me.turn <= 2 && this.me.unit >= 2) {
-        try{
-          var creator = this.getRobot(vars.creatorID);
-          if(creator == null)
-            this.log("BIRTHCOMM: Creator " + vars.creatorID + " is not visible.");
-          else if(creator.unit != 1){
-            var dist = (this.me.x-creator.x)**2 + (this.me.y-creator.y)**2;
-            if(creator.signal_radius == 0)
-              this.log("BIRTHCOMM: Creator is not sending signal");
-            else if(creator.signal_radius != dist)
-              this.log("BIRTHCOMM: Creator is sending signal over an incorrect distance: " + creator.signal_radius + " != " + dist);
-            else{
-              castleLocReceive.call(this, creator, vars.symmetry, vars.castleVars);
-              if(this.me.turn == 2){
-                //TODO: Fix order of castles
-                this.log("Received castle locations: " + vars.castleVars[0]);
-              }
-            }
-          }
-        }
-        catch (err) {
-          this.log("BIRTHCOMM: Failed to receive castle locations from " + vars.creatorID);
-          this.log(err.toString());
-        }
       }
 
       this.castleTalk(0);
@@ -178,29 +148,26 @@ class MyRobot extends BCAbstractRobot {
       if(ret != null){
         switch(ret.action){
           case 'build':
-            var val = {'dxdy': [ret.dx, ret.dy]};
-            if(this.me.unit != vars.SPECS.PILGRIM)
-              val.unit = ret.build_unit;
-            vars.CastleTalk.performAction('build', val);
+            if(this.me.unit != vars.SPECS.PILGRIM){
+              if(ret.build_unit > 2){
+                this.castleTalk(2);
+                //this.log("Built defender");
+              }
+            }
+            else{
+              this.castleTalk(3);
+              this.log("Built Church");
+            }
             break;
-          case 'move':
-            vars.CastleTalk.performAction('move', {'dxdy': [ret.dx, ret.dy]});
-            break;
-          case 'mine':
-            vars.CastleTalk.performAction('mine', {});
-            break;
-          case 'give':
-            vars.CastleTalk.performAction('give', {'dxdy': [ret.dx, ret.dy]});
         }
       }
-      vars.CastleTalk.send();
 
       vars.firstTurn = false;
       return ret;
     }
     catch (err) {
       this.log("Error in unit "+this.me.unit+" at ("+this.me.x+", "+this.me.y+")");
-      if(true){
+      if(typeof(err.stack) != 'undefined'){
         var lines = err.stack.split('\n');
         for(var i in lines){
           this.log(lines[i]);
