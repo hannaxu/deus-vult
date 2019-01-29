@@ -13,7 +13,7 @@ export function checkMapSymmetry (passMap, karbMap, fuelMap) {
     symmetry2DHoriz(passMap) && symmetry2DHoriz(karbMap) && symmetry2DHoriz(fuelMap)];
 }
 function symmetry2DVert (arr) {
-    
+
   var N = arr[0].length;
   var leftFlipped = arr.map(function(row){return row.slice(0, Math.floor(N/2)).reverse()});
   var right = arr.map(function(row){return row.slice(Math.floor((N+1)/2))});
@@ -503,6 +503,7 @@ export function add (v1, v2) {
 export function onLattice (x, y) {
   var dx = Math.abs(x-vars.creatorPos[0]);
   var dy = Math.abs(y-vars.creatorPos[1]);
+  return dx%2==0||dy%2==0;
   if (dx>dy) {
     var temp = dx;
     dx = dy;
@@ -515,6 +516,49 @@ export function onLattice (x, y) {
   else {
     return (dx+dy)%2==0;
   }
+}
+
+export function onLattice2 (x, y) {
+  var dx = Math.abs(x-vars.creatorPos[0]);
+  var dy = Math.abs(y-vars.creatorPos[1]);
+  if (dx>dy) {
+    var temp = dx;
+    dx = dy;
+    dy = temp;
+  }
+  // dx <= dy
+  if (dx<=2) {
+    return dy%2==0;
+  }
+  else {
+    return (dx+dy)%2==0;
+  }
+}
+
+export function findBetterLattice () {
+  var betterPos = [];
+  var curDist = (this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2;
+  // minimum distance AND on even tile AND not on resource tile
+  for (var i = 0; i < vars.visible.length; i++) {
+    var x = this.me.x+vars.visible[i][0];
+    var y = this.me.y+vars.visible[i][1];
+    var newDist = (x-vars.creatorPos[0])**2+(y-vars.creatorPos[1])**2;
+    // robust addition
+    var empty = checkBounds(x, y)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]<=0;
+    var oL = onLattice(x, y);
+    if (!empty || !oL || newDist <= vars.MIN_LAT_DIST) {
+      continue;
+    }
+    var onResource = vars.fuelMap[y][x]||vars.karbMap[y][x];
+    if (onResource) {
+      continue;
+    }
+    if (curDist >= newDist) {
+      continue;
+    }
+    betterPos.push([x, y]);
+  }
+  return betterPos;
 }
 
 export function findAttackableEnemies (pos=[this.me.x, this.me.y], range=vars.attackRadius) {
@@ -557,7 +601,7 @@ export function timeLeft () {
 
 var seed = 1;
 export function random() {
-  
+
   var x = Math.sin(seed++) * 10000;
   return x - Math.floor(x);
 }

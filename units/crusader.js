@@ -143,14 +143,13 @@ export default function crusaderTurn() {
         }
         betterPos.push([x, y]);
       }
+      if (betterPos.length==0 && !alreadyOk) {
+        this.log("Finding better lattice");
+        betterPos = utils.findBetterLattice.call(this);
+      }
       if (betterPos.length==0) {
         return;
       }
-      betterPos.sort(function (v1, v2) {
-        var d1 = (v1[0]-vars.creatorPos[0])**2+(v1[1]-vars.creatorPos[1])**2;
-        var d2 = (v2[0]-vars.creatorPos[0])**2+(v2[1]-vars.creatorPos[1])**2;
-        return d1-d2;
-      });
       // this.log("betterPos");
       // this.log(betterPos);
 
