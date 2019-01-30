@@ -193,7 +193,7 @@ export function buildPilgrim (defend, churchLoc, churching, visibleCount, deposi
   return false;
 }
 
-export function buildProphet(defend, totChurchLoc, castleOrder, visibleCount, castleOrderAll, myCastles, unitTrackingChurches, unitTrackingDefenders) {
+export function buildProphet(defend, totChurchLoc, visibleCount, castleOrderAll, myCastles, unitTrackingChurches, unitTrackingDefenders) {
   var units = [];
   var numC = castleOrderAll.length;
   var castleLoc = [];
@@ -201,44 +201,31 @@ export function buildProphet(defend, totChurchLoc, castleOrder, visibleCount, ca
     units.push(0);
     castleLoc.push([myCastles[castleOrderAll[i]][0], myCastles[castleOrderAll[i]][1]]);
   }
-  //this.log(castleLoc);
-  var churchC = 0;
   if ( defend )
     return true;
-  if( visibleCount[4] > 30 )
+  if( visibleCount[4] > vars.MIN_DEF_ROBOTS )
     return false;
-  /*for( var key in unitTracking ) {
-    if( unitTracking[key]["unit"] == vars.SPECS.PROPHET ) {
-      var temp = nearestCastle(unitTracking[key]["x"], unitTracking[key]["y"], castleLoc, 100);
-      //this.log(temp);
-      if( temp[0] > -1 )
-        units[temp[0]] += 1;
-    }
-    if( unitTracking[key]["unit"] == vars.SPECS.CHURCH ) 
-      churchC++;
-  }*/
-  //this.log(units);
   var min = 5000;
-  var minI = 0;
-  for( var i = 0; i < units.length; i++ ) {
-    if( units[i] <= min ) {
-      min = units[i];
-      minI = i;
+  var id = 0;
+  for( const k of unitTrackingDefenders.keys() ) {
+    if( unitTrackingDefenders[k] < min ) {
+      min = unitTrackingDefenders[k];
+      id = parseInt(k);
     }
   }
-  //this.log(units[castleOrder]);
-  //this.log(min);
-  if( Math.abs(units[castleOrder] - min) <= 1 ) {
+  if( this.me.id == id || visibleCount[4] <= min ) {
     //this.log("build");
     if( visibleCount[4] < 2 )
       return true;
-    if( visibleCount[4] < 12 && this.karbonite >= 75 && this.fuel >= 300 /*&& totChurchLoc/2 < churchC*/ )
+    if( visibleCount[4] < 12 && this.karbonite >= 100 && this.fuel >= 300 && totChurchLoc/2 < unitTrackingChurches )
       return true;
-    if( visibleCount[4] < 7 && this.karbonite >= 50 && this.fuel >= 300 && this.me.turn > totChurchLoc*vars.ymax/2 )
+    if( visibleCount[4] < 7 && this.karbonite >= 75 && this.fuel >= 300 && this.me.turn > totChurchLoc*vars.ymax/2 )
       return true;
-    if( /*churchC == Math.min(totChurchLoc, 1) &&*/ visibleCount[4] < 4 && vars.ymax < 48 && this.me.turn < 12 )
+    if( unitTrackingChurches == Math.min(totChurchLoc, 1) && visibleCount[4] < 4 && vars.ymax < 48 && this.me.turn < 12 )
       return true;
   }
+  if( this.me.turn > 100 && this.fuel < 1000 )
+    return false;
   if( this.karbonite >= 100 && this.fuel >= 300 )
       return true;
   if( this.me.turn > 980 )
