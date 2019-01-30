@@ -19,7 +19,7 @@ export default function churchTurn() {
   }
 
   //last minute church building
-  if(this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
+  if(false && this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PILGRIM].CONSTRUCTION_FUEL) {
     if (vars.isLastTurn) {
       for (var i = 0; i < vars.buildable.length; i++) {
         var x = this.me.x+vars.buildable[i][0];
