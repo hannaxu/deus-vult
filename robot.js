@@ -160,13 +160,13 @@ class MyRobot extends BCAbstractRobot {
       if(ret != null){
         switch(ret.action){
           case 'build':
-            if(this.me.unit != vars.SPECS.PILGRIM){
+            if(this.me.unit == vars.SPECS.CASTLE){
               if(ret.build_unit > 2){
                 this.castleTalk(2);
                 //this.log("Built defender");
               }
             }
-            else{
+            else if(this.me.unit == vars.SPECS.PILGRIM){
               this.castleTalk(3);
               this.log("Built Church");
             }
