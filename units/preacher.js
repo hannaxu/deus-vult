@@ -4,32 +4,47 @@ import { sendMessage, sendMessageTrusted, readMessages, cypherMessage } from '..
 
 var enemyCastles = [];
 var symmetry = [false, false];
-var deusVult = null; // boolean for whether or not in attack phase
-var deusVultFrom = null;
-var curPath = [];
+var deusVult = null;
+var deusVultTiles = null;
+var curFuzzy = null;
+var clearPath = false;
 
 export default function preacherTurn() {
-  //this.log("I am a Preacher at "+vars.xpos+" "+vars.ypos);
+  // this.log("I am a Preacher at "+vars.xpos+" "+vars.ypos);
   if (this.me.turn==1) {
 
   }
 
   // check for DEUS VULT signal
   if (deusVult==null) {
-    outer: for (var i = 0; i < vars.visibleRobots.length; i++) {
-      if (!this.isRadioing(vars.visibleRobots[i])||this.me.team!=vars.visibleRobots[i].team) {
-        continue;
-      }
-      var pos = [vars.visibleRobots.x, vars.visibleRobots.y];
-      if (vars.visibleRobots[i].unit==0) {
-        var message = cypherMessage(vars.visibleRobots[i].signal, this.me.team);
-        if ((message & 2**15)>0) {
-          //this.log("DEUS VULT 0 RECEIVED");
-          deusVultFrom = vars.visibleRobots[i].id;
-          deusVult = utils.unhashCoordinates(message-2**15);
-          break outer;
+    var creator = this.getRobot(vars.creatorID);
+    if (creator!=null&&this.isRadioing(creator)) {
+      var message = cypherMessage(creator.signal, this.me.team);
+      if ((message & 2**15)>0) {
+        var stayDistance = (message%(1<<15))>>12;
+        var dist = (this.me.x-vars.creatorPos[0])**2+(this.me.y-vars.creatorPos[1])**2;
+        if (dist>stayDistance) {
+          //this.log("Deus Vult received");
+          deusVult = utils.unhashCoordinates(message%(1<<12));
+          deusVultTiles = [];
+          for (var i = 0; i < vars.attackable.length; i++) {
+            var x = deusVult[0]+vars.attackable[i][0];
+            var y = deusVult[1]+vars.attackable[i][1];
+            if (utils.checkBounds(x, y)&&vars.passableMap[y][x]) {
+              deusVultTiles.push([x, y]);
+            }
+          }
         }
       }
+    }
+  }
+
+  // checks if enemy castle is already dead
+  if (deusVult!=null) {
+    var id = vars.visibleRobotMap[deusVult[1]][deusVult[0]];
+    if (id==0||(id>0&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
+      deusVult = null;
+      this.castleTalk(1);
     }
   }
 
@@ -83,44 +98,59 @@ export default function preacherTurn() {
   // moving
   if (this.fuel >= vars.moveCost*vars.moveRadius) {
 
-    // IMPLEMENT LATER get in range of enemies
-    /*
-    var damageLoc = {};
-    for (var i = 0; i < vars.visibleEnemyRobots.length; i++) {
-        var u = vars.visibleRobots[i].unit;
-        if (3 <= u && u <= 5) {
-          var dx = vars.visibleRobots[i].x-this.me.x;
-          var dy = vars.visibleRobots[i].y-this.me.y;
-          if (dx**2+dy**2 < vars.attackRadius[0]) {
-            this.log(1);
-          }
+    // basic kiting
+    if (vars.dangerTiles[utils.hashCoordinates[this.me.x, this.me.y]]!=null) {
+      this.log("In danger");
+      var saferPos = [];
+      for (var i = 0; i < vars.moveable.length; i++) {
+        var x = this.me.x+vars.moveable[i][0];
+        var y = this.me.y+vars.moveable[i][1];
+        var empty = utils.checkBounds(x, y)&&vars.passableMap[y][x]&&vars.visibleRobotMap[y][x]<=0;
+        if (empty && vars.dangerTiles[utils.hashCoordinates([x, y])]==null) {
+          curPath = [];
+          return this.move(vars.moveable[i][0], vars.moveable[i][1]);
         }
-    }
-    */
-    if (curPath.length>0) {
-      var move = curPath.splice(0, 1)[0];
-      if (vars.visibleRobotMap[this.me.y+move[1]][this.me.x+move[0]] == 0) {
-        return this.move(move[0], move[1])
       }
-      curPath = [];
     }
 
-    // DEUS VULT, attack deusVult
+    // continues moving along the current path
+    if (clearPath&&curFuzzy[this.me.x][this.me.y]!=null&&curFuzzy[this.me.x][this.me.y][0]>0) {
+      var move = utils.findMove.call(this, vars.myPos, curFuzzy);
+      if (move!=null) {
+        return this.move(move[0], move[1])
+      }
+      else {
+        clearPath = false;
+      }
+    }
+
     if (deusVult!=null) {
+      if (utils.timeLeft.call(this)>1.2*vars.NAVIGATION_TIME_LIMIT) {
+        var curDist = (this.me.x-deusVult[0])**2+(this.me.y-deusVult[1])**2;
+        if (vars.attackRadius[0] > curDist || curDist > vars.attackRadius[1]) {
+          clearPath = true;
+          curFuzzy = utils.bfs2.call(this, [deusVult], 20, vars.myPos, true);
+          var move = utils.findMove.call(this, vars.myPos, curFuzzy);
+          if (move!=null) {
+            return this.move(move[0], move[1])
+          }
+          else {
+            clearPath = false;
+          }
+        }
+      }
       var x = deusVult[0];
       var y = deusVult[1];
       var id = vars.visibleRobotMap[y][x];
       // check if already dead
-      if (id==0||(id>0&&this.getRobot(id).unit!=vars.SPECS.CASTLE)) {
-        deusVult = null;
-        deusVultFrom = null;
-        this.castleTalk(1);
-        return;
-      }
-      var move = utils.findMoveD.call(this, [this.me.x, this.me.y], deusVult);
+      var move = utils.findMove.call(this, vars.myPos, curFuzzy);
       if (move != null) {
         //this.log("Moving towards "+x+" "+y);
+        clearPath = true;
         return this.move(move[0], move[1]);
+      }
+      else {
+        clearPath = false;
       }
     }
     else {
@@ -148,20 +178,30 @@ export default function preacherTurn() {
         }
         betterPos.push([x, y]);
       }
-      betterPos.sort(function (v1, v2) {
-        var d1 = (v1[0]-vars.creatorPos[0])**2+(v1[1]-vars.creatorPos[1])**2;
-        var d2 = (v2[0]-vars.creatorPos[0])**2+(v2[1]-vars.creatorPos[1])**2;
-        return d1-d2;
-      });
+      if (betterPos.length==0 && !alreadyOk) {
+        this.log("Finding better lattice");
+        betterPos = utils.findBetterLattice.call(this);
+      }
+      if (betterPos.length==0) {
+        return;
+      }
       // this.log("betterPos");
       // this.log(betterPos);
 
-      var path = utils.navigate.call(this, [this.me.x, this.me.y], betterPos, vars.DEFENSE_DEPTH);
-      if (path!=null) {
-        //this.log(path);
-        var move = path.splice(0, 1)[0];
-        curPath = path;
-        return this.move(move[0], move[1]);
+      if (utils.timeLeft.call(this)>1.2*vars.NAVIGATION_TIME_LIMIT) {
+        clearPath = true;
+        curFuzzy = utils.bfs2.call(this, betterPos, 20, vars.myPos, true);
+        // this.log("here "+curFuzzy[this.me.x][this.me.y]+" "+vars.myPos);
+        // for(var i = 0; i < curFuzzy.length; i++) {
+        //   this.log(curFuzzy[i]);
+        // }
+        var move = utils.findMove.call(this, vars.myPos, curFuzzy);
+        if (move!=null) {
+          return this.move(move[0], move[1])
+        }
+        else {
+          clearPath = false;
+        }
       }
     }
   }

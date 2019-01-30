@@ -19,7 +19,7 @@ export default {
   CASTLE_MIN_DEF: 8, // minimum number of visible ally attackers on defense per castle
 
   CHURCH_DEPTH: 20, // how many moves a pilgrim is willing to make to build a church
-  CHURCH_MIN_DEF: 2,
+  CHURCH_MIN_DEF: 8,
   CHURCH_MAX_DEF: 20,
 
   SPECS: null,

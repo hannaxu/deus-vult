@@ -198,7 +198,6 @@ export function buildProphet(defend, totChurchLoc, visibleCount, castleOrderAll,
   var numC = castleOrderAll.length;
   var castleLoc = [];
   for( var i = 0; i < numC; i++ ) {
-    units.push(0);
     castleLoc.push([myCastles[castleOrderAll[i]][0], myCastles[castleOrderAll[i]][1]]);
   }
   if ( defend )

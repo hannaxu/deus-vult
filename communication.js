@@ -218,6 +218,14 @@ export function trackUnits(unitTrackingChurches, unitTrackingDefenders, totalCas
       continue;
 
     try{
+      if(this.me.castle_talk == 2){
+        if(!(this.me.id in unitTrackingDefenders))
+          this.log("ERROR: Unit " + this.me.id + " is not a castle");
+        else{
+          //this.log("Received defender build");
+          unitTrackingDefenders[this.me.id]++;
+        }
+      }
       switch(other_r.castle_talk){
         case 1:
           //killed castle
