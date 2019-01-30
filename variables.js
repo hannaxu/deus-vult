@@ -11,7 +11,7 @@ export default {
   ATTACK_DEPTH: 50, // maximum search depth of navigate when finding path to deusVult
 
   MIN_LAT_DIST: 4, // must be strictly greater than this
-  DEFENSE_DEPTH: 10, // maximum search depth of navigate() when forming the defensive lattice
+  DEFENSE_DEPTH: 15, // maximum search depth of navigate() when forming the defensive lattice
   NAVIGATION_TIME_LIMIT: 80, // maximum amount of time used in navigate()
 
   ENEMY_PRIORITY: [5, 4, 3, 0, 1, 2],
@@ -19,7 +19,7 @@ export default {
   CASTLE_MIN_DEF: 8, // minimum number of visible ally attackers on defense per castle
 
   CHURCH_DEPTH: 20, // how many moves a pilgrim is willing to make to build a church
-  CHURCH_MIN_DEF: 2,
+  CHURCH_MIN_DEF: 8,
   CHURCH_MAX_DEF: 20,
 
   SPECS: null,
