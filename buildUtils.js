@@ -193,12 +193,10 @@ export function buildPilgrim (defend, churchLoc, churching, visibleCount, deposi
   return false;
 }
 
-export function buildProphet(defend, totChurchLoc, castleOrder, visibleCount, castleOrderAll, myCastles, unitTrackingChurches, unitTrackingDefenders) {
-  var units = [];
+export function buildProphet(defend, totChurchLoc, castleOrder, visibleCount, castleOrderAll, myCastles, churchC, units) {
   var numC = castleOrderAll.length;
   var castleLoc = [];
   for( var i = 0; i < numC; i++ ) {
-    units.push(0);
     castleLoc.push([myCastles[castleOrderAll[i]][0], myCastles[castleOrderAll[i]][1]]);
   }
   //this.log(castleLoc);
@@ -207,28 +205,18 @@ export function buildProphet(defend, totChurchLoc, castleOrder, visibleCount, ca
     return true;
   if( visibleCount[4] > 30 )
     return false;
-  /*for( var key in unitTracking ) {
-    if( unitTracking[key]["unit"] == vars.SPECS.PROPHET ) {
-      var temp = nearestCastle(unitTracking[key]["x"], unitTracking[key]["y"], castleLoc, 100);
-      //this.log(temp);
-      if( temp[0] > -1 )
-        units[temp[0]] += 1;
-    }
-    if( unitTracking[key]["unit"] == vars.SPECS.CHURCH ) 
-      churchC++;
-  }*/
-  //this.log(units);
+
   var min = 5000;
-  var minI = 0;
-  for( var i = 0; i < units.length; i++ ) {
-    if( units[i] <= min ) {
-      min = units[i];
-      minI = i;
+  var minId = -1;
+  for(var id in units){
+    if( units[id] <= min ) {
+      min = units[id];
+      minId = id;
     }
   }
   //this.log(units[castleOrder]);
   //this.log(min);
-  if( Math.abs(units[castleOrder] - min) <= 1 ) {
+  if( Math.abs(units[this.me.id] - min) <= 1 ) {
     //this.log("build");
     if( visibleCount[4] < 2 )
       return true;

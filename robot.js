@@ -36,6 +36,7 @@ class MyRobot extends BCAbstractRobot {
         vars.fuelMap = this.getFuelMap();
         vars.ymax = vars.passableMap.length;
         vars.xmax = vars.passableMap[0].length;
+        vars.moveRadius = vars.SPECS.UNITS[this.me.unit].SPEED;
         vars.attackRadius = vars.SPECS.UNITS[this.me.unit].ATTACK_RADIUS;
         vars.buildRadius = 2;
         vars.visionRadius = vars.SPECS.UNITS[this.me.unit].VISION_RADIUS;
@@ -49,6 +50,7 @@ class MyRobot extends BCAbstractRobot {
         utils.findAllAttackable(); // initializes vars.allAttackable
         vars.attackable = vars.allAttackable[this.me.unit];
         vars.buildable = utils.findConnections.call(this, vars.buildRadius);
+        vars.moveable = utils.findConnections.call(this, vars.moveRadius);
 
         vars.symmetry = utils.checkMapSymmetry(vars.passableMap, vars.karbMap, vars.fuelMap);
 
