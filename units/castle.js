@@ -230,23 +230,23 @@ export default function castleTurn() {
       }
     }
   }
-
+  
   // prophet build
-  if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
-    if ( buildUtils.buildProphet.call(this, defend, totChurchLoc, visibleCount, castleOrderAll, myCastles, unitTrackingChurches, unitTrackingDefenders) ) {
-      var buildLoc;
-      if( attackPos == null && this.me.turn < 15 )
-        buildLoc = buildUtils.buildOpt.call(this, attackPosEarly, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
-      else
-        buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
-      if( buildLoc != null ) {
-        //this.log(buildLoc);
-        buildCount[4]++;
-        vars.buildRobot = 4;
-        return this.buildUnit(vars.SPECS.PROPHET, buildLoc[1], buildLoc[0]);
-      }
-    }
-  }
+   if (this.karbonite >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_KARBONITE && this.fuel >= vars.SPECS.UNITS[vars.SPECS.PROPHET].CONSTRUCTION_FUEL)  {
+     if ( buildUtils.buildProphet.call(this, defend, totChurchLoc, castleOrder, visibleCount, castleOrderAll, myCastles, unitTrackingChurches, unitTrackingDefenders) ) {
+       var buildLoc;
+       if( attackPos == null && this.me.turn < 15 )
+         buildLoc = buildUtils.buildOpt.call(this, attackPosEarly, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
+       else
+         buildLoc = buildUtils.buildOpt.call(this, attackPos, deposits, vars.SPECS.PROPHET, this.me.x, this.me.y);
+       if( buildLoc != null ) {
+         //this.log(buildLoc);
+         buildCount[4]++;
+         vars.buildRobot = 4;
+         return this.buildUnit(vars.SPECS.PROPHET, buildLoc[1], buildLoc[0]);
+       }
+     }
+   }
 
   var desp = (this.me.turn==950 && headcount[0] < enemyCastles.length);
   if (false&&this.fuel >= vars.MIN_ATK_FUEL && enemyCastles.length > 0 && this.me.turn%50==0) {
